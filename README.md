@@ -25,16 +25,18 @@ Os artifacts levam o número da lição no título, na ordem de leitura do MIT (
 
 | # | Lição | Fonte | Artifact |
 |---|---|---|---|
-| 0000 | Máxima verossimilhança (MLE) | M10, LMLE 6–10 | [abrir](https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks) |
-| 0001 | Tabela de atualização bayesiana | M11, L03 Q1.1 | [abrir](https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa) |
-| 0002 | Probabilidade preditiva | M12, L03 Q1.2–1.3 | [abrir](https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z) |
-| 0003 | Prior contínua e MAP | M13, L03 Q2.1–2.2 | [abrir](https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT) |
+| 0000 | Máxima verossimilhança (MLE) | MIT10, LMLE 6–10 | [abrir](https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks) |
+| 0001 | Tabela de atualização bayesiana | MIT11, L03 Q1.1 | [abrir](https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa) |
+| 0002 | Probabilidade preditiva | MIT12, L03 Q1.2–1.3 | [abrir](https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z) |
+| 0003 | Prior contínua e MAP | MIT13, L03 Q2.1–2.2 | [abrir](https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT) |
 
 Os artifacts são privados. O HTML de cada lição também está em [lessons/](lessons/) e abre direto no navegador.
 
 ## Build
 
-O visual vem do `render.py` da skill **explain-diff-html** (KaTeX, tema claro/escuro, quiz), que está no meu repositório [agent-kit](https://github.com/drbarros2004/agent-kit/tree/main/skills/explain-diff-html). [assets/build.py](assets/build.py) carrega o renderer de `~/.claude/skills/explain-diff-html/render.py` e acrescenta o que é das lições: respostas numéricas ([assets/check.js](assets/check.js)), tabela de Bayes, gráficos de pdf e textos em português.
+O visual vem do `render.py` da skill **explain-diff-html** (KaTeX, tema claro/escuro, quiz), que está no meu repositório [agent-kit](https://github.com/drbarros2004/agent-kit/tree/main/skills/explain-diff-html). [assets/build.py](assets/build.py) carrega o renderer de `~/.claude/skills/explain-diff-html/render.py` e acrescenta o que é das lições: respostas numéricas ([assets/check.js](assets/check.js)), tabela de Bayes, gráficos de pdf e textos em português. Também injeta a camada de caneta da skill [explain-diff-html-ink](https://github.com/drbarros2004/agent-kit/tree/main/skills/explain-diff-html-ink) (`~/.claude/skills/explain-diff-html-ink/ink.js`): o botão ✎ liga a caneta, e os traços ficam salvos no `db` do artifact (coleção `ink`). Por isso os artifacts são publicados com `capabilities: {"db": {}}`.
+
+Os módulos do MIT 18.05 aparecem como MIT10, MIT11, ... (os arquivos no Drive se chamam M10, M11, ...).
 
 Para gerar uma lição:
 

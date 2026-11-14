@@ -17,15 +17,15 @@ $$P(H \mid D) = \frac{P(D \mid H)\,P(H)}{P(D)}, \qquad P(D) = \sum_H P(D \mid H)
 <tr><td>posterior \(P(H \mid D)\)</td><td>numerador ÷ \(P(D)\)</td><td>1</td></tr>
 </table>
 <h3>Vários dados, independentes dada a hipótese</h3>
-<p>Multiplique as likelihoods, \((1/n)^k\) para \(k\) lançamentos de um dado de \(n\) faces, e normalize só no fim. Dá o mesmo que atualizar passo a passo (M11 §4).</p>
-<div class="callout"><b>Armadilhas.</b> Confundir \(P(D \mid H)\) com \(P(H \mid D)\) (falácia da taxa-base, M11 §5) ·
+<p>Multiplique as likelihoods, \((1/n)^k\) para \(k\) lançamentos de um dado de \(n\) faces, e normalize só no fim. Dá o mesmo que atualizar passo a passo (MIT11 §4).</p>
+<div class="callout"><b>Armadilhas.</b> Confundir \(P(D \mid H)\) com \(P(H \mid D)\) (falácia da taxa-base, MIT11 §5) ·
 usar a proporção como prior sem dividir pelo total · somar a coluna likelihood · esquecer que um dado impossível zera a hipótese ·
 achar que o MLE é a hipótese mais provável.</div>
 """
 
 SPEC = {
     "title": "Ficha: tabela de atualização bayesiana",
-    "subtitle": "Hipóteses discretas · MIT 18.05, M11 §3–4",
+    "subtitle": "Hipóteses discretas · MIT11 §3–4",
     "crumbs": 'COE241 · P2 · Ficha &nbsp;·&nbsp; aprendida na <a href="../lessons/0001-tabela-de-atualizacao-bayesiana.html">lição 0001</a>',
     "sections": [{"id": "ficha", "heading": "Resumo", "html": body}],
 }

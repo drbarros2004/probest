@@ -1,7 +1,7 @@
 """Lesson 0003 source. Build: python lessons/src/0003-prior-continua.py
 
-Quotes from M13 (and one from M11) are verbatim from the PDF text (MIT OCW 18.05 Spring 2022,
-CC BY-NC-SA 4.0). The extracted text of M13 kept the prose clean but garbled the math symbols
+Quotes from MIT13 (and one from MIT11) are verbatim from the PDF text (MIT OCW 18.05 Spring 2022,
+CC BY-NC-SA 4.0). The extracted text of MIT13 kept the prose clean but garbled the math symbols
 (theta, f, p, d-theta came out as one placeholder glyph), so the prose is quoted word for word and
 the symbols and formulas are restored in LaTeX from context. Obvious typos are fixed silently.
 """
@@ -12,9 +12,9 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
 from build import build, mc, quote, pdf_plot  # noqa: E402
 
-M11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
-M13 = "https://drive.google.com/file/d/1JZzKI6Iad26Wgm2oNSGRJQ4Eex-6gPiP/view"
-M15 = "https://drive.google.com/file/d/1nkNUeimH00v3suIbVcsD3XPl-17bW-TV/view"
+MIT11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
+MIT13 = "https://drive.google.com/file/d/1JZzKI6Iad26Wgm2oNSGRJQ4Eex-6gPiP/view"
+MIT15 = "https://drive.google.com/file/d/1nkNUeimH00v3suIbVcsD3XPl-17bW-TV/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
 L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
 LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
@@ -23,8 +23,8 @@ LESSON2 = "https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z"
 ACC, MUT, FG = "var(--accent)", "var(--muted)", "var(--fg)"
 
 
-def src(where, doc="M13"):
-    url = {"M13": M13, "M11": M11, "M15": M15}[doc]
+def src(where, doc="MIT13"):
+    url = {"MIT13": MIT13, "MIT11": MIT11, "MIT15": MIT15}[doc]
     return f'<a href="{url}">{doc}</a>, {where}'
 
 
@@ -83,7 +83,7 @@ $$P(X = k) = \underbrace{\binom{n}{k}}_{\text{quantas sequências}} \cdot \under
 
 <h3 id="pdf">Densidade (pdf) de uma variável contínua</h3>
 <p>Uma variável aleatória <b>contínua</b> pode assumir qualquer valor num intervalo, e a chance de um valor exato é 0. Por isso ela não tem pmf;
-tem uma <b>pdf</b> (função densidade de probabilidade) \(f(x)\), em que probabilidade é <em>área</em> sob a curva. O M13 faz essa revisão antes
+tem uma <b>pdf</b> (função densidade de probabilidade) \(f(x)\), em que probabilidade é <em>área</em> sob a curva. O MIT13 faz essa revisão antes
 de usar a pdf:</p>
 """ + quote(r"""<p>Suppose \(X\) is a random variable with pdf \(f(x)\). Recall \(f(x)\) is a density; its units are probability/(units of \(x\)). […]</p>
 <p>The probability that the value of \(X\) is in \([c, d]\) is given by</p>
@@ -115,7 +115,7 @@ the probability that \(X\) is in an infinitesimal range around \(x\) of width \(
 
 # ---------------------------------------------------------------- hipóteses contínuas
 continuas = r"""
-<p>Até aqui as hipóteses eram poucas: três moedas, cinco dados. O M13 abre com o caso em que elas formam um contínuo:</p>
+<p>Até aqui as hipóteses eram poucas: três moedas, cinco dados. O MIT13 abre com o caso em que elas formam um contínuo:</p>
 """ + quote(r"""<p>Up to now we have only done Bayesian updating when we had a finite number of hypotheses, e.g. our dice example had five hypotheses
 (4, 6, 8, 12 or 20 sides). Now we will study Bayesian updating when there is a continuous range of hypotheses. The Bayesian update process
 will be essentially the same as in the discrete case. As usual when moving from discrete to continuous we will need to replace the
@@ -132,7 +132,7 @@ uma hipótese. Na L03 Q2, \(\theta\) é a fração do grupo que prefere comédia
 Agora imagine uma fábrica de moedas tortas em que cada moeda sai com uma chance de cara diferente: 0.31, 0.7313, 0.9… Qualquer número entre
 0 e 1 é possível. Você pega uma moeda ao acaso e pergunta "qual é o \(\theta\) desta moeda?". A pergunta é a mesma de antes, mas agora há
 infinitas respostas possíveis.</p>
-<p>A partir daqui o M13 chama o parâmetro de \(\theta\) e usa letras pequenas:</p>
+<p>A partir daqui o MIT13 chama o parâmetro de \(\theta\) e usa letras pequenas:</p>
 <ul>
 <li><b>prior</b> \(f(\theta)\): agora uma <b>pdf</b> sobre as hipóteses;</li>
 <li><b>likelihood</b> \(p(x \mid \theta)\): continua uma <b>pmf</b>, porque o dado \(x\) é discreto (cara ou coroa, número de pessoas).</li>
@@ -158,10 +158,10 @@ mais frequência que coroa, e, antes de jogar, a chance de a moeda escolhida ser
 
 <p>A likelihood não muda de natureza: o dado continua discreto (cara ou coroa), então ela continua uma probabilidade comum, só que escrita
 como fórmula, \(p(\text{cara} \mid \theta) = \theta\).</p>
-""" + mc("O M13 pergunta: X ~ Bernoulli(θ) (um lançamento: 1 com probabilidade θ, 0 senão), com θ desconhecido. Qual frase é verdadeira?",
-         [("O dado é discreto e o espaço de hipóteses é contínuo", True, "Isso: x vale 0 ou 1, e θ pode ser qualquer número em [0, 1]. É o caso do M13 inteiro."),
+""" + mc("O MIT13 pergunta: X ~ Bernoulli(θ) (um lançamento: 1 com probabilidade θ, 0 senão), com θ desconhecido. Qual frase é verdadeira?",
+         [("O dado é discreto e o espaço de hipóteses é contínuo", True, "Isso: x vale 0 ou 1, e θ pode ser qualquer número em [0, 1]. É o caso do MIT13 inteiro."),
           ("O dado é contínuo e as hipóteses são discretas", False, "É o contrário: x só vale 0 ou 1; θ é que varia num contínuo."),
-          ("Os dois são contínuos", False, "θ é contínuo, mas x só vale 0 ou 1. Dado contínuo é o assunto do M14.")])
+          ("Os dois são contínuos", False, "θ é contínuo, mas x só vale 0 ou 1. Dado contínuo é o assunto do MIT14.")])
 
 # ---------------------------------------------------------------- probabilidade total
 total = r"""
@@ -175,7 +175,7 @@ analogous to the term \(p(x \mid \theta_i)\,p(\theta_i)\) […]. Continuing the 
 <p>As in the discrete case, when we think of \(\theta\) as a hypothesis explaining the probability of the data we call \(p(x)\) the prior
 predictive probability for \(x\).</p>""", src("§7")) + r"""
 <p>Cada termo \(p(x \mid \theta)\,f(\theta)\,d\theta\) é uma likelihood vezes a probabilidade prior de uma tira de largura \(d\theta\), exatamente
-como \(P(D \mid H)\,P(H)\) era na tabela discreta. O exemplo do M13:</p>
+como \(P(D \mid H)\,P(H)\) era na tabela discreta. O exemplo do MIT13:</p>
 """ + quote(r"""<p><b>Example 5.</b> […] We have a bent coin with probability \(\theta\) of heads. The value of \(\theta\) is random with prior pdf
 \(f(\theta) = 2\theta\) on \([0, 1]\). Suppose I am about to flip the coin. What is the total probability of heads, i.e what is the prior
 predictive probability of heads?</p>
@@ -195,7 +195,7 @@ $$p(x = 1) = \int_0^1 p(x = 1 \mid \theta)\,f(\theta)\,d\theta = \int_0^1 \theta
 <p>O segundo é menor porque "a moeda favorece cara" não garante cara: uma moeda com \(\theta = 0.55\) ainda dá coroa 45% das vezes, e as
 moedas com \(\theta < 0.5\) ainda dão alguma cara. É a distinção da lição 0002: prior e posterior são sobre hipóteses (qual moeda é);
 as predictive são sobre resultados (o que sai no lançamento).</p>
-<p>Agora o problema 1 em sala do M13, com outra prior:</p>
+<p>Agora o problema 1 em sala do MIT13, com outra prior:</p>
 """ + quote(r"""<p><b>Problem 1. Total probability</b> (a) A coin has unknown probability of heads \(\theta\) with prior pdf, for the value of \(\theta\),
 \(f(\theta) = 3\theta^2\). Find the probability of throwing tails on the first toss.</p>""", src("problemas em sala")) + check(
     r"""<p>\(p(x = 0) = \int_0^1 (1-\theta)\,3\theta^2\,d\theta\) = """ + num("1/4", "0.002") + "</p>"
@@ -225,7 +225,7 @@ passo a acreditar sobre \(\theta\)?</em> Antes de jogar, a crença era a prior \
 quais valores de \(\theta\) ficaram mais ou menos plausíveis. Na lição 0001 a resposta eram três números (um por moeda); aqui é uma curva,
 porque as moedas possíveis são infinitas. A tabela é só o caminho até ela: os mesmos passos da lição 0001 (prior, likelihood, numerador,
 total, posterior).</p>
-<p>No exemplo a seguir, o dado é a sequência HHT, que o M13 escreve codificada como \(x = 1, 1, 0\) (1 = cara, 0 = coroa). Então
+<p>No exemplo a seguir, o dado é a sequência HHT, que o MIT13 escreve codificada como \(x = 1, 1, 0\) (1 = cara, 0 = coroa). Então
 \(p(x = 1,1,0 \mid \theta)\) é a chance de sair H, H, T com uma moeda de tipo \(\theta\): \(\theta \cdot \theta \cdot (1-\theta)\).</p>
 """ + quote(r"""<p>1. The table for continuous priors is very simple: since we cannot have a row for each of an infinite number of hypotheses we’ll
 have just one row which uses a variable to stand for all hypotheses \(H_\theta\).</p>
@@ -269,7 +269,7 @@ posterior, a área volta a ser 1.</li>
     ymax=2.4,
     caption="A coroa no fim de HHT multiplica a prior por \\((1-\\theta)\\), que zera em \\(\\theta = 1\\): a moeda que só dá cara fica impossível. "
             "As duas caras multiplicam por \\(\\theta^2\\), que zera perto de 0. O que sobra é um morro com pico (ponto de máximo) em 0.75, que a <a href='#map'>seção do MAP</a> ensina a achar, um pouco acima da fração de caras observada (2/3), porque a prior 2θ favorece valores altos.") + r"""
-<p>Duas observações do M13 sobre a tabela:</p>
+<p>Duas observações do MIT13 sobre a tabela:</p>
 """ + quote(r"""<p>2. The posterior pdf for \(\theta\) is found by removing the \(d\theta\) from the posterior probability in the table. […]</p>
 <p>5. Regarding both sides as functions of \(\theta\), we can again express Bayes’ theorem in the form:
 \(f(\theta \mid x) \propto p(x \mid \theta) \cdot f(\theta)\)</p>
@@ -325,7 +325,7 @@ is \(f(\theta \mid x_1 = 1) = 3\theta^2\). So the posterior predictive probabili
 $$\begin{aligned} p(x_2 = 1 \mid x_1 = 1) &= \int_0^1 p(x_2 = 1 \mid \theta, x_1 = 1)\,f(\theta \mid x_1 = 1)\,d\theta \\ &= \int_0^1 \theta \cdot 3\theta^2\,d\theta = \frac{3}{4} \end{aligned}$$
 $$\begin{aligned} p(x_2 = 0 \mid x_1 = 1) &= \int_0^1 p(x_2 = 0 \mid \theta, x_1 = 1)\,f(\theta \mid x_1 = 1)\,d\theta \\ &= \int_0^1 (1-\theta) \cdot 3\theta^2\,d\theta = \frac{1}{4} \end{aligned}$$
 <p>(More simply, we could have computed \(p(x_2 = 0 \mid x_1 = 1) = 1 - p(x_2 = 1 \mid x_1 = 1) = 1/4\).)</p>""", src("§10")) + r"""
-<p>A posterior \(3\theta^2\) depois de uma cara é a que você calculou na <a href="#pratica-tabela">prática (a)</a>. O "Example 6" citado pelo M13
+<p>A posterior \(3\theta^2\) depois de uma cara é a que você calculou na <a href="#pratica-tabela">prática (a)</a>. O "Example 6" citado pelo MIT13
 aqui é o da cara única, não o de HHT. Como na lição 0002, \(p(x_2 = 1 \mid \theta, x_1 = 1)\) vira \(\theta\) porque, sabendo a moeda, o primeiro
 lançamento não diz nada sobre o segundo. A receita, lado a lado com a da lição 0002:</p>
 $$\sum_H P(D_2 \mid H)\,P(H \mid D_1) \quad\longrightarrow\quad \int_a^b p(x_2 \mid \theta)\,f(\theta \mid x_1)\,d\theta$$
@@ -340,9 +340,9 @@ $$\underbrace{\sum_H P(D_2 \mid H)\,P(H \mid D_1)}_{\text{hipóteses discretas (
 map_ = r"""
 <p>A L03 Q2 pede o <b>máximo a posteriori</b> (MAP): o valor de \(\theta\) com a maior densidade posterior, ou seja, o ponto de máximo da
 curva posterior. Nesta lição, "pico" quer dizer esse ponto de máximo.
-No gráfico de HHT acima, o MAP é 0.75. O M13 não usa esse nome, mas o M11 já tinha registrado a ideia que o torna barato:</p>
+No gráfico de HHT acima, o MAP é 0.75. O MIT13 não usa esse nome, mas o MIT11 já tinha registrado a ideia que o torna barato:</p>
 """ + quote(r"""<p>4. If all we care about is finding the most likely hypothesis, the Bayes numerator works as well as the normalized posterior.</p>""",
-            src("§3.1, “Important things to notice”", "M11")) + r"""
+            src("§3.1, “Important things to notice”", "MIT11")) + r"""
 <p><b>Como achar o MAP: o pico do numerador.</b> A posterior é o numerador dividido por \(p(x)\), um número fixo. Dividir por uma
 constante muda a altura da curva, não o lugar do pico. Então não é preciso normalizar: basta achar o pico do numerador
 \(p(x \mid \theta)\,f(\theta)\). Onde fica esse pico:</p>
@@ -379,10 +379,10 @@ sem a prior. Para HHT, a likelihood \(\theta^2(1-\theta)\) tem pico em \(2/3\), 
 
 # ---------------------------------------------------------------- beta
 beta = r"""
-<p>A L03 Q2, na próxima seção, dá a prior só pelo nome: Beta(2,2). Esse nome vem do M15, que define a família inteira:</p>
+<p>A L03 Q2, na próxima seção, dá a prior só pelo nome: Beta(2,2). Esse nome vem do MIT15, que define a família inteira:</p>
 """ + quote(r"""<p>The beta distribution \(\text{Beta}(a, b)\) is a two-parameter distribution with range \([0, 1]\) and pdf</p>
 $$f(\theta) = \frac{(a+b-1)!}{(a-1)!\,(b-1)!}\,\theta^{a-1}(1-\theta)^{b-1}$$
-<p>[…] In 18.05 we will stick to integers \(a\) and \(b\) […]</p>""", src("§3", "M15")) + r"""
+<p>[…] In 18.05 we will stick to integers \(a\) and \(b\) […]</p>""", src("§3", "MIT15")) + r"""
 <p>Com as partes nomeadas:</p>
 $$f(\theta) = \underbrace{\frac{(a+b-1)!}{(a-1)!\,(b-1)!}}_{\text{constante: faz a área dar 1}}\;\underbrace{\theta^{a-1}(1-\theta)^{b-1}}_{\text{a forma da curva}}$$
 <p>\(a\) e \(b\) são dois inteiros positivos que escolhem a forma; a fração na frente só normaliza. Para a <b>Beta(2,2)</b>:</p>
@@ -400,12 +400,12 @@ $$f(\theta) = \underbrace{\frac{(a+b-1)!}{(a-1)!\,(b-1)!}}_{\text{constante: faz
 <tr><td>\(12\theta^2(1-\theta)\), cara e depois coroa</td><td class="num">3</td><td class="num">2</td><td>\(\frac{4!}{2!\,1!} = 12\)</td></tr>
 <tr><td>\(20\theta^3(1-\theta)\), depois de HHT</td><td class="num">4</td><td class="num">2</td><td>\(\frac{5!}{3!\,1!} = 20\)</td></tr>
 </table>
-<p>O M15 tira daí uma regra que dispensa a integral do total:</p>
+<p>O MIT15 tira daí uma regra que dispensa a integral do total:</p>
 """ + quote(r"""<p>If a pdf \(f(\theta)\) with range \([0, 1]\) has the form \(c\,\theta^{a-1}(1-\theta)^{b-1}\) then \(f(\theta)\) is a \(\text{Beta}(a, b)\)
 distribution and the normalizing constant must be</p>
 $$c = \frac{(a+b-1)!}{(a-1)!\,(b-1)!}.$$
 <p>This follows because the constant \(c\) must normalize the pdf to have total probability 1. There is only one such constant and it is given in
-the formula for the beta distribution.</p>""", src("§3.1", "M15")) + r"""
+the formula for the beta distribution.</p>""", src("§3.1", "MIT15")) + r"""
 <p>Ou seja: basta olhar os expoentes. Expoente de \(\theta\) igual a \(a - 1\), expoente de \((1-\theta)\) igual a \(b - 1\), e a constante sai da fórmula.</p>
 """ + uso("esta é a fórmula 3.") + r"""
 """ + check(
@@ -433,7 +433,7 @@ modelo de como o dado é gerado.</li>
 <tr><td><b>Q3</b></td><td>o atraso máximo \(\theta\) (1/4 ou 3/4 h)</td><td>atraso de 10 min</td><td>1/2 para cada</td><td>Uniforme[0, \(\theta\)]: \(1/\theta\) se o atraso \(\le \theta\), senão 0</td></tr>
 <tr><td><b>Q4</b></td><td>o comprimento \(\theta\) do cabo</td><td>medição \(x = 10\)</td><td>Normal(9, 1)</td><td>Normal(\(\theta\), \(10^{-4}\))</td></tr>
 </table>
-<p>A Q3 e a Q4 têm dado contínuo; a Q3 vem na lição 0004 (M14) e a Q4 na lição 0005 (M15). A pista mais segura é a pergunta 4: a likelihood é sempre a chance do
+<p>A Q3 e a Q4 têm dado contínuo; a Q3 vem na lição 0004 (MIT14) e a Q4 na lição 0005 (MIT15). A pista mais segura é a pergunta 4: a likelihood é sempre a chance do
 dado <em>fingindo que você já sabe \(\theta\)</em>.</p>
 <p>Depois do passo zero, as fórmulas:</p>
 <div class="callout"><p>Todo o resto da lição explica por que estas fórmulas funcionam; para resolver as questões, basta isto:</p>
@@ -459,7 +459,7 @@ Beta(2,2), onde \(\theta\) é a porcentagem das pessoas que preferem comédia.</
 <p>2. Calcule a posterior de \(\theta\) dado que \(x_1 = 6\). Qual o máximo a posteriori (MAP) de \(\theta\)?</p>
 <p>3. É feita uma nova pesquisa com mais dez pessoas. Calcule a posterior predictive probability de que a maioria das pessoas da segunda amostra
 prefira comédia.</p>""", f'<a href="{L03}">L03</a>, questão 2', lang="pt-BR") + r"""
-<p>Esta lição resolve a Q2.1 e a Q2.2 (a posterior e o MAP). A Q2.3 fica para a lição 0005 (M15), que traz a ferramenta que torna aquela
+<p>Esta lição resolve a Q2.1 e a Q2.2 (a posterior e o MAP). A Q2.3 fica para a lição 0005 (MIT15), que traz a ferramenta que torna aquela
 integral viável.</p>
 
 <p>A Q2.1 usa a fórmula 1; a Q2.2 usa as fórmulas 2, 3 e 4. A fórmula 5 é a da Q2.3, na lição 0005.</p>
@@ -521,11 +521,11 @@ aos dados, ficam 7 e 5, e o MAP é \(7/(7+5)\). A lição 0005 transforma essa l
 
 # ---------------------------------------------------------------- fontes
 fontes = rf"""
-<p>O arquivo do <a href="{M13}">M13</a> tem três partes: a nota <em>Bayesian Updating with Continuous Priors</em>, a nota <em>Notational
+<p>O arquivo do <a href="{MIT13}">MIT13</a> tem três partes: a nota <em>Bayesian Updating with Continuous Priors</em>, a nota <em>Notational
 conventions</em> e os problemas em sala. Esta lição cobre a nota principal até o §10. O que ficou de fora:</p>
 <table>
-<tr><th>trecho do M13</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
-<tr><td>§3, exemplos 2 e 3: tempo de vida exponencial e Normal com parâmetros desconhecidos</td><td>são só exemplos de hipóteses contínuas, sem conta</td><td>não; a Normal volta no M14/M15 (L03 Q4)</td></tr>
+<tr><th>trecho do MIT13</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
+<tr><td>§3, exemplos 2 e 3: tempo de vida exponencial e Normal com parâmetros desconhecidos</td><td>são só exemplos de hipóteses contínuas, sem conta</td><td>não; a Normal volta no MIT14/MIT15 (L03 Q4)</td></tr>
 <tr><td>§4 e a nota <em>Notational conventions</em>: letras grandes (\(P(H)\), \(P(D \mid H)\)) e pequenas (\(f(\theta)\), \(p(x \mid \theta)\))</td><td>a lição usa a notação sem a tabela-resumo</td><td>não; é só notação</td></tr>
 <tr><td>§11 (opcional): do discreto ao contínuo, cortando \([0, 1]\) em 4, 8 e 20 hipóteses e vendo os histogramas da prior e da posterior convergirem para a pdf</td><td>é intuição, sem conta nova</td><td>não, mas ajuda se o \(d\theta\) ainda parecer estranho</td></tr>
 <tr><td>§9.2, Example 8: probabilidade de um intervalo pela posterior, \(P(\theta > 0.5 \mid x = 1) = \int_{0.5}^1 2\theta\,d\theta = 3/4\)</td><td>nenhuma lista nem prova pede probabilidade de intervalo da posterior</td><td>não; é a mesma conta de área da revisão de pdf</td></tr>
@@ -534,16 +534,16 @@ conventions</em> e os problemas em sala. Esta lição cobre a nota principal at�
 <tr><td>Problema 2(c): esboçar a prior e as duas posteriores do <em>Bent coin 1</em></td><td>o gráfico de HHT mostra o mesmo efeito</td><td>não</td></tr>
 <tr><td>Problema "Bent coin 2": prior plana, 15 caras em 27; escrever a posterior com a constante \(T\) sem calculá-la</td><td>é a mesma ideia da Q2.2, que esta lição faz</td><td>como treino: posterior \(\binom{{27}}{{15}}\theta^{{15}}(1-\theta)^{{12}}/T\), MAP 15/27</td></tr>
 </table>
-<p>Fica para as próximas lições: a L03 Q3, em que o dado é contínuo (lição 0004, M14); a regra de atualização da Beta, a L03 Q2.3 e a Q4 (lição 0005, M15).</p>
+<p>Fica para as próximas lições: a L03 Q3, em que o dado é contínuo (lição 0004, MIT14); a regra de atualização da Beta, a L03 Q2.3 e a Q4 (lição 0005, MIT15).</p>
 <div class="callout">Se ficou alguma dúvida, pergunte ao seu professor, que é o agente nesta conversa. Vale um passo da conta, um termo ou "por que isso funciona?".</div>
 <p style="font-size:.8rem;color:var(--muted)">As citações em inglês são de J. Orloff e J. Bloom, <i>18.05 Introduction to Probability and Statistics</i>,
-Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos aparecem como […]. No texto extraído do PDF do M13, os símbolos
+Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos aparecem como […]. No texto extraído do PDF do MIT13, os símbolos
 matemáticos saíram corrompidos; a prosa é literal, e as fórmulas foram reescritas a partir do contexto.</p>
 """
 
 SPEC = {
     "title": "0003 · Prior contínua e MAP",
-    "subtitle": "Lição 0003 · COE241 P2 · MIT 18.05 M13 · hipóteses num contínuo · meta: resolver a L03 Q2.1 e Q2.2 (posterior e MAP)",
+    "subtitle": "Lição 0003 · COE241 P2 · MIT13 · hipóteses num contínuo · meta: resolver a L03 Q2.1 e Q2.2 (posterior e MAP)",
     "crumbs": f'COE241 · P2 · Lição 0003 &nbsp;·&nbsp; anterior: <a href="{LESSON2}">0002, probabilidade preditiva</a>',
     "sections": [
         {"id": "recordacao", "heading": "Recordação da lição 0002", "html": recordacao},
@@ -556,39 +556,39 @@ SPEC = {
         {"id": "beta", "heading": "A família Beta", "html": beta},
         {"id": "receita", "heading": "Como resolver: passo zero e as 5 fórmulas", "html": receita},
         {"id": "objetivo", "heading": "O objetivo: L03 Q2.1 e Q2.2", "html": objetivo},
-        {"id": "fontes", "heading": "O que ficou de fora do M13", "html": fontes},
+        {"id": "fontes", "heading": "O que ficou de fora do MIT13", "html": fontes},
     ],
     "quiz": [
-        {"question": "A pdf de θ vale f(0.9) = 1.8. O que isso diz?",
+        {"question": r"A pdf de \(\theta\) vale \(f(0.9) = 1.8\). O que isso diz?",
          "ref": [("pdf", "Densidade (pdf) de uma variável contínua")],
          "options": [
-             {"text": "Que a probabilidade de θ cair numa tira estreita de largura dθ perto de 0.9 é cerca de 1.8 dθ", "correct": True, "feedback": "Isso: só a área f(θ) dθ é probabilidade."},
-             {"text": "Que P(θ = 0.9) = 1.8, o que é impossível, então a pdf está errada", "correct": False, "feedback": "Uma densidade pode passar de 1; o que não pode passar de 1 é a área total (que é exatamente 1)."},
-             {"text": "Que P(θ ≤ 0.9) = 1.8", "correct": False, "feedback": "P(θ ≤ 0.9) é a área de 0 a 0.9, uma integral, e é no máximo 1."}]},
-        {"question": "Moeda torta com prior f(θ) = 2θ em [0, 1]. Na tabela de Bayes contínua (uma linha só), a coluna 'total' do numerador é p(x) = ∫ p(x | θ) f(θ) dθ. No caso discreto, o que fazia esse papel?",
+             {"text": r"Que a probabilidade de \(\theta\) cair numa tira estreita de largura \(d\theta\) perto de \(0.9\) é cerca de \(1.8\,d\theta\)", "correct": True, "feedback": r"Isso: só a área \(f(\theta)\,d\theta\) é probabilidade."},
+             {"text": r"Que \(P(\theta = 0.9) = 1.8\), o que é impossível, então a pdf está errada", "correct": False, "feedback": r"Uma densidade pode passar de \(1\); o que não pode passar de \(1\) é a área total (que é exatamente \(1\))."},
+             {"text": r"Que \(P(\theta \le 0.9) = 1.8\)", "correct": False, "feedback": r"\(P(\theta \le 0.9)\) é a área de \(0\) a \(0.9\), uma integral, e é no máximo \(1\)."}]},
+        {"question": r"Moeda torta com prior \(f(\theta) = 2\theta\) em \([0, 1]\). Na tabela de Bayes contínua (uma linha só), a coluna 'total' do numerador é \(p(x) = \int p(x \mid \theta)\,f(\theta)\,d\theta\). No caso discreto, o que fazia esse papel?",
          "ref": [("total", "Probabilidade total vira integral"), ("tabela", "A tabela de Bayes com uma linha")],
          "options": [
-             {"text": "A soma dos numeradores, P(D), que era também a prior predictive", "correct": True, "feedback": "Isso: a soma virou integral, e o papel é o mesmo, normalizar e prever."},
-             {"text": "A soma das likelihoods", "correct": False, "feedback": "A coluna das likelihoods não se soma (NO SUM). Somam-se os numeradores, likelihood × prior."},
+             {"text": r"A soma dos numeradores, \(P(D)\), que era também a prior predictive", "correct": True, "feedback": "Isso: a soma virou integral, e o papel é o mesmo, normalizar e prever."},
+             {"text": "A soma das likelihoods", "correct": False, "feedback": r"A coluna das likelihoods não se soma (NO SUM). Somam-se os numeradores, likelihood \(\times\) prior."},
              {"text": "A maior posterior da tabela", "correct": False, "feedback": "Essa seria a hipótese mais provável (a ideia do MAP), não o total."}]},
-        {"question": "Prior 2θ, dados HHT (cara, cara, coroa). O numerador é 2θ³(1−θ) dθ e a posterior é 20θ³(1−θ). De onde vem o 20?",
+        {"question": r"Prior \(2\theta\), dados HHT (cara, cara, coroa). O numerador é \(2\theta^3(1-\theta)\,d\theta\) e a posterior é \(20\,\theta^3(1-\theta)\). De onde vem o \(20\)?",
          "ref": [("tabela", "A tabela de Bayes com uma linha")],
          "options": [
-             {"text": "De dividir o numerador por p(x) = ∫₀¹ 2θ³(1−θ) dθ = 1/10", "correct": True, "feedback": "Isso: normalizar para que a área da posterior seja 1."},
-             {"text": "Do coeficiente binomial de 2 caras em 3", "correct": False, "feedback": "Os dados são uma sequência específica (HHT), sem coeficiente. E esse coeficiente seria 3."},
-             {"text": "Da prior, que vale 2 em θ = 1, vezes 10 lançamentos", "correct": False, "feedback": "Foram 3 lançamentos. O 20 é 2 ÷ (1/10)."}]},
-        {"question": "Para achar o MAP de uma posterior contínua, por que não é preciso calcular a integral p(x)?",
+             {"text": r"De dividir o numerador por \(p(x) = \int_0^1 2\theta^3(1-\theta)\,d\theta = \frac{1}{10}\)", "correct": True, "feedback": r"Isso: normalizar para que a área da posterior seja \(1\)."},
+             {"text": r"Do coeficiente binomial de \(2\) caras em \(3\)", "correct": False, "feedback": r"Os dados são uma sequência específica (HHT), sem coeficiente. E esse coeficiente seria \(3\)."},
+             {"text": r"Da prior, que vale \(2\) em \(\theta = 1\), vezes \(10\) lançamentos", "correct": False, "feedback": r"Foram \(3\) lançamentos. O \(20\) é \(2 \div \frac{1}{10}\)."}]},
+        {"question": r"Para achar o MAP de uma posterior contínua, por que não é preciso calcular a integral \(p(x)\)?",
          "ref": [("map", "MAP: o pico da posterior")],
          "options": [
-             {"text": "Porque p(x) é uma constante: dividir por ela muda a altura da curva, não o lugar do pico", "correct": True, "feedback": "Isso: maximize o numerador likelihood × prior."},
-             {"text": "Porque p(x) sempre vale 1", "correct": False, "feedback": "Quem integra 1 é a prior. p(x) foi 1/10 no exemplo de HHT."},
+             {"text": r"Porque \(p(x)\) é uma constante: dividir por ela muda a altura da curva, não o lugar do pico", "correct": True, "feedback": r"Isso: maximize o numerador likelihood \(\times\) prior."},
+             {"text": r"Porque \(p(x)\) sempre vale \(1\)", "correct": False, "feedback": r"Quem integra \(1\) é a prior. \(p(x)\) foi \(\frac{1}{10}\) no exemplo de HHT."},
              {"text": "Porque o MAP é sempre a fração observada de sucessos", "correct": False, "feedback": "Essa é o MLE. O MAP só coincide com ela quando a prior é plana."}]},
-        {"question": "L03 Q2: prior 6θ(1−θ) (pico em 0.5), 6 de 10 pessoas preferem comédia. A posterior é proporcional a θ⁷(1−θ)⁵ e o MAP é 7/12 ≈ 0.583. Por que ele fica entre 0.5 e 0.6?",
+        {"question": r"L03 Q2: prior \(6\theta(1-\theta)\) (pico em \(0.5\)), \(6\) de \(10\) pessoas preferem comédia. A posterior é proporcional a \(\theta^7(1-\theta)^5\) e o MAP é \(\frac{7}{12} \approx 0.583\). Por que ele fica entre \(0.5\) e \(0.6\)?",
          "ref": [("objetivo", "O objetivo: L03 Q2.1 e Q2.2")],
          "options": [
-             {"text": "A prior puxa para 0.5 e a likelihood para 0.6; a posterior é o produto das duas", "correct": True, "feedback": "Isso. Com mais dados, o MAP se aproximaria da fração observada."},
-             {"text": "Porque o MAP é a média entre o pico da prior e a fração observada", "correct": False, "feedback": "A média seria 0.55. O MAP 7/12 pesa mais os dados (10 pessoas) que a prior (equivale a 2)."},
-             {"text": "Por erro de arredondamento: o certo seria 0.6", "correct": False, "feedback": "0.6 é o MLE, o pico da likelihood sozinha. A prior desloca o pico."}]},
+             {"text": r"A prior puxa para \(0.5\) e a likelihood para \(0.6\); a posterior é o produto das duas", "correct": True, "feedback": "Isso. Com mais dados, o MAP se aproximaria da fração observada."},
+             {"text": "Porque o MAP é a média entre o pico da prior e a fração observada", "correct": False, "feedback": r"A média seria \(0.55\). O MAP \(\frac{7}{12}\) pesa mais os dados (\(10\) pessoas) que a prior (equivale a \(2\))."},
+             {"text": r"Por erro de arredondamento: o certo seria \(0.6\)", "correct": False, "feedback": r"\(0.6\) é o MLE, o pico da likelihood sozinha. A prior desloca o pico."}]},
     ],
 }
 

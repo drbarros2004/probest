@@ -2,7 +2,8 @@
 
 The look (CSS, light/dark theme, KaTeX, quiz) comes from
 ~/.claude/skills/explain-diff-html/render.py. This wrapper only adds what the
-renderer lacks: numeric answer inputs (assets/check.js) and Portuguese UI strings.
+renderer lacks: numeric answer inputs (assets/check.js), Portuguese UI strings and the
+pen layer from ~/.claude/skills/explain-diff-html-ink/ink.js.
 
 Usage from a lesson source:  from build import build, prior_post, mc, quote
 """
@@ -13,7 +14,10 @@ import sys
 from pathlib import Path
 
 ASSETS = Path(__file__).resolve().parent
-RENDER = Path.home() / ".claude" / "skills" / "explain-diff-html" / "render.py"
+SKILLS = Path.home() / ".claude" / "skills"
+RENDER = SKILLS / "explain-diff-html" / "render.py"
+# Pen layer from explain-diff-html-ink: strokes saved in the artifact db (collection "ink").
+INK_JS = SKILLS / "explain-diff-html-ink" / "ink.js"
 
 _spec = importlib.util.spec_from_file_location("render", RENDER)
 render = importlib.util.module_from_spec(_spec)
@@ -187,6 +191,20 @@ def bayes_table(rows, ok="", lik_header="likelihood", weight_header="prior",
             f'</table><button class="check">Verificar</button><div class="feedback"></div></div>')
 
 
+# Runs after the renderer's quiz handler, which wrote the feedback as text: feedback that
+# build() pre-rendered with KaTeX is shown as HTML instead.
+QUIZ_MATH_JS = """
+document.querySelectorAll('.quiz-opt').forEach(function (o) {
+  if (!(o.dataset.feedback || '').includes('class="katex')) return;
+  o.addEventListener('click', function () {
+    var fb = o.nextElementSibling;
+    if (fb && fb.classList.contains('feedback'))
+      fb.innerHTML = (o.dataset.correct === 'true' ? '\\u2705 ' : '\\u274c ') + o.dataset.feedback;
+  });
+});
+"""
+
+
 def mc(question, options):
     """Inline multiple-choice question (same widget as the renderer's end quiz).
     options: [(text, correct, feedback)]. Order is kept as given."""
@@ -200,22 +218,32 @@ def build(spec, out):
     """Render spec (render.py format) to the path out, with the extras injected."""
     spec.setdefault("math", True)
     spec.setdefault("_base", str(Path(out).parent))
+    # The renderer shows quiz feedback as plain text, so math in it is rendered here, ahead of
+    # time; QUIZ_MATH_JS then shows that feedback as HTML.
+    for q in spec.get("quiz", []):
+        for o in q["options"]:
+            if "\\(" in o.get("feedback", ""):
+                o["feedback"] = render.render_math(html.escape(o["feedback"], quote=False))
     page = render.render(spec)
     # Quiz questions may carry "ref": [(anchor_id, label), ...]: a "Rever:" line linking to the section.
-    for q in spec.get("quiz", []):
-        if q.get("ref"):
-            head = f'<p><strong>{html.escape(q["question"])}</strong></p>'
+    # Matched by position (the end quiz keeps question order), since math changes the question text.
+    head, sep, tail = page.partition('<h2 id="quiz">')
+    blocks = tail.split('<div class="quiz-q">')
+    for i, q in enumerate(spec.get("quiz", []), 1):
+        if q.get("ref") and i < len(blocks):
             links = " · ".join(f'<a href="#{a}">{lbl}</a>' for a, lbl in q["ref"])
-            page = page.replace(head, head + f'\n<p class="quiz-ref">Rever: {links}</p>', 1)
+            blocks[i] = blocks[i].replace("</strong></p>", f'</strong></p>\n<p class="quiz-ref">Rever: {links}</p>', 1)
+    page = head + sep + '<div class="quiz-q">'.join(blocks)
     page = re.sub(r"(<table\b.*?</table>)", r'<div class="tw">\1</div>', page, flags=re.S)
     check_js = (ASSETS / "check.js").read_text(encoding="utf-8")
+    ink_js = INK_JS.read_text(encoding="utf-8")
     page = (page
             .replace('<html lang="en">', '<html lang="pt-BR">')
             .replace("<strong>Contents</strong>", "<strong>Sumário</strong>")
             .replace('<a href="#quiz">Quiz</a>', '<a href="#quiz">Quiz final</a>')
             .replace('<h2 id="quiz">Quiz</h2>', '<h2 id="quiz">Quiz final</h2>')
             .replace("</style>", EXTRA_CSS + "</style>", 1)
-            .replace("</body>", f"<script>{check_js}</script>\n</body>"))
+            .replace("</body>", f"<script>{check_js}</script>\n<script>{QUIZ_MATH_JS}</script>\n<script>{ink_js}</script>\n</body>"))
     if spec.get("crumbs"):
         page = page.replace("<h1>", f'<nav class="crumbs">{spec["crumbs"]}</nav>\n<h1>', 1)
     Path(out).write_text(page, encoding="utf-8")

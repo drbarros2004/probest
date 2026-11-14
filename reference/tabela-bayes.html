@@ -155,6 +155,17 @@
   a[href^="#"]:not(.toc a):hover { color: var(--accent); text-decoration-color: var(--accent); }
   .quiz-ref { font-size: .8rem; color: var(--muted); margin: -.4rem 0 .6rem; }
   .quiz-ref a[href^="#"] { color: var(--muted); }
+  /* Formulas never break inside a table cell; a table too wide for the screen scrolls in its own box (.tw, added in build()). */
+  td .katex, th .katex { white-space: nowrap; }
+  .tw { overflow-x: auto; margin: 1rem 0; } .tw > table { margin: 0; }
+  blockquote.src td, blockquote.src th { white-space: nowrap; padding: .4rem .55rem; }
+  /* Exercise tables: cells never wrap on their own (an input must not drop below its symbol); line breaks are written as <br>. */
+  .check-group td, .check-group th { white-space: nowrap; padding: .4rem .55rem; }
+  /* A letter that check.js replaces by the value from an earlier item once that item is right. */
+  [data-show] { font-family: KaTeX_Math, serif; font-style: italic; }
+  [data-show].shown { font-family: inherit; font-style: normal; color: var(--accent); font-weight: 700; }
+  /* "Na prova:" pointer from an explanation to the formula to use. */
+  p.uso { font-size: .9rem; color: var(--muted); border-left: 3px solid var(--accent); padding-left: .7rem; }
   details { margin: .5rem 0; } summary { cursor: pointer; color: var(--accent); }
   nav.crumbs { font-size: .85rem; color: var(--muted); }
   nav.crumbs a { color: var(--accent); }
@@ -170,7 +181,7 @@ try { var t = localStorage.getItem('explain-diff-theme'); if (t) document.docume
 
 <nav class="crumbs">COE241 · P2 · Ficha &nbsp;·&nbsp; aprendida na <a href="../lessons/0001-tabela-de-atualizacao-bayesiana.html">lição 0001</a></nav>
 <h1>Ficha: tabela de atualização bayesiana</h1>
-<p style="color:var(--muted); margin-top:-.5rem;">Hipóteses discretas · MIT 18.05, M11 §3–4</p>
+<p style="color:var(--muted); margin-top:-.5rem;">Hipóteses discretas · MIT11 §3–4</p>
 
 <div class="toc">
 <strong>Sumário</strong>
@@ -183,16 +194,16 @@ try { var t = localStorage.getItem('explain-diff-theme'); if (t) document.docume
 
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>H</mi><mo>∣</mo><mi>D</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo>∣</mo><mi>H</mi><mo stretchy="false">)</mo><mtext> </mtext><mi>P</mi><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mfrac><mo separator="true">,</mo><mspace width="2em"/><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo><mo>=</mo><munder><mo>∑</mo><mi>H</mi></munder><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo>∣</mo><mi>H</mi><mo stretchy="false">)</mo><mtext> </mtext><mi>P</mi><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mspace width="2em"/><mtext>posterior</mtext><mo>∝</mo><mtext>likelihood</mtext><mo>×</mo><mtext>prior</mtext></mrow><annotation encoding="application/x-tex">P(H \mid D) = \frac{P(D \mid H)\,P(H)}{P(D)}, \qquad P(D) = \sum_H P(D \mid H)\,P(H), \qquad \text{posterior} \propto \text{likelihood} \times \text{prior}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.3443em;vertical-align:-1.2943em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8557em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0813em;">H</span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2943em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord text"><span class="mord">posterior</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∝</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">likelihood</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8623em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">prior</span></span></span></span></span></span>
 
-<table>
+<div class="tw"><table>
 <tr><th>coluna</th><th>o que é</th><th>soma</th></tr>
 <tr><td>prior <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(H)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mclose">)</span></span></span></span></td><td>crença antes do dado; proporção ÷ total</td><td>1</td></tr>
 <tr><td>likelihood <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo>∣</mo><mi>H</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(D \mid H)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mclose">)</span></span></span></span></td><td>probabilidade do dado se <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> for verdadeira</td><td>não soma</td></tr>
 <tr><td>numerador</td><td>prior × likelihood</td><td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(D)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mclose">)</span></span></span></span></td></tr>
 <tr><td>posterior <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>H</mi><mo>∣</mo><mi>D</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(H \mid D)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mclose">)</span></span></span></span></td><td>numerador ÷ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(D)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mclose">)</span></span></span></span></td><td>1</td></tr>
-</table>
+</table></div>
 <h3>Vários dados, independentes dada a hipótese</h3>
-<p>Multiplique as likelihoods, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mi mathvariant="normal">/</mi><mi>n</mi><msup><mo stretchy="false">)</mo><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">(1/n)^k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1/</span><span class="mord mathnormal">n</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span></span></span></span></span></span></span> para <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> lançamentos de um dado de <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> faces, e normalize só no fim. Dá o mesmo que atualizar passo a passo (M11 §4).</p>
-<div class="callout"><b>Armadilhas.</b> Confundir <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo>∣</mo><mi>H</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(D \mid H)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mclose">)</span></span></span></span> com <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>H</mi><mo>∣</mo><mi>D</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(H \mid D)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mclose">)</span></span></span></span> (falácia da taxa-base, M11 §5) ·
+<p>Multiplique as likelihoods, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mi mathvariant="normal">/</mi><mi>n</mi><msup><mo stretchy="false">)</mo><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">(1/n)^k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1/</span><span class="mord mathnormal">n</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span></span></span></span></span></span></span> para <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> lançamentos de um dado de <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> faces, e normalize só no fim. Dá o mesmo que atualizar passo a passo (MIT11 §4).</p>
+<div class="callout"><b>Armadilhas.</b> Confundir <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>D</mi><mo>∣</mo><mi>H</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(D \mid H)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mclose">)</span></span></span></span> com <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>H</mi><mo>∣</mo><mi>D</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(H \mid D)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mclose">)</span></span></span></span> (falácia da taxa-base, MIT11 §5) ·
 usar a proporção como prior sem dividir pelo total · somar a coluna likelihood · esquecer que um dado impossível zera a hipótese ·
 achar que o MLE é a hipótese mais provável.</div>
 
@@ -361,6 +372,278 @@ document.querySelectorAll('.quiz-q').forEach(q => {
     }
     t.addEventListener("input", update);
   });
+
+  // 3. A value carried to a later item: <input data-name="c" data-answer="3"> fills every
+  //    <span data-show="c">c</span> with the typed value once it is right; otherwise the letter stays.
+  var named = document.querySelectorAll("input[data-name]");
+  function showNamed() {
+    named.forEach(function (inp) {
+      var tol = inp.dataset.tol ? Number(inp.dataset.tol) : 0.002;
+      var got = parseNum(inp.value);
+      var right = !isNaN(got) && Math.abs(got - parseNum(inp.dataset.answer)) <= tol;
+      document.querySelectorAll('[data-show="' + inp.dataset.name + '"]').forEach(function (s) {
+        s.textContent = right ? inp.value.trim() : inp.dataset.name;
+        s.classList.toggle("shown", right);
+      });
+    });
+  }
+  if (named.length) {
+    document.addEventListener("input", showNamed);
+    document.addEventListener("click", showNamed); // "Mostrar gabarito" / "Limpar" set values without an input event
+  }
+})();
+</script>
+<script>// Ink layer: draw over the page with a pen (S Pen, Apple Pencil) or mouse.
+// Fingers keep scrolling. Strokes live in the artifact's db (shared, durable),
+// or in localStorage when the page is opened outside claude.ai.
+(function () {
+  const NS = 'http://www.w3.org/2000/svg';
+  // Strokes store a color slot (k), not a hex, so they follow the light/dark theme.
+  // Each slot's light and dark shade are the CSS vars --ink0..3 defined below.
+  const COLORS = [
+    { light: '#d1242f', dark: '#ff7b72', w: 2.5, o: 1, label: 'Vermelho' },
+    { light: '#1f5fd6', dark: '#79b8ff', w: 2.5, o: 1, label: 'Azul' },
+    { light: '#1a7f37', dark: '#56d364', w: 2.5, o: 1, label: 'Verde' },
+    { light: '#ffd60a', dark: '#c99a06', w: 16, o: 0.4, label: 'Marca-texto' },
+  ];
+  const inkColor = (s) => (s.k != null ? `var(--ink${s.k})` : s.c); // s.c: strokes saved before slots
+  // Thickness multipliers for every tool, highlighter included.
+  const SIZES = [{ m: 0.6, label: 'Fino' }, { m: 1, label: 'Médio' }, { m: 2, label: 'Grosso' }];
+  const HOLD_MS = 500, HOLD_PX = 4, MIN_LINE_PX = 20; // hold-to-straighten
+  let on = true, tool = 0, size = 1, erasing = false, visible = true;
+  let strokes = [];            // [{id, pts:[x,y,...], c, w, o}]
+  let mine = [];               // ids this page drew, for undo
+  let store = null;            // {add, remove} backend
+  let live = null;             // stroke being drawn
+
+  const body = document.body;
+  if (getComputedStyle(body).position === 'static') body.style.position = 'relative';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.style.cssText = 'position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:50;overflow:visible';
+  body.appendChild(svg);
+  const sizeSvg = () => { svg.style.height = body.scrollHeight + 'px'; };
+  new ResizeObserver(sizeSvg).observe(body);
+
+  // Points are stored relative to <body>, so they follow the centered content column.
+  const origin = () => { const r = body.getBoundingClientRect(); return [r.left, r.top]; };
+  const pt = (e) => { const [ox, oy] = origin(); return [Math.round((e.clientX - ox) * 10) / 10, Math.round((e.clientY - oy) * 10) / 10]; };
+
+  function pathD(p) {
+    if (p.length < 4) return `M${p[0]} ${p[1]}l0.01 0`;
+    let d = `M${p[0]} ${p[1]}`;
+    for (let i = 2; i < p.length - 2; i += 2) {
+      d += `Q${p[i]} ${p[i + 1]} ${(p[i] + p[i + 2]) / 2} ${(p[i + 1] + p[i + 3]) / 2}`;
+    }
+    return d + `L${p[p.length - 2]} ${p[p.length - 1]}`;
+  }
+  function makePath(s) {
+    const el = document.createElementNS(NS, 'path');
+    el.setAttribute('d', pathD(s.pts));
+    el.setAttribute('fill', 'none');
+    el.style.stroke = inkColor(s);
+    el.setAttribute('stroke-width', s.w);
+    el.setAttribute('stroke-opacity', s.o);
+    el.setAttribute('stroke-linecap', 'round');
+    el.setAttribute('stroke-linejoin', 'round');
+    return el;
+  }
+  // Reconcile by id: only new strokes get a <path>, only removed ones lose theirs.
+  const els = new Map();
+  function render() {
+    const keep = new Set();
+    for (const s of strokes) {
+      keep.add(s.id);
+      if (!els.has(s.id)) { const el = makePath(s); els.set(s.id, el); svg.appendChild(el); }
+    }
+    for (const [id, el] of els) if (!keep.has(id)) { el.remove(); els.delete(id); }
+  }
+
+  // --- input ---------------------------------------------------------------
+  const draws = (e) => on && visible && (e.pointerType === 'pen' || e.pointerType === 'mouse');
+  // Browsers scroll on pen drags. Pointer events fire before the matching touch
+  // events, so remember a pen is down and cancel its touches; fingers still scroll.
+  let penDown = false;
+  const isPen = (e) => e.pointerType === 'pen';
+  // Controls are excluded so pen taps on them still become clicks.
+  const CONTROLS = '.ink-bar, a, button, input, select, textarea, summary, label';
+  document.addEventListener('pointerdown', (e) => { if (isPen(e) && on && visible && !e.target.closest(CONTROLS)) penDown = true; }, true);
+  const penUp = (e) => { if (isPen(e)) penDown = false; };
+  document.addEventListener('pointerup', penUp, true);
+  document.addEventListener('pointercancel', penUp, true);
+  const blockStylus = (e) => {
+    if (on && visible && (penDown || [...e.changedTouches].some((t) => t.touchType === 'stylus'))) e.preventDefault();
+  };
+  document.addEventListener('touchstart', blockStylus, { passive: false });
+  document.addEventListener('touchmove', blockStylus, { passive: false });
+  // The S Pen side button can open a context menu; it means "erase" here.
+  document.addEventListener('contextmenu', (e) => { if (penDown || (on && e.pointerType === 'pen')) e.preventDefault(); });
+  // Pen barrel (side) button = buttons bit 2; dedicated eraser end = bit 32.
+  const sideButton = (e) => (e.buttons & 34) !== 0 || e.button === 2 || e.button === 5;
+
+  document.addEventListener('pointerdown', (e) => {
+    if (!draws(e) || e.target.closest(CONTROLS)) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    e.preventDefault();
+    // S Pen side button (or the eraser tool) erases.
+    if (erasing || (isPen(e) && sideButton(e))) { live = { erase: true }; eraseAt(pt(e)); return; }
+    const t = COLORS[tool];
+    const pressure = e.pointerType === 'pen' && e.pressure > 0 ? e.pressure : 0.5;
+    const w = t.w * SIZES[size].m * (t.o < 1 ? 1 : 0.6 + pressure * 0.8);
+    live = { pts: pt(e), k: tool, w: Math.round(w * 10) / 10, o: t.o, pid: e.pointerId };
+    live.anchor = live.pts.slice();
+    live.el = makePath(live);
+    svg.appendChild(live.el);
+  });
+  document.addEventListener('pointermove', (e) => {
+    if (!live) return;
+    if (live.erase) { if (e.buttons) eraseAt(pt(e)); return; }
+    if (e.pointerId !== live.pid) return;
+    // Side button pressed mid-stroke: drop the stroke and erase instead.
+    if (isPen(e) && sideButton(e)) { live.el.remove(); live = { erase: true }; eraseAt(pt(e)); return; }
+    const [x, y] = pt(e);
+    if (live.straight) {
+      // Already a straight line: the end follows the pen until it lifts.
+      live.pts = [live.pts[0], live.pts[1], x, y];
+    } else {
+      const co = e.getCoalescedEvents ? e.getCoalescedEvents() : [];
+      for (const ev of co.length ? co : [e]) {
+        const [cx, cy] = pt(ev), p = live.pts;
+        if (Math.hypot(cx - p[p.length - 2], cy - p[p.length - 1]) < 1.5) continue;
+        p.push(cx, cy);
+      }
+      // Holding the pen still at the end of a stroke turns it into a straight line.
+      if (Math.hypot(x - live.anchor[0], y - live.anchor[1]) > HOLD_PX) {
+        live.anchor = [x, y];
+        clearTimeout(live.hold);
+        const s = live;
+        s.hold = setTimeout(() => {
+          const p = s.pts, [x0, y0] = p, [x1, y1] = s.anchor;
+          if (live !== s || Math.hypot(x1 - x0, y1 - y0) < MIN_LINE_PX) return;
+          s.straight = true;
+          s.pts = [x0, y0, x1, y1];
+          s.el.setAttribute('d', pathD(s.pts));
+        }, HOLD_MS);
+      }
+    }
+    live.el.setAttribute('d', pathD(live.pts));
+  });
+  const end = () => {
+    if (!live) return;
+    const s = live; live = null;
+    clearTimeout(s.hold);
+    if (s.erase) return;
+    s.el.remove();
+    const rec = { pts: s.pts, k: s.k, w: s.w, o: s.o, t: Date.now() };
+    const tmp = { id: 'tmp' + Math.random(), ...rec };
+    strokes.push(tmp); render();
+    store.add(rec).then((id) => { mine.push(id); }).catch(() => { flash('Não salvou esse traço'); strokes = strokes.filter((x) => x !== tmp); render(); });
+  };
+  document.addEventListener('pointerup', end);
+  document.addEventListener('pointercancel', end);
+
+  function eraseAt([x, y]) {
+    const r = 10;
+    // Distance to each segment, so long straight lines (2 points) erase along their length.
+    const segDist = (ax, ay, bx, by) => {
+      const dx = bx - ax, dy = by - ay, L = dx * dx + dy * dy;
+      const u = L ? Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / L)) : 0;
+      return Math.hypot(ax + u * dx - x, ay + u * dy - y);
+    };
+    const hit = strokes.filter((s) => {
+      const p = s.pts, pad = r + s.w / 2;
+      // Bounding box, computed once per stroke object, rules out far strokes cheaply.
+      if (!s.bb) {
+        let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+        for (let i = 0; i < p.length; i += 2) { x0 = Math.min(x0, p[i]); x1 = Math.max(x1, p[i]); y0 = Math.min(y0, p[i + 1]); y1 = Math.max(y1, p[i + 1]); }
+        s.bb = [x0, y0, x1, y1];
+      }
+      if (x < s.bb[0] - pad || x > s.bb[2] + pad || y < s.bb[1] - pad || y > s.bb[3] + pad) return false;
+      if (p.length === 2) return Math.hypot(p[0] - x, p[1] - y) < r + s.w / 2;
+      for (let i = 0; i + 3 < p.length; i += 2) if (segDist(p[i], p[i + 1], p[i + 2], p[i + 3]) < r + s.w / 2) return true;
+      return false;
+    });
+    if (!hit.length) return;
+    strokes = strokes.filter((s) => !hit.includes(s)); render();
+    hit.forEach((s) => store.remove(s.id).catch(() => flash('Não apagou')));
+  }
+
+  // --- toolbar -------------------------------------------------------------
+  const css = document.createElement('style');
+  const vars = (mode) => COLORS.map((t, i) => `--ink${i}:${t[mode]}`).join(';');
+  // Same theme selectors as the page: OS setting, overridden by data-theme.
+  css.textContent = `
+:root{${vars('light')}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${vars('dark')}}}
+:root[data-theme="dark"]{${vars('dark')}}
+.ink-bar{position:fixed;right:12px;bottom:12px;z-index:100;display:flex;gap:4px;align-items:center;padding:6px;border-radius:999px;
+ background:var(--surface,#fff);border:1px solid var(--border,#ccc);box-shadow:0 4px 16px rgba(0,0,0,.15);font:14px system-ui,sans-serif}
+.ink-bar button{all:unset;cursor:pointer;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--fg,#222);font-size:18px}
+.ink-bar button[aria-pressed=true]{background:var(--border,#ddd)}
+.ink-bar button:focus-visible{outline:2px solid var(--accent,#36f)}
+.ink-bar .sw{width:18px;height:18px;border-radius:50%}
+.ink-bar.off>:not(.ink-main){display:none}
+.ink-msg{position:fixed;right:12px;bottom:64px;z-index:100;padding:6px 10px;border-radius:8px;background:var(--fg,#222);color:var(--bg,#fff);font:13px system-ui;display:none}
+@media print{.ink-bar,.ink-msg{display:none}}`;
+  document.head.appendChild(css);
+  const bar = document.createElement('div');
+  bar.className = 'ink-bar';
+  const msg = document.createElement('div');
+  msg.className = 'ink-msg';
+  let msgT;
+  function flash(t) { msg.textContent = t; msg.style.display = 'block'; clearTimeout(msgT); msgT = setTimeout(() => { msg.style.display = 'none'; }, 2500); }
+  const btn = (html, label, fn, cls) => {
+    const b = document.createElement('button'); b.type = 'button'; b.innerHTML = html; b.title = label; b.setAttribute('aria-label', label);
+    if (cls) b.className = cls; b.onclick = fn; bar.appendChild(b); return b;
+  };
+  const main = btn('✎', 'Caneta ligada/desligada', () => { on = !on; sync(); }, 'ink-main');
+  const swatches = COLORS.map((t, i) => btn(`<span class="sw" style="background:var(--ink${i});opacity:${t.o < 1 ? 0.7 : 1}"></span>`, t.label, () => { tool = i; erasing = false; sync(); }));
+  const sizeBtns = SIZES.map((s, i) => btn(`<span class="sw" style="width:${4 + i * 5}px;height:${4 + i * 5}px;background:var(--fg,#222)"></span>`, s.label, () => { size = i; erasing = false; sync(); }));
+  const eraser = btn('⌫', 'Borracha (ou segure o botão da S Pen)', () => { erasing = !erasing; sync(); });
+  btn('↶', 'Desfazer', () => {
+    const id = mine.pop(); if (!id) return;
+    strokes = strokes.filter((s) => s.id !== id); render(); store.remove(id).catch(() => flash('Não desfez'));
+  });
+  const eye = btn('👁', 'Mostrar/ocultar anotações', () => { visible = !visible; svg.style.display = visible ? '' : 'none'; sync(); });
+  function sync() {
+    bar.classList.toggle('off', !on);
+    main.setAttribute('aria-pressed', on);
+    swatches.forEach((b, i) => b.setAttribute('aria-pressed', !erasing && tool === i));
+    sizeBtns.forEach((b, i) => b.setAttribute('aria-pressed', size === i));
+    eraser.setAttribute('aria-pressed', erasing);
+    eye.setAttribute('aria-pressed', !visible);
+  }
+  sync();
+  document.body.append(bar, msg);
+
+  // --- storage -------------------------------------------------------------
+  const KEY = 'ink:' + location.pathname + ':' + document.title;
+  const local = {
+    load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } },
+    save() { try { localStorage.setItem(KEY, JSON.stringify(strokes.filter((s) => !String(s.id).startsWith('tmp')).map(({ bb, ...s }) => s))); } catch (e) {} },
+  };
+  store = { // local until the db answers
+    async add(rec) { const id = 'l' + Date.now() + Math.random().toString(36).slice(2, 6); const t = strokes.find((s) => s.pts === rec.pts); if (t) t.id = id; local.save(); return id; },
+    async remove() { local.save(); },
+  };
+  strokes = local.load(); render();
+
+  if (window.claude && claude.use) {
+    claude.use('db').then((db) => {
+      if (!db) return;
+      const col = db.collection('ink');
+      const timer = setTimeout(() => flash('Anotações salvas ainda não carregaram'), 10000);
+      col.onSnapshot((snap) => {
+        if (!snap.metadata.fromCache) clearTimeout(timer);
+        strokes = snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => a.t - b.t);
+        render();
+      }, () => { clearTimeout(timer); flash('Não deu para carregar as anotações'); });
+      store = {
+        add: (rec) => col.add(rec).then((ref) => ref.id),
+        remove: (id) => col.doc(id).delete(),
+      };
+    });
+  }
 })();
 </script>
 </body>

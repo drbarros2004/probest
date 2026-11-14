@@ -1,6 +1,6 @@
 """Lesson 0002 source. Build: python lessons/src/0002-probabilidade-preditiva.py
 
-Quotes from M12 (and one from M11) are verbatim from the PDF text (MIT OCW 18.05 Spring 2022,
+Quotes from MIT12 (and one from MIT11) are verbatim from the PDF text (MIT OCW 18.05 Spring 2022,
 CC BY-NC-SA 4.0). Only passages whose extracted text was clean are quoted.
 """
 import sys
@@ -10,16 +10,16 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
 from build import build, mc, quote, bayes_table  # noqa: E402
 
-M11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
-M12 = "https://drive.google.com/file/d/1Kpa0gQzUJ63kKbU5iG_hxIhTMJn6rWCV/view"
+MIT11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
+MIT12 = "https://drive.google.com/file/d/1Kpa0gQzUJ63kKbU5iG_hxIhTMJn6rWCV/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
 L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
 LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
 LESSON3 = "https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT"
 
 
-def src(where, doc="M12"):
-    url = M12 if doc == "M12" else M11
+def src(where, doc="MIT12"):
+    url = MIT12 if doc == "MIT12" else MIT11
     return f'<a href="{url}">{doc}</a>, {where}'
 
 
@@ -43,7 +43,7 @@ recordacao = rf"""
 
 ideia = r"""
 <p>A lição 0001 respondeu "qual hipótese é a verdadeira?". A L03 Q1.2 faz outra pergunta: "qual vai ser o <em>próximo</em> resultado?".
-O M12 abre exatamente com essa mudança:</p>
+O MIT12 abre exatamente com essa mudança:</p>
 """ + quote(r"""<p>In the previous class we looked at updating the probability of hypotheses based on data. We can also use the data to update
 the probability of each possible outcome of a future experiment.</p>
 <p>[…] Probabilistic prediction simply means assigning a probability to each possible outcomes of an experiment.</p>""",
@@ -121,7 +121,7 @@ pesos dados pela crença atual em cada uma.</p>
 """ + uso("esta é a fórmula 3; os pesos vêm da fórmula 2.") + r"""
 <p>Falta justificar um detalhe. A rigor, o termo seria \(P(D_2 \mid H, D_1)\), a chance do próximo resultado sabendo a hipótese <em>e</em>
 o primeiro resultado. Ele vira \(P(D_2 \mid H)\) porque, sabendo qual é a moeda, o primeiro lançamento não diz nada sobre o segundo.
-O M12 dá nome a essa propriedade:</p>
+O MIT12 dá nome a essa propriedade:</p>
 """ + quote(r"""<p>Suppose we collect data in two stages, first \(D_1\), then \(D_2\). We have seen in our dice and coin examples that the final
 posterior can be computed all at once or in two stages where we first update the prior using the likelihoods for \(D_1\) and then update
 the resulting posterior using the likelihoods for \(D_2\). The latter approach works whenever likelihoods multiply:</p>
@@ -129,7 +129,7 @@ $$P(D_1, D_2 \mid H) = P(D_1 \mid H)\,P(D_2 \mid H).$$
 <p>Since likelihoods are conditioned on hypotheses, we say that \(D_1\) and \(D_2\) are <b>conditionally independent</b> if the above
 equation holds for every hypothesis \(H\).</p>""", src("nota Odds, §4.1")) + r"""
 <p>Foi essa mesma propriedade que permitiu, na lição 0001, multiplicar as likelihoods de dois lançamentos.</p>
-<p id="quatro">Com isso, já são quatro probabilidades com nomes parecidos. O M12 resume a diferença:</p>
+<p id="quatro">Com isso, já são quatro probabilidades com nomes parecidos. O MIT12 resume a diferença:</p>
 """ + quote(r"""<p>Each hypothesis gives a different probability of heads, so the total probability of heads is a weighted average. For the prior
 predictive probability of heads, the weights are given by the prior probabilities of the hypotheses. For the posterior predictive probability
 of heads, the weights are given by the posterior probabilities of the hypotheses.</p>
@@ -151,7 +151,7 @@ pergunta de previsão:</p>
 """ + quote(r"""<p><b>Problem 4. Probabilistic prediction</b> […] With the same setup as before let:
 \(D_1\) = result of first roll, \(D_2\) = result of second roll</p>
 <p>(a) Find \(P(D_1 = 5)\).</p>
-<p>(b) Find \(P(D_2 = 4 \mid D_1 = 5)\).</p>""", src("problemas em sala, problema 4", "M11")) + r"""
+<p>(b) Find \(P(D_2 = 4 \mid D_1 = 5)\).</p>""", src("problemas em sala, problema 4", "MIT11")) + r"""
 <p><b>(a)</b> é uma prior predictive, e a resposta já apareceu em <a href="#prior-predictive">Antes de jogar</a>: é o \(P(D)\) da tabela "tirei 5" da lição 0001, 0.085.
 Para treinar a conta, calcule a prior predictive de outro resultado: a chance de o primeiro lançamento dar <b>4</b>.</p>
 <details><summary>Dica</summary><p>Monte a tabela de Bayes como se o dado fosse "tirei 4" e some os numeradores: prior 1/5 para cada dado, likelihood \(P(4 \mid H)\). Agora o dado de 4 lados também entra.</p></details>
@@ -210,14 +210,14 @@ anotadas, o botão "Preencher anteriores" coloca esses valores na tabela.</p>
 <button class="check">Verificar</button><div class="feedback"></div>
 </div>
 <p>Com isso, a Q1 da L03 está completa. A Q2 troca as cinco hipóteses por um contínuo (a proporção \(\theta\) pode ser qualquer número
-entre 0 e 1), e esse é o assunto da <a href="{LESSON3}">lição 0003</a>, pelo M13.</p>
+entre 0 e 1), e esse é o assunto da <a href="{LESSON3}">lição 0003</a>, pelo MIT13.</p>
 """
 
 fontes = rf"""
-<p>O arquivo do <a href="{M12}">M12</a> tem duas notas: <em>Probabilistic Prediction</em>, que esta lição cobre inteira menos o §2.1,
+<p>O arquivo do <a href="{MIT12}">MIT12</a> tem duas notas: <em>Probabilistic Prediction</em>, que esta lição cobre inteira menos o §2.1,
 e <em>Odds</em>. O que ficou de fora:</p>
 <table>
-<tr><th>trecho do M12</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
+<tr><th>trecho do MIT12</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
 <tr><td>Nota <em>Odds</em> inteira: odds (razão \(P(E)/P(E^c)\)), fator de Bayes (razão entre as likelihoods de duas hipóteses), atualização de odds, log odds</td><td>a L03 não usa; é outra forma de escrever a mesma atualização</td><td>sim: a L04 (PSet 7) cobra. Terá lição própria</td></tr>
 <tr><td>§2.1, previsões em palavras ("é provável que chova") × previsões com probabilidade</td><td>discussão de vocabulário, sem conta</td><td>não</td></tr>
 <tr><td>Problema 1 em sala: 3 moedas (0.5, 0.6 e 0.9), 1 cara em 5 lançamentos; posterior e posterior predictive</td><td>a likelihood usa a Binomial da P1, que merece revisão própria</td><td>sim, como treino; entra quando revisarmos a Binomial</td></tr>
@@ -231,7 +231,7 @@ Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos apar
 
 SPEC = {
     "title": "0002 · Probabilidade preditiva",
-    "subtitle": "Lição 0002 · COE241 P2 · MIT 18.05 M12 · prever o próximo resultado · meta: resolver a L03 Q1.2 e Q1.3",
+    "subtitle": "Lição 0002 · COE241 P2 · MIT12 · prever o próximo resultado · meta: resolver a L03 Q1.2 e Q1.3",
     "crumbs": f'COE241 · P2 · Lição 0002 &nbsp;·&nbsp; anterior: <a href="{LESSON1}">0001, tabela de atualização bayesiana</a>'
               f' &nbsp;·&nbsp; próxima: <a href="{LESSON3}">0003, prior contínua e MAP</a>',
     "sections": [
@@ -240,7 +240,7 @@ SPEC = {
         {"id": "pratica", "heading": "Prática: o próximo lançamento dos cinco dados", "html": pratica},
         {"id": "receita", "heading": "Como resolver: passo zero e as 3 fórmulas", "html": receita},
         {"id": "objetivo", "heading": "O objetivo: L03 Q1.2 e Q1.3", "html": objetivo},
-        {"id": "fontes", "heading": "O que ficou de fora do M12", "html": fontes},
+        {"id": "fontes", "heading": "O que ficou de fora do MIT12", "html": fontes},
     ],
     "quiz": [
         {"question": "Há quatro probabilidades com nomes parecidos: prior, posterior, prior predictive e posterior predictive. Prior e posterior são probabilidades de hipóteses (por exemplo, qual dado foi escolhido). As duas predictive são probabilidades de quê?",
@@ -249,28 +249,28 @@ SPEC = {
              {"text": "De resultados de um experimento", "correct": True, "feedback": "Isso: preveem dados futuros, como a face do próximo lançamento."},
              {"text": "De hipóteses depois de novos dados", "correct": False, "feedback": "Essas são as posteriores. As predictive são sobre resultados."},
              {"text": "Da likelihood de cada hipótese", "correct": False, "feedback": "A likelihood entra na conta da predictive, mas a predictive é sobre o resultado."}]},
-        {"question": "Gaveta com 2 moedas A (cara com 0.5), 1 B (0.6) e 1 C (0.9), uma escolhida ao acaso. Antes de jogar, a chance de cara é 0.625 (a prior predictive). Se você montar a tabela de Bayes para o dado 'saiu cara', onde aparece esse 0.625?",
+        {"question": r"Gaveta com \(2\) moedas A (cara com \(0.5\)), \(1\) B (\(0.6\)) e \(1\) C (\(0.9\)), uma escolhida ao acaso. Antes de jogar, a chance de cara é \(0.625\) (a prior predictive). Se você montar a tabela de Bayes para o dado 'saiu cara', onde aparece esse \(0.625\)?",
          "ref": [("prior-predictive", "Antes de jogar: prior predictive")],
          "options": [
-             {"text": "No total da coluna dos numeradores, P(D)", "correct": True, "feedback": "Isso. Σ P(D|H)P(H) é ao mesmo tempo o P(D) da tabela e a prior predictive de D."},
-             {"text": "Na posterior da moeda mais provável", "correct": False, "feedback": "A posterior de A é 0.4. O 0.625 é o total dos numeradores."},
-             {"text": "Na likelihood média sem pesos", "correct": False, "feedback": "A média simples seria (0.5+0.6+0.9)/3 ≈ 0.667. A predictive pondera pela prior."}]},
-        {"question": "A posterior predictive é P(D₂ | D₁) = Σ P(D₂ | H) · P(H | D₁), em que D₁ é o resultado já observado e D₂ o próximo. Por que o termo é P(D₂ | H), e não P(D₂ | H, D₁)?",
+             {"text": r"No total da coluna dos numeradores, \(P(D)\)", "correct": True, "feedback": r"Isso. \(\sum_H P(D \mid H)\,P(H)\) é ao mesmo tempo o \(P(D)\) da tabela e a prior predictive de \(D\)."},
+             {"text": "Na posterior da moeda mais provável", "correct": False, "feedback": r"A posterior de A é \(0.4\). O \(0.625\) é o total dos numeradores."},
+             {"text": "Na likelihood média sem pesos", "correct": False, "feedback": r"A média simples seria \(\frac{0.5 + 0.6 + 0.9}{3} \approx 0.667\). A predictive pondera pela prior."}]},
+        {"question": r"A posterior predictive é \(P(D_2 \mid D_1) = \sum_H P(D_2 \mid H)\,P(H \mid D_1)\), em que \(D_1\) é o resultado já observado e \(D_2\) o próximo. Por que o termo é \(P(D_2 \mid H)\), e não \(P(D_2 \mid H, D_1)\)?",
          "ref": [("posterior-predictive", "Depois de jogar: posterior predictive")],
          "options": [
              {"text": "Dada a hipótese, os resultados são independentes", "correct": True, "feedback": "Isso: independência condicional. Sabendo qual é o dado, o primeiro lançamento não informa sobre o segundo."},
-             {"text": "Os resultados são sempre independentes entre si", "correct": False, "feedback": "Sem condicionar na hipótese eles não são: um 5 elimina o dado de 4 lados e muda a chance do próximo."},
-             {"text": "D₁ já foi usado e pode ser descartado", "correct": False, "feedback": "D₁ não é descartado: ele está nos pesos, as posteriores P(H | D₁)."}]},
-        {"question": "Na L03 Q1.3, depois de dois 5, pede-se a chance de o próximo lançamento dar 15 (dados de 4, 6, 8, 12 e 20 lados). Por que só o dado de 20 lados entra na conta?",
+             {"text": "Os resultados são sempre independentes entre si", "correct": False, "feedback": r"Sem condicionar na hipótese eles não são: um \(5\) elimina o dado de \(4\) lados e muda a chance do próximo."},
+             {"text": r"\(D_1\) já foi usado e pode ser descartado", "correct": False, "feedback": r"\(D_1\) não é descartado: ele está nos pesos, as posteriores \(P(H \mid D_1)\)."}]},
+        {"question": r"Na L03 Q1.3, depois de dois \(5\), pede-se a chance de o próximo lançamento dar \(15\) (dados de \(4\), \(6\), \(8\), \(12\) e \(20\) lados). Por que só o dado de \(20\) lados entra na conta?",
          "ref": [("objetivo", "O objetivo: L03 Q1.2 e Q1.3")],
          "options": [
-             {"text": "É o único dado com face 15", "correct": True, "feedback": "Para os outros, P(15 | H) = 0, e o produto zera."},
-             {"text": "É o dado de maior posterior", "correct": False, "feedback": "O de maior posterior é o de 8 lados (0.685). O que importa é a likelihood de 15."},
-             {"text": "É o dado de maior prior", "correct": False, "feedback": "A maior prior é a do dado de 8 lados (10/16)."}]},
-        {"question": "Gaveta com 2 moedas A (cara com 0.5), 1 B (0.6) e 1 C (0.9), uma escolhida ao acaso. Antes de jogar, a chance de cara é 0.625. Depois de sair uma cara, a chance de cara no próximo lançamento sobe para 0.668. Por que a previsão sobe, se a chance de cara de cada moeda é fixa?",
+             {"text": r"É o único dado com face \(15\)", "correct": True, "feedback": r"Para os outros, \(P(15 \mid H) = 0\), e o produto zera."},
+             {"text": "É o dado de maior posterior", "correct": False, "feedback": r"O de maior posterior é o de \(8\) lados (\(0.685\)). O que importa é a likelihood de \(15\)."},
+             {"text": "É o dado de maior prior", "correct": False, "feedback": r"A maior prior é a do dado de \(8\) lados (\(\frac{10}{16}\))."}]},
+        {"question": r"Gaveta com \(2\) moedas A (cara com \(0.5\)), \(1\) B (\(0.6\)) e \(1\) C (\(0.9\)), uma escolhida ao acaso. Antes de jogar, a chance de cara é \(0.625\). Depois de sair uma cara, a chance de cara no próximo lançamento sobe para \(0.668\). Por que a previsão sobe, se a chance de cara de cada moeda é fixa?",
          "ref": [("posterior-predictive", "Depois de jogar: posterior predictive")],
          "options": [
-             {"text": "O peso passou para moedas que dão mais cara", "correct": True, "feedback": "Isso: a posterior de C subiu de 0.25 para 0.36, e C dá cara 90% das vezes."},
+             {"text": "O peso passou para moedas que dão mais cara", "correct": True, "feedback": r"Isso: a posterior de C subiu de \(0.25\) para \(0.36\), e C dá cara \(90\%\) das vezes."},
              {"text": "A moeda ficou mais propensa a dar cara", "correct": False, "feedback": "Cada moeda tem chance fixa. O que mudou foi a crença sobre qual moeda é."},
              {"text": "Caras seguidas são mais prováveis", "correct": False, "feedback": "Dada a moeda, os lançamentos são independentes. O efeito vem da incerteza sobre a moeda."}]},
     ],

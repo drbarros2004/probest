@@ -1,6 +1,6 @@
 """Lesson 0001 source. Build: python lessons/src/0001-tabela-de-atualizacao-bayesiana.py
 
-Quotes from M11 are verbatim from the PDF text (MIT OCW 18.05 Spring 2022, CC BY-NC-SA 4.0).
+Quotes from MIT11 are verbatim from the PDF text (MIT OCW 18.05 Spring 2022, CC BY-NC-SA 4.0).
 Only passages whose extracted text was clean are quoted; garbled ones are not reconstructed.
 """
 import sys
@@ -10,13 +10,13 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
 from build import build, prior_post, mc, quote, bayes_table  # noqa: E402
 
-M11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
+MIT11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
 L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
 
 
 def src(where):
-    return f'<a href="{M11}">M11</a>, {where}'
+    return f'<a href="{MIT11}">MIT11</a>, {where}'
 
 
 def uso(text):
@@ -31,7 +31,7 @@ def row(h, prior, cells):
 
 
 aquecimento = r"""
-<p>Esta lição se apoia na regra de Bayes da P1. Antes de construir em cima dela, vale testar o que ficou. O problema é do próprio M11:</p>
+<p>Esta lição se apoia na regra de Bayes da P1. Antes de construir em cima dela, vale testar o que ficou. O problema é do próprio MIT11:</p>
 """ + quote(r"""<p>A screening test for a disease is both sensitive and specific. By that we mean it is usually positive when testing
 a person with the disease and usually negative when testing someone without the disease. Let’s assume the true positive rate is 99%
 and the false positive rate is 2%. Suppose the prevalence of the disease in the general population is 0.5%. If a random person tests
@@ -51,7 +51,7 @@ Quem chuta 99% caiu na <b>falácia da taxa-base</b>: ignorou a raridade e confun
 
 <h3 id="termos">Dando nome às partes</h3>
 <p>Você acabou de fazer uma inferência bayesiana completa sem usar o vocabulário dela. Cada número da conta tem um nome, e o resto
-da P2 usa esses nomes o tempo todo. O M11 define os termos usando este mesmo problema:</p>
+da P2 usa esses nomes o tempo todo. O MIT11 define os termos usando este mesmo problema:</p>
 """ + quote(r"""<p><b>Data:</b> The data are the results of the experiment. In this case, the positive test.</p>
 <p><b>Hypotheses:</b> The hypotheses are the possible answers to the question being asked. In this case they are \(\mathcal{H}_+\) the
 patient has the disease; \(\mathcal{H}_-\) they don’t.</p>
@@ -64,7 +64,7 @@ two likelihoods, one for each hypothesis</p>
 <p><b>Posterior probabilities of the hypotheses:</b> The posteriors are the probabilities of the hypotheses given the data. In this case</p>
 <p style="text-align:center">\(P(\mathcal{H}_+ \mid \mathcal{T}_+) = 0.199\) and \(P(\mathcal{H}_- \mid \mathcal{T}_+) = 0.801\).</p>""",
             src("problemas em sala, solução do problema 1(b)")) + r"""
-<p>Na notação do M11, \(\mathcal{T}_+\) é "o teste deu positivo". Em português, e com o papel de cada termo na regra de Bayes:</p>
+<p>Na notação do MIT11, \(\mathcal{T}_+\) é "o teste deu positivo". Em português, e com o papel de cada termo na regra de Bayes:</p>
 <table>
 <tr><th>termo</th><th>o que é</th><th>no exemplo da doença</th><th>na fórmula</th></tr>
 <tr><td><b>dado</b> (data)</td><td>o que foi observado</td><td>o teste deu positivo</td><td>\(D\)</td></tr>
@@ -83,7 +83,7 @@ Passar da prior para a posterior tem nome próprio:</p>
 """
 
 tabela = r"""
-<p>O M11 introduz a tabela com um exemplo pequeno. Este é o enunciado completo:</p>
+<p>O MIT11 introduz a tabela com um exemplo pequeno. Este é o enunciado completo:</p>
 """ + quote(r"""<p>There are three types of coins which have different probabilities of landing heads when tossed.</p>
 <ul><li>Type \(A\) coins are fair, with probability 0.5 of heads</li>
 <li>Type \(B\) coins are bent and have probability 0.6 of heads</li>
@@ -99,14 +99,14 @@ a coin at random. Without showing you the coin I flip it once and get heads. Wha
 <li><b>likelihood</b>: 0.5, 0.6 e 0.9, a chance de cara para cada tipo;</li>
 <li><b>posterior</b>: é o que a questão pede.</li>
 </ul>
-<p>O M11 insiste num detalhe da likelihood: nela o dado fica fixo e o que varia é a hipótese.</p>
+<p>O MIT11 insiste num detalhe da likelihood: nela o dado fica fixo e o que varia é a hipótese.</p>
 """ + quote(r"""<p><b>Likelihood:</b> […] The likelihood function is \(P(D \mid \mathcal{H})\), i.e., the probability of the data assuming that
 the hypothesis is true. Most often we will consider the data as fixed and let the hypothesis vary.</p>""", src("§3")) + r"""
 <p>Para cada hipótese basta aplicar a regra de Bayes acima, e o denominador é o mesmo em todas. A tabela é essa conta organizada em
 colunas, não uma fórmula nova. Cada termo da fórmula vira uma coluna:</p>
 $$\underbrace{P(H \mid D)}_{\text{posterior}} \;=\; \dfrac{\overbrace{P(D \mid H)}^{\text{likelihood}}\;\cdot\;\overbrace{P(H)}^{\text{prior}}}{\underbrace{P(D)}_{\text{soma dos numeradores}}}$$
 """ + uso("são as fórmulas 2, 3 e 4.") + r"""
-<p>A tabela do M11 para o exemplo, exatamente como está lá:</p>
+<p>A tabela do MIT11 para o exemplo, exatamente como está lá:</p>
 """ + quote(r"""<table>
 <tr><th>hypothesis</th><th>prior</th><th>likelihood</th><th>Bayes numerator</th><th>posterior</th></tr>
 <tr><th>\(\mathcal{H}\)</th><th>\(P(\mathcal{H})\)</th><th>\(P(D \mid \mathcal{H})\)</th><th>\(P(D \mid \mathcal{H})P(\mathcal{H})\)</th><th>\(P(\mathcal{H} \mid D)\)</th></tr>
@@ -128,7 +128,7 @@ hipóteses, ponderada pela prior: \(0.4 \cdot 0.5 + 0.4 \cdot 0.6 + 0.2 \cdot 0.
 Assim, A (0.5) perde bastante (× 0.81), B (0.6) perde um pouco (× 0.97) e C (0.9) ganha (× 1.45).
 Mesmo multiplicada por 1.45, a prior baixa de C não alcança B, e B continua na frente.</p>
 """ + r"""
-<p>O M11 tira quatro lições da tabela. Antes, dois termos que elas usam. <b>Normalizar</b> é dividir cada numerador
+<p>O MIT11 tira quatro lições da tabela. Antes, dois termos que elas usam. <b>Normalizar</b> é dividir cada numerador
 por \(P(D)\), para que a coluna some 1 e vire probabilidade. O <b>MLE</b> (<em>maximum likelihood estimate</em>, estimativa de máxima
 verossimilhança) é escolher a hipótese de maior likelihood, sem olhar a prior.</p>
 """ + quote(r"""<ol start="4">
@@ -140,7 +140,7 @@ posterior, a large prior may be deflated by a small likelihood, and a small prio
 but you can see in this example that it is not the entire story, since type \(B\) has the greatest posterior probability.</li></ol>
 <p>[…] This leads to the most elegant form of Bayes’ theorem in the context of Bayesian updating:</p>
 <p style="text-align:center"><b>posterior \(\propto\) likelihood \(\times\) prior</b></p>""", src("§3.1, itens 4 a 7")) + r"""
-<p>Falta uma consequência que o M11 não lista, mas que a L03 vai usar: se o dado é impossível sob uma hipótese,
+<p>Falta uma consequência que o MIT11 não lista, mas que a L03 vai usar: se o dado é impossível sob uma hipótese,
 \(P(D \mid H) = 0\) e o numerador dela zera, qualquer que seja a prior. Tirar 5 num dado de 4 lados, por exemplo.</p>
 """ + mc("Na tabela, a coluna likelihood guarda:",
          [("\\(P(\\text{dado} \\mid \\text{hipótese})\\)", True, "Isso: a probabilidade do dado supondo que a hipótese é verdadeira."),
@@ -148,7 +148,7 @@ but you can see in this example that it is not the entire story, since type \(B\
           ("\\(P(\\text{hipótese e dado})\\)", False, "Essa é a probabilidade conjunta, de a hipótese ser verdadeira E o dado acontecer. Ela é exatamente o numerador: prior × likelihood.")])
 
 repetidos = r"""
-<p>Até aqui houve um dado só. O M11 continua jogando a mesma moeda. Na tabela dele, cada moeda aparece pela sua chance de cara:
+<p>Até aqui houve um dado só. O MIT11 continua jogando a mesma moeda. Na tabela dele, cada moeda aparece pela sua chance de cara:
 0.5 é a moeda A, 0.6 é a B e 0.9 é a C.</p>
 """ + quote(r"""<p>[…] In Bayesian inference, after updating the prior to the posterior, we can take more data and update again!
 For the second update, the posterior from the first data becomes the prior for the second data.</p>
@@ -189,7 +189,7 @@ dados = r"""
 I pick one at random, roll it and report that the roll was a 13.</p>
 <p>Goal: Find the probabilities the die is 4, 6, 8, 12 or 20 sided.</p>""", src("problemas em sala, problema 2")) + r"""
 <p>Com um 13, o problema quase não tem conta. Os dados de 4, 6, 8 e 12 lados não têm face 13, então a likelihood deles é 0 e eles
-saem da tabela. Na solução do M11 (\(\mathcal{H}_n\) é "o dado tem \(n\) lados"):</p>
+saem da tabela. Na solução do MIT11 (\(\mathcal{H}_n\) é "o dado tem \(n\) lados"):</p>
 """ + quote(r"""<table>
 <tr><th>hypothesis</th><th>prior</th><th>likelihood</th><th>Bayes numerator</th><th>posterior</th></tr>
 <tr><th>\(\mathcal{H}\)</th><th>\(P(\mathcal{H})\)</th><th>\(P(D \mid \mathcal{H})\)</th><th>\(P(D \mid \mathcal{H})P(\mathcal{H})\)</th><th>\(P(\mathcal{H} \mid D)\)</th></tr>
@@ -222,7 +222,7 @@ saem da tabela. Na solução do M11 (\(\mathcal{H}_n\) é "o dado tem \(n\) lado
 <p>(b) Do the Bayesian update in one step. That is, the data is \(D\) = ‘9 followed by 5’</p>""",
             src("problemas em sala, problema 3")) + r"""
 <p><b>(a) Em dois passos.</b> O primeiro numerador usa a likelihood de tirar 9. O segundo multiplica esse numerador pela
-likelihood de tirar 5, e só no fim se normaliza. Na solução do M11 (\(D_1\) = tirou 9, \(D_2\) = tirou 5):</p>
+likelihood de tirar 5, e só no fim se normaliza. Na solução do MIT11 (\(D_1\) = tirou 9, \(D_2\) = tirou 5):</p>
 """ + quote(r"""<table>
 <tr><th>hyp.</th><th>prior</th><th>likel. 1</th><th>Bayes num. 1</th><th>likel. 2</th><th>Bayes num. 2</th><th>posterior</th></tr>
 <tr><th>\(\mathcal{H}\)</th><th>\(P(\mathcal{H})\)</th><th>\(P(D_1 \mid \mathcal{H})\)</th><th>* * *</th><th>\(P(D_2 \mid \mathcal{H})\)</th><th>* * *</th><th>\(P(\mathcal{H} \mid D_1, D_2)\)</th></tr>
@@ -288,19 +288,19 @@ inteira é necessária, porque \(P(D)\) soma todas as linhas. As dicas são para
     ok=f"A resposta da Q1.1 é P(8 lados | 5, 5) ≈ 0.685. Confira no <a href='{L03G}'>L03G</a>, página 1: a solução lá é imagem, então compare com o PDF aberto.",
     lik_header="likelihood \\(P(5, 5 \\mid H)\\)") + r"""
 <p>As Q1.2 e Q1.3 perguntam a probabilidade do <em>próximo</em> lançamento. Isso é a <b>posterior predictive</b>, assunto da <a href="https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z">lição 0002</a>
-pelo M12, e a coluna posterior que você acabou de calcular é metade da conta. Guarde a sua tabela.</p>
+pelo MIT12, e a coluna posterior que você acabou de calcular é metade da conta. Guarde a sua tabela.</p>
 """
 
 fontes = rf"""
-<p>Esta lição foi feita para bastar sozinha naquilo que a P2 cobra do M11. O que ficou de fora do
-<a href="{M11}">M11, Bayesian Updating with Discrete Priors</a>:</p>
+<p>Esta lição foi feita para bastar sozinha naquilo que a P2 cobra do MIT11. O que ficou de fora do
+<a href="{MIT11}">MIT11, Bayesian Updating with Discrete Priors</a>:</p>
 <table>
-<tr><th>trecho do M11</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
-<tr><td>§3.2, prior e posterior escritas como pmf (função de massa de probabilidade, da P1): \(p(\theta)\), \(p(x \mid \theta)\), \(p(\theta \mid x)\)</td><td>só passa a importar com prior contínua</td><td>sim, mas entra na lição do M13</td></tr>
+<tr><th>trecho do MIT11</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
+<tr><td>§3.2, prior e posterior escritas como pmf (função de massa de probabilidade, da P1): \(p(\theta)\), \(p(x \mid \theta)\), \(p(\theta \mid x)\)</td><td>só passa a importar com prior contínua</td><td>sim, mas entra na lição do MIT13</td></tr>
 <tr><td>Tabela de likelihood completa e exemplo 2 (saiu coroa)</td><td>é a mesma conta com outro dado</td><td>não</td></tr>
 <tr><td>§3.3 (como escolher a hipótese sem saber quantas moedas há de cada tipo) e a concept question (escolher entre tratamentos que curaram 3 de 3, 19 de 20 ou 90000 de 100000 pacientes)</td><td>perguntas de reflexão, sem conta</td><td>não</td></tr>
 <tr><td>Problema 1 e extra 1 (doença, um dado de 4 contra 999 de 6)</td><td>repetem o aquecimento e a prática</td><td>não; servem de treino extra</td></tr>
-<tr><td>Problema 4, <em>probabilistic prediction</em>: com os cinco dados, a probabilidade de tirar 5 e, depois de um 5, a de o próximo lançamento dar 4</td><td>é o começo da posterior predictive</td><td>sim, na lição 0002 (M12)</td></tr>
+<tr><td>Problema 4, <em>probabilistic prediction</em>: com os cinco dados, a probabilidade de tirar 5 e, depois de um 5, a de o próximo lançamento dar 4</td><td>é o começo da posterior predictive</td><td>sim, na lição 0002 (MIT12)</td></tr>
 </table>
 <div class="callout">Se ficou alguma dúvida, pergunte ao seu professor, que é o agente nesta conversa. Vale um passo da conta, um termo ou "por que isso funciona?".</div>
 <p style="font-size:.8rem;color:var(--muted)">As citações em inglês são de J. Orloff e J. Bloom, <i>18.05 Introduction to Probability and Statistics</i>,
@@ -309,7 +309,7 @@ Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos apar
 
 SPEC = {
     "title": "0001 · Tabela de atualização bayesiana",
-    "subtitle": "Lição 0001 · COE241 P2 · MIT 18.05 M11 · prior discreta, likelihood discreta · meta: resolver a L03 Q1.1",
+    "subtitle": "Lição 0001 · COE241 P2 · MIT11 · prior discreta, likelihood discreta · meta: resolver a L03 Q1.1",
     "crumbs": 'COE241 · P2 · Lição 0001 &nbsp;·&nbsp; anterior: <a href="https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks">0000, MLE</a> &nbsp;·&nbsp; próxima: <a href="https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z">0002, probabilidade preditiva</a>',
     "sections": [
         {"id": "aquecimento", "heading": "Aquecimento: o que sobrou da P1", "html": aquecimento},
@@ -318,39 +318,39 @@ SPEC = {
         {"id": "pratica", "heading": "Prática: os cinco dados do MIT", "html": dados},
         {"id": "receita", "heading": "Como resolver: passo zero e as 5 fórmulas", "html": receita},
         {"id": "objetivo", "heading": "O objetivo: L03 Q1.1", "html": objetivo},
-        {"id": "fontes", "heading": "O que ficou de fora do M11", "html": fontes},
+        {"id": "fontes", "heading": "O que ficou de fora do MIT11", "html": fontes},
     ],
     "quiz": [
-        {"question": "Uma tabela de atualização bayesiana tem as colunas hipótese, prior, likelihood, numerador e posterior. Qual delas soma P(D)?",
+        {"question": r"Uma tabela de atualização bayesiana tem as colunas hipótese, prior, likelihood, numerador e posterior. Qual delas soma \(P(D)\)?",
          "ref": [("tabela", "A tabela é a regra de Bayes, linha por linha")],
          "options": [
-             {"text": "A coluna dos numeradores", "correct": True, "feedback": "Pela probabilidade total, P(D) = Σ P(D|H)P(H), que é exatamente a soma dos numeradores."},
+             {"text": "A coluna dos numeradores", "correct": True, "feedback": r"Pela probabilidade total, \(P(D) = \sum_H P(D \mid H)\,P(H)\), que é exatamente a soma dos numeradores."},
              {"text": "A coluna das likelihoods", "correct": False, "feedback": "A likelihood não tem soma com significado: o dado está fixo e a hipótese varia."},
-             {"text": "A coluna das posteriores", "correct": False, "feedback": "As posteriores somam 1 por construção."}]},
-        {"question": "Há cinco dados (4, 6, 8, 12 e 20 lados), e um foi escolhido ao acaso. O lançamento deu 7. O que acontece com a hipótese 'é o dado de 6 lados'?",
+             {"text": "A coluna das posteriores", "correct": False, "feedback": r"As posteriores somam \(1\) por construção."}]},
+        {"question": r"Há cinco dados (\(4\), \(6\), \(8\), \(12\) e \(20\) lados), e um foi escolhido ao acaso. O lançamento deu \(7\). O que acontece com a hipótese 'é o dado de \(6\) lados'?",
          "ref": [("pratica", "Prática: os cinco dados do MIT")],
          "options": [
-             {"text": "A posterior dela vira zero", "correct": True, "feedback": "A likelihood é 0, então o numerador é 0, qualquer que seja a prior."},
-             {"text": "A posterior dela cai à metade", "correct": False, "feedback": "Não há meio-termo: P(7 | 6 lados) = 0 anula o numerador."},
+             {"text": r"A posterior dela vira \(0\)", "correct": True, "feedback": r"A likelihood é \(0\), então o numerador é \(0\), qualquer que seja a prior."},
+             {"text": "A posterior dela cai à metade", "correct": False, "feedback": r"Não há meio-termo: \(P(7 \mid 6 \text{ lados}) = 0\) anula o numerador."},
              {"text": "A posterior dela fica igual", "correct": False, "feedback": "Só ficaria igual se a likelihood fosse a mesma para todas as hipóteses."}]},
-        {"question": "Gaveta com 2 moedas A (cara com 0.5), 2 B (0.6) e 1 C (0.9); uma é escolhida ao acaso e dá cara. A posterior de B (0.387) fica acima da de C (0.290), embora C tenha a maior likelihood. Por quê?",
+        {"question": r"Gaveta com \(2\) moedas A (cara com \(0.5\)), \(2\) B (\(0.6\)) e \(1\) C (\(0.9\)); uma é escolhida ao acaso e dá cara. A posterior de B (\(0.387\)) fica acima da de C (\(0.290\)), embora C tenha a maior likelihood. Por quê?",
          "ref": [("tabela", "A tabela é a regra de Bayes, linha por linha")],
          "options": [
-             {"text": "A prior de B é o dobro da de C", "correct": True, "feedback": "Os numeradores são 0.4·0.6 = 0.24 contra 0.2·0.9 = 0.18. É o 'tug-of-war' do M11, e a prior venceu essa rodada."},
-             {"text": "A likelihood de B soma mais", "correct": False, "feedback": "Likelihoods não se somam entre hipóteses, e a de C (0.9) é maior."},
+             {"text": "A prior de B é o dobro da de C", "correct": True, "feedback": r"Os numeradores são \(0.4 \cdot 0.6 = 0.24\) contra \(0.2 \cdot 0.9 = 0.18\). É o 'tug-of-war' do MIT11, e a prior venceu essa rodada."},
+             {"text": "A likelihood de B soma mais", "correct": False, "feedback": r"Likelihoods não se somam entre hipóteses, e a de C (\(0.9\)) é maior."},
              {"text": "B foi a moeda mais jogada", "correct": False, "feedback": "Só houve um lançamento, de uma moeda só. O que pesa é a prior."}]},
-        {"question": "Com dois lançamentos observados (por exemplo, 9 e depois 5), há duas formas de atualizar: passo a passo, normalizando no meio, ou de uma vez, multiplicando as likelihoods. Elas dão:",
+        {"question": r"Com dois lançamentos observados (por exemplo, \(9\) e depois \(5\)), há duas formas de atualizar: passo a passo, normalizando no meio, ou de uma vez, multiplicando as likelihoods. Elas dão:",
          "ref": [("repetidos", "Mais de um dado observado"), ("dois-lancamentos", "Dois lançamentos")],
          "options": [
              {"text": "A mesma posterior final", "correct": True, "feedback": "Normalizar no meio só reescala, e a escala some no fim."},
              {"text": "Posteriores um pouco diferentes", "correct": False, "feedback": "São idênticas: normalizar no meio só reescala, e a escala some no fim."},
-             {"text": "Posteriores muito diferentes", "correct": False, "feedback": "São idênticas. Na seção dos dois lançamentos, as duas formas dão 0.735 e 0.265."}]},
-        {"question": "Na L03 Q1, a caixa tem dados de 4, 6, 8, 12 e 20 lados na proporção 1:2:10:2:1. Por que a prior do dado de 8 lados é 10/16?",
+             {"text": "Posteriores muito diferentes", "correct": False, "feedback": r"São idênticas. Na seção dos dois lançamentos, as duas formas dão \(0.735\) e \(0.265\)."}]},
+        {"question": r"Na L03 Q1, a caixa tem dados de \(4\), \(6\), \(8\), \(12\) e \(20\) lados na proporção \(1:2:10:2:1\). Por que a prior do dado de \(8\) lados é \(\frac{10}{16}\)?",
          "ref": [("objetivo", "O objetivo: L03 Q1.1")],
          "options": [
-             {"text": "Peso 10 dividido pela soma 16", "correct": True, "feedback": "A proporção 1:2:10:2:1 vira probabilidade quando dividida pelo total."},
-             {"text": "Peso 10 dividido por 5 dados", "correct": False, "feedback": "Dividir por 5 só serve para prior uniforme. Aqui os pesos são diferentes."},
-             {"text": "Faces 8 dividido por 16", "correct": False, "feedback": "O número de faces entra na likelihood, não na prior."}]},
+             {"text": r"Peso \(10\) dividido pela soma \(16\)", "correct": True, "feedback": r"A proporção \(1:2:10:2:1\) vira probabilidade quando dividida pelo total \(1+2+10+2+1 = 16\)."},
+             {"text": r"Peso \(10\) dividido por \(5\) dados", "correct": False, "feedback": r"Dividir por \(5\) só serve para prior uniforme. Aqui os pesos são diferentes."},
+             {"text": r"Faces \(8\) dividido por \(16\)", "correct": False, "feedback": "O número de faces entra na likelihood, não na prior."}]},
     ],
 }
 

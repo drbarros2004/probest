@@ -1,6 +1,6 @@
 """Lesson 0000 source. Build: python lessons/src/0000-mle.py
 
-Quotes from M10 (Maximum Likelihood Estimates) are verbatim from the PDF text (MIT OCW 18.05 Spring 2022,
+Quotes from MIT10 (Maximum Likelihood Estimates) are verbatim from the PDF text (MIT OCW 18.05 Spring 2022,
 CC BY-NC-SA 4.0). The extracted text kept the prose clean but garbled the math symbols, so the prose is
 quoted word for word and the formulas are restored in LaTeX from context. The LMLE problems are quoted from
 the list PDF (an image; transcribed by hand). Answers checked against LMLEG and MEX2G problems 5 to 9.
@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
 from build import build, mc, quote, pdf_plot  # noqa: E402
 
-M10 = "https://drive.google.com/file/d/1KlxN6zAnv-MLnhpaTUvTBKVZ5aame8yM/view"
+MIT10 = "https://drive.google.com/file/d/1KlxN6zAnv-MLnhpaTUvTBKVZ5aame8yM/view"
 LMLE = "https://drive.google.com/file/d/17yRyo--qjCsMfsi2MPj322gUagn193bd/view"
 LMLEG = "https://drive.google.com/file/d/1ZyJsivcY8yYgSM0Ull_rAWnWQEcg6D7X/view"
 LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
@@ -23,7 +23,7 @@ ACC, MUT, FG = "var(--accent)", "var(--muted)", "var(--fg)"
 
 
 def src(where):
-    return f'<a href="{M10}">M10</a>, {where}'
+    return f'<a href="{MIT10}">MIT10</a>, {where}'
 
 
 def lmle(n):
@@ -93,7 +93,7 @@ def lik55(t):
 
 mle = r"""
 <p>Um <b>parâmetro</b> é o número que fixa uma distribuição: a chance de cara \(\theta\) de uma moeda, por exemplo. Na estatística, os dados
-são conhecidos e o parâmetro não. O M10 propõe um jeito de estimar o parâmetro a partir dos dados:</p>
+são conhecidos e o parâmetro não. O MIT10 propõe um jeito de estimar o parâmetro a partir dos dados:</p>
 """ + quote(r"""<p>There are many methods for estimating unknown parameters from data. We will first consider the maximum likelihood estimate
 (MLE), which answers the question:</p>
 <p>For which parameter value does the observed data have the biggest probability?</p>""", src("§3")) + quote(
@@ -108,7 +108,7 @@ $$P(55 \text{ heads} \mid p) = \binom{100}{55} p^{55}(1-p)^{45}.$$
 parameter \(p\). […]</p>
 <p><b>Definition:</b> Given data the maximum likelihood estimate (MLE) for the parameter \(p\) is the value of \(p\) that maximizes the
 likelihood \(P(\text{data} \mid p)\). That is, the MLE is the value of \(p\) for which the data is most likely.</p>""", src("§3, Example 1")) + r"""
-<p>O M10 chama de \(p\) o que a LMLE chama de \(\theta\); daqui em diante, \(\theta\). A fórmula da likelihood é a pmf da Binomial
+<p>O MIT10 chama de \(p\) o que a LMLE chama de \(\theta\); daqui em diante, \(\theta\). A fórmula da likelihood é a pmf da Binomial
 (<a href="#dists">revisão</a>, se precisar). O que muda é a leitura: os dados (55 caras) ficam <em>fixos</em> e \(\theta\) varia. Avaliando em
 alguns valores:</p>
 <ul>
@@ -123,7 +123,7 @@ alguns valores:</p>
     caption="A likelihood de 55 caras em 100, como função de θ. Ela foi multiplicada por uma constante para caber no gráfico; "
             "isso muda a altura, não o lugar do máximo. Ela vale 0 em θ = 0 e em θ = 1 (com θ = 0 nunca sai cara; com θ = 1 nunca sai coroa).") + r"""
 <p><b>Como achar o máximo.</b> Onde a curva tem um pico liso, a derivada é zero. Derivar \(\theta^{55}(1-\theta)^{45}\) direto exige a regra do
-produto; o M10 mostra um atalho:</p>
+produto; o MIT10 mostra um atalho:</p>
 """ + quote(r"""<p>It is often easier to work with the natural log of the likelihood function. For short this is simply called the log likelihood.
 Since \(\ln(x)\) is an increasing function, the maxima of the likelihood and log likelihood coincide.</p>""", src("§3.1")) + r"""
 <p>"Crescente" quer dizer que, se \(a > b\), então \(\ln a > \ln b\): o \(\theta\) que dá a maior likelihood dá também o maior log. E o log
@@ -134,7 +134,7 @@ troca produtos e potências por somas, que são fáceis de derivar. Os passos pa
 <li><b>derivada</b> \(\frac{d}{d\theta}\ln L = \frac{55}{\theta} - \frac{45}{1-\theta}\) (a constante \(\ln\binom{100}{55}\) some ao derivar);</li>
 <li><b>igualar a zero:</b> \(\frac{55}{\theta} = \frac{45}{1-\theta}\), então \(55(1-\theta) = 45\theta\), então \(55 = 100\theta\), e \(\hat\theta = 0.55\).</li>
 </ul>
-<p><b>Conferir que é máximo.</b> A derivada zero pode ser um mínimo. O M10 sugere olhar as bordas:</p>
+<p><b>Conferir que é máximo.</b> A derivada zero pode ser um mínimo. O MIT10 sugere olhar as bordas:</p>
 """ + quote(r"""<p>Officially we need to check that this critical point is actually the maximum. We could use the second derivative test. Another way
 is to notice that we are interested only in \(0 \le p \le 1\); that the probability is bigger than zero for \(0 < p < 1\); and that the
 probability is equal to zero for \(p = 0\) and for \(p = 1\). From these facts it follows that the critical point must be the unique
@@ -180,7 +180,7 @@ uma variável contínua, mas \(f(x)\) não é probabilidade: probabilidade é á
 iid = r"""
 <p>Na 6, o dado é uma contagem só. Na 8, são \(n\) números \(x_1, \dots, x_n\), cada um de uma exponencial. Dados <b>i.i.d.</b>
 (independentes e identicamente distribuídos) são observações que não influenciam umas às outras e vêm da mesma distribuição.
-Para eles, o M10 dá a regra:</p>
+Para eles, o MIT10 dá a regra:</p>
 """ + quote(r"""<p>For multiple independent data points, the likelihood is the product of the individual likelihoods.</p>""",
             src("problemas em sala, Problem 2")) + r"""
 <p>É a regra da P1 para eventos independentes, \(P(A \cap B) = P(A)\,P(B)\). Com dados contínuos, entra a pdf no lugar da pmf:</p>
@@ -201,7 +201,7 @@ exponencial cuja média é a média observada. Conferir as bordas: com \(\lambda
 \(e^{-13\lambda} \to 0\). A likelihood começa e termina em 0, então o ponto da derivada zero é o máximo.</p>
 <p><b>Por que a pdf, se ela não é probabilidade?</b> A chance de uma lâmpada durar perto de \(x\) é \(f(x)\,dx\), com \(dx\) uma largura minúscula
 (a precisão da medida). A chance dos dados seria \(L(\lambda)\,dx_1 \cdots dx_5\), e os \(dx\) não dependem de \(\lambda\): não mudam onde fica
-o máximo. Por isso o M10 (§4) os descarta e usa só a pdf.</p>
+o máximo. Por isso o MIT10 (§4) os descarta e usa só a pdf.</p>
 """ + uso("é a fórmula 1 (produto) seguida da 2 (log vira soma).") + r"""
 <p>Com \(n\) dados genéricos, a soma \(2 + 3 + 1 + 3 + 4\) vira \(x_1 + \dots + x_n\), que se escreve \(\sum x_i\). A média dos dados é
 \(\bar x = \frac{\sum x_i}{n}\), e por isso \(\sum x_i = n\bar x\).</p>
@@ -216,7 +216,7 @@ o máximo. Por isso o M10 (§4) os descarta e usa só a pdf.</p>
 # ---------------------------------------------------------------- sem derivada
 borda = r"""
 <p>Dois problemas da LMLE (a Uniforme 1..\(N\) e a turma) têm parâmetro inteiro: não dá para derivar em \(N\). E a likelihood é zero em
-parte dos valores, então nem há um pico liso. O M10 faz um caso parecido, com a Uniforme contínua \(U(a, b)\):</p>
+parte dos valores, então nem há um pico liso. O MIT10 faz um caso parecido, com a Uniforme contínua \(U(a, b)\):</p>
 """ + quote(r"""<p><b>Example 5. Uniform distributions</b> Suppose our data \(x_1, \dots, x_n\) are independently drawn from a uniform distribution
 \(U(a, b)\). Find the MLE for \(a\) and \(b\).</p>
 <p><b>Solution:</b> This example is different from the previous ones in that we won’t use calculus to find the MLE. The density for
@@ -318,26 +318,26 @@ reposição, como no problema 7, a likelihood vira \((1/n)^3\), que também só 
 fontes = rf"""
 <p><b>Ligação com a lição 0003.</b> Na <a href="{LESSON3}">lição 0003</a>, o MAP faz o mesmo cálculo com a prior junto: maximiza
 likelihood × prior em vez de só a likelihood. Com prior plana, MAP = MLE.</p>
-<p>O arquivo do <a href="{M10}">M10</a> tem duas notas (<em>Introduction to Statistics</em> e <em>Maximum Likelihood Estimates</em>) e os
+<p>O arquivo do <a href="{MIT10}">MIT10</a> tem duas notas (<em>Introduction to Statistics</em> e <em>Maximum Likelihood Estimates</em>) e os
 problemas em sala. Leitura recomendada: a nota do MLE, §3 e §4. O que ficou de fora:</p>
 <table>
-<tr><th>trecho do M10</th><th>faz falta na P2?</th></tr>
+<tr><th>trecho do MIT10</th><th>faz falta na P2?</th></tr>
 <tr><td><em>Introduction to Statistics</em>: fases da estatística, o caso Sally Clark, revisão de Bayes</td><td>só a definição de <b>estatística</b> (§2.4): "anything that can be computed from the collected data". \(\bar x\) é uma estatística; \(\lambda\) não é</td></tr>
 <tr><td>Example 4: MLE da Normal, \(\hat\mu = \bar x\) e \(\hat\sigma^2 = \frac{{1}}{{n}}\sum(x_i - \bar x)^2\)</td><td>pode cair; usa derivadas parciais, com os mesmos passos</td></tr>
 <tr><td>Example 6 (captura e recaptura) e Example 7 (Hardy-Weinberg)</td><td>não; o 6 é a mesma ideia sem derivada da turma</td></tr>
 <tr><td>§4: por que usar a densidade (o \(dx\) que não depende do parâmetro)</td><td>não; está resumido em <a href="#iid">dados independentes</a></td></tr>
-<tr><td>§5 apêndice: propriedades do MLE</td><td>não; o próprio M10 diz "will not be on any exams"</td></tr>
+<tr><td>§5 apêndice: propriedades do MLE</td><td>não; o próprio MIT10 diz "will not be on any exams"</td></tr>
 <tr><td>Problema em sala 1 (a): três moedas (1/3, 1/2, 2/3), 49 caras em 80; MLE entre hipóteses discretas</td><td>como treino: calcule a likelihood de cada moeda e escolha a maior; dá 2/3</td></tr>
 </table>
 <div class="callout">Se ficou alguma dúvida, pergunte ao seu professor, que é o agente nesta conversa: um passo da conta, um termo ou "por que isso funciona?".</div>
 <p style="font-size:.8rem;color:var(--muted)">As citações em inglês são de J. Orloff e J. Bloom, <i>18.05 Introduction to Probability and Statistics</i>,
 Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0, e da lista de MLE da Profª Rosa Leão (COE241). Trechos omitidos aparecem como […].
-No texto extraído do PDF do M10, os símbolos matemáticos saíram corrompidos; a prosa é literal, e as fórmulas foram reescritas a partir do contexto.</p>
+No texto extraído do PDF do MIT10, os símbolos matemáticos saíram corrompidos; a prosa é literal, e as fórmulas foram reescritas a partir do contexto.</p>
 """
 
 SPEC = {
     "title": "0000 · Máxima verossimilhança (MLE)",
-    "subtitle": "Lição 0000 · COE241 P2 · MIT 18.05 M10 · meta: resolver a LMLE inteira (problemas 6 a 10)",
+    "subtitle": "Lição 0000 · COE241 P2 · MIT10 · meta: resolver a LMLE inteira (problemas 6 a 10)",
     "crumbs": f'COE241 · P2 · Lição 0000 &nbsp;·&nbsp; próxima: <a href="{LESSON1}">0001, tabela de atualização bayesiana</a>',
     "sections": [
         {"id": "diagnostico", "heading": "Diagnóstico: tente antes", "html": diagnostico},
@@ -347,33 +347,33 @@ SPEC = {
         {"id": "borda", "heading": "Sem derivada: parâmetro inteiro", "html": borda},
         {"id": "receita", "heading": "As 4 fórmulas", "html": receita},
         {"id": "objetivo", "heading": "O objetivo: LMLE 7, 9 e 10", "html": objetivo},
-        {"id": "fontes", "heading": "Ligação com a 0003 e o que ficou de fora do M10", "html": fontes},
+        {"id": "fontes", "heading": "Ligação com a 0003 e o que ficou de fora do MIT10", "html": fontes},
     ],
     "quiz": [
-        {"question": "Uma moeda deu 49 caras em 80 lançamentos, e o MLE de θ é 49/80. O que esse valor maximiza?",
+        {"question": r"Uma moeda deu \(49\) caras em \(80\) lançamentos, e o MLE de \(\theta\) é \(\frac{49}{80}\). O que esse valor maximiza?",
          "ref": [("mle", "O MLE")],
          "options": [
-             {"text": "p(dados | θ), como função de θ", "correct": True, "feedback": "Isso: os dados ficam fixos e θ varia."},
-             {"text": "p(θ | dados), como função de θ", "correct": False, "feedback": "Essa é a posterior, que precisa de uma prior (lição 0003). O MLE usa só a likelihood."},
-             {"text": "p(dados), somada em todo θ", "correct": False, "feedback": "Essa é a probabilidade total, que nem depende de θ."}]},
-        {"question": "Por que se maximiza ln L(θ) em vez de L(θ)?",
+             {"text": r"\(p(\text{dados} \mid \theta)\), como função de \(\theta\)", "correct": True, "feedback": r"Isso: os dados ficam fixos e \(\theta\) varia."},
+             {"text": r"\(p(\theta \mid \text{dados})\), como função de \(\theta\)", "correct": False, "feedback": "Essa é a posterior, que precisa de uma prior (lição 0003). O MLE usa só a likelihood."},
+             {"text": r"\(p(\text{dados})\), somada em todo \(\theta\)", "correct": False, "feedback": r"Essa é a probabilidade total, que nem depende de \(\theta\)."}]},
+        {"question": r"Por que se maximiza \(\ln L(\theta)\) em vez de \(L(\theta)\)?",
          "ref": [("mle", "O MLE"), ("logs", "Regras de log")],
          "options": [
-             {"text": "ln cresce, e produto vira soma", "correct": True, "feedback": "Isso: o máximo fica no mesmo lugar, e a derivada fica fácil."},
-             {"text": "ln muda o máximo para dentro", "correct": False, "feedback": "Como ln é crescente, o máximo não muda de lugar."},
-             {"text": "ln deixa a likelihood sempre positiva", "correct": False, "feedback": "O log de um número entre 0 e 1 é negativo. O ganho é trocar produto por soma."}]},
-        {"question": "Cinco lâmpadas com vida exp(λ) duraram 2, 3, 1, 3 e 4 anos. Qual é o MLE de λ?",
+             {"text": r"\(\ln\) cresce, e produto vira soma", "correct": True, "feedback": "Isso: o máximo fica no mesmo lugar, e a derivada fica fácil."},
+             {"text": r"\(\ln\) muda o máximo para dentro", "correct": False, "feedback": r"Como \(\ln\) é crescente, o máximo não muda de lugar."},
+             {"text": r"\(\ln\) deixa a likelihood sempre positiva", "correct": False, "feedback": r"O log de um número entre \(0\) e \(1\) é negativo. O ganho é trocar produto por soma."}]},
+        {"question": r"Cinco lâmpadas com vida \(\text{exp}(\lambda)\) duraram \(2\), \(3\), \(1\), \(3\) e \(4\) anos. Qual é o MLE de \(\lambda\)?",
          "ref": [("iid", "Dados independentes")],
          "options": [
-             {"text": "λ̂ = 5/13", "correct": True, "feedback": "Isso: L = λ⁵e^(−13λ), derivada do log 5/λ − 13 = 0."},
-             {"text": "λ̂ = 13/5", "correct": False, "feedback": "13/5 é a média dos dados; λ̂ é o inverso dela."},
-             {"text": "λ̂ = 1/13", "correct": False, "feedback": "São 5 lâmpadas: o expoente de λ é 5, e a derivada dá 5/λ."}]},
-        {"question": "Dados 2, 9 e 4 de uma Uniforme discreta 1..N. Qual é o MLE de N?",
+             {"text": r"\(\hat\lambda = \frac{5}{13}\)", "correct": True, "feedback": r"Isso: \(L = \lambda^5 e^{-13\lambda}\), e a derivada do log é \(\frac{5}{\lambda} - 13 = 0\)."},
+             {"text": r"\(\hat\lambda = \frac{13}{5}\)", "correct": False, "feedback": r"\(\frac{13}{5}\) é a média dos dados; \(\hat\lambda\) é o inverso dela."},
+             {"text": r"\(\hat\lambda = \frac{1}{13}\)", "correct": False, "feedback": r"São \(5\) lâmpadas: o expoente de \(\lambda\) é \(5\), e a derivada dá \(\frac{5}{\lambda}\)."}]},
+        {"question": r"Dados \(2\), \(9\) e \(4\) de uma Uniforme discreta \(1, \dots, N\). Qual é o MLE de \(N\)?",
          "ref": [("borda", "Sem derivada")],
          "options": [
-             {"text": "N̂ = 9", "correct": True, "feedback": "Isso: L(N) = (1/N)³ só para N ≥ 9, e diminui com N."},
-             {"text": "N̂ = 5", "correct": False, "feedback": "Com N = 5, o 9 seria impossível: L(5) = 0."},
-             {"text": "N̂ = 15", "correct": False, "feedback": "L(15) = (1/15)³ é positiva, mas menor que L(9) = (1/9)³."}]},
+             {"text": r"\(\hat N = 9\)", "correct": True, "feedback": r"Isso: \(L(N) = \left(\frac{1}{N}\right)^3\) só para \(N \ge 9\), e diminui com \(N\)."},
+             {"text": r"\(\hat N = 5\)", "correct": False, "feedback": r"Com \(N = 5\), o \(9\) seria impossível: \(L(5) = 0\)."},
+             {"text": r"\(\hat N = 15\)", "correct": False, "feedback": r"\(L(15) = \left(\frac{1}{15}\right)^3\) é positiva, mas menor que \(L(9) = \left(\frac{1}{9}\right)^3\)."}]},
     ],
 }
 

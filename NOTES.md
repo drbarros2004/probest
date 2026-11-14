@@ -2,7 +2,7 @@
 
 ## Preferências do usuário
 - Ensinar em português.
-- Citar sempre o MIT (Mxx, com seção). Listas e provas são a prática.
+- Citar sempre o MIT (MITxx, com seção; nas lições é sempre MIT13, nunca M13). Listas e provas são a prática.
 - R1 mostra o que já foi visto na P1, mas não é fonte de ensino e não prova domínio. Revisar o pré-requisito sempre que uma lição depender dele.
 - Sem comunidades/wisdom.
 - Global (CLAUDE.md): explicar em camadas (o que faz + exemplo numérico, depois a versão ingênua, depois os atalhos), dizendo quando algo é atalho e não outra formulação.
@@ -27,6 +27,7 @@
 - Links entre lições usam a URL do artifact (links relativos quebram no artifact).
 - O `title` de cada lição começa com o número ("0004 · ..."), para a ordem aparecer no artifact. Toda lição nova entra também na tabela do README.md.
 - Repositório: github.com/drbarros2004/probest (privado). Os HTML gerados entram no repo.
+- As lições levam a caneta da explain-diff-html-ink (build.py injeta o ink.js). Publicar com capabilities {"db": {}}; num republish, omitir capabilities.
 
 - L03 Q2 (calculado): MAP = 7/12 ≈ 0.583 (posterior ∝ θ⁷(1−θ)⁵ = Beta(8,6), constante 10296); Q2.3 P(maioria ≥ 6 de 10) = 8203/14858 ≈ 0.552. Q3: MAP 1/4 h após 10 min; 3/4 h após 30 min.
 - Decisão (usuário): 0003 = M13 + Q2.1 + MAP da Q2.2. A Q2.3 vai para a 0005 (M15). A Q3 vai com o M14 (0004); a Q4 (Normal-Normal) vai com o M15 (0005).
