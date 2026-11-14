@@ -1,0 +1,45 @@
+# probest
+
+Estudo para a P2 de COE241 (Estatística e Modelos Probabilísticos), com lições interativas em HTML geradas com o Claude Code.
+
+## Materiais
+
+Os PDFs (MIT 18.05, listas, gabaritos e provas antigas) estão na pasta do Google Drive:
+https://drive.google.com/drive/folders/1epRBrXuGYCBsixNzqd4vQqDMDyAh2PFo
+
+O [RESOURCES.md](RESOURCES.md) liga cada arquivo da pasta ao tópico e à lista em que ele é usado.
+
+## Como o workspace funciona
+
+O workspace segue a skill `/mattpocock-skills:teach`, que define estes arquivos:
+
+- [MISSION.md](MISSION.md): o objetivo (passar na P2), como é o sucesso e o que fica fora.
+- [RESOURCES.md](RESOURCES.md): as fontes, com o MIT 18.05 como fonte primária.
+- [NOTES.md](NOTES.md): preferências, decisões, contas já feitas e o ponto em que a última sessão parou.
+- [GLOSSARY.md](GLOSSARY.md): os termos.
+- [learning-records/](learning-records/): diagnósticos do que eu já sei e do que travou.
+
+## Lições
+
+Os artifacts levam o número da lição no título, na ordem de leitura do MIT (não na ordem em que foram feitos).
+
+| # | Lição | Fonte | Artifact |
+|---|---|---|---|
+| 0000 | Máxima verossimilhança (MLE) | M10, LMLE 6–10 | [abrir](https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks) |
+| 0001 | Tabela de atualização bayesiana | M11, L03 Q1.1 | [abrir](https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa) |
+| 0002 | Probabilidade preditiva | M12, L03 Q1.2–1.3 | [abrir](https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z) |
+| 0003 | Prior contínua e MAP | M13, L03 Q2.1–2.2 | [abrir](https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT) |
+
+Os artifacts são privados. O HTML de cada lição também está em [lessons/](lessons/) e abre direto no navegador.
+
+## Build
+
+O visual vem do `render.py` da skill **explain-diff-html** (KaTeX, tema claro/escuro, quiz), que está no meu repositório [agent-kit](https://github.com/drbarros2004/agent-kit/tree/main/skills/explain-diff-html). [assets/build.py](assets/build.py) carrega o renderer de `~/.claude/skills/explain-diff-html/render.py` e acrescenta o que é das lições: respostas numéricas ([assets/check.js](assets/check.js)), tabela de Bayes, gráficos de pdf e textos em português.
+
+Para gerar uma lição:
+
+```bash
+python lessons/src/0001-tabela-de-atualizacao-bayesiana.py
+```
+
+O fonte fica em `lessons/src/NNNN-*.py` e a saída em `lessons/NNNN-*.html`. A ficha de referência fica em `reference/src/` e gera `reference/`. O renderer embaralha as opções do quiz a cada build.

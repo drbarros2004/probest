@@ -1,0 +1,45 @@
+# Notes
+
+## Preferências do usuário
+- Ensinar em português.
+- Citar sempre o MIT (Mxx, com seção). Listas e provas são a prática.
+- R1 mostra o que já foi visto na P1, mas não é fonte de ensino e não prova domínio. Revisar o pré-requisito sempre que uma lição depender dele.
+- Sem comunidades/wisdom.
+- Global (CLAUDE.md): explicar em camadas (o que faz + exemplo numérico, depois a versão ingênua, depois os atalhos), dizendo quando algo é atalho e não outra formulação.
+
+- Visual: o usuário achou feio o HTML feito à mão. Toda lição e ficha usa o renderer do explain-diff-html via `assets/build.py`. O fonte fica em `lessons/src/*.py` e `reference/src/*.py`. Build: `python lessons/src/<arquivo>.py`.
+- Componentes de `build.py`: `flow()` (diagrama de caixas), `prior_post()` (barras prior × posterior), `mc()` (múltipla escolha no meio da lição), `.check-group` com `<input data-answer>` (resposta numérica, via check.js) e `quiz` no spec (quiz final, com opções embaralhadas).
+
+- As lições bastam sozinhas para o que a P2 cobra. O MIT vira aprofundamento opcional, e cada lição termina com o quadro "o que ficou de fora do Mxx".
+- Trechos importantes do MIT entram **literais** com `quote()`, e não parafraseados. Exemplos são repetidos por inteiro. Só cito texto que veio limpo da extração do PDF; omissões aparecem como […].
+- Nenhum termo sem definição na primeira vez que aparece (prior, likelihood, MLE, normalizar, pmf...). Depois de um exemplo, ligar os números aos conceitos.
+- Diagrama de caixinhas (flow) não serve para fórmula: use a fórmula anotada (\underbrace/\overbrace). O `flow()` foi removido.
+
+## Trabalho
+- L03G: as soluções são imagens no PDF. As respostas das lições foram calculadas com frações exatas (Python). Pedir ao usuário que confira no PDF.
+- L03 Q1.1 (calculado): posterior = 0, 0.2435, 0.6847, 0.0609, 0.0110 (dados de 4/6/8/12/20 lados). Q1.2 P(5) = 0.1318; Q1.3 P(15) = 0.000548.
+
+## Artifacts publicados
+- 0000 MLE (M10, LMLE 6–10): https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks
+- 0001 tabela bayesiana: https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa
+- 0002 probabilidade preditiva: https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z
+- 0003 prior contínua e MAP: https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT
+- Links entre lições usam a URL do artifact (links relativos quebram no artifact).
+- O `title` de cada lição começa com o número ("0004 · ..."), para a ordem aparecer no artifact. Toda lição nova entra também na tabela do README.md.
+- Repositório: github.com/drbarros2004/probest (privado). Os HTML gerados entram no repo.
+
+- L03 Q2 (calculado): MAP = 7/12 ≈ 0.583 (posterior ∝ θ⁷(1−θ)⁵ = Beta(8,6), constante 10296); Q2.3 P(maioria ≥ 6 de 10) = 8203/14858 ≈ 0.552. Q3: MAP 1/4 h após 10 min; 3/4 h após 30 min.
+- Decisão (usuário): 0003 = M13 + Q2.1 + MAP da Q2.2. A Q2.3 vai para a 0005 (M15). A Q3 vai com o M14 (0004); a Q4 (Normal-Normal) vai com o M15 (0005).
+- O M13/M15 extraídos do PDF têm os símbolos corrompidos ("ð"); a prosa é citada literalmente e as fórmulas são reescritas (aviso no rodapé da lição).
+- "MAP" não aparece no M11/M13/M15; a 0003 o define a partir do M11 §3.1 item 4.
+
+## Próxima sessão
+- Pausa em 2026-11-08 depois da 0003 (revisada várias vezes com o usuário: fábrica sem a ponte de faixas, "tira", H/T, fórmula limpa antes da anotada, contas em lista, c automático na prática).
+- O usuário pensa em fazer a LMLE (M10) antes de seguir a L03. Recomendação dada: começar com um diagnóstico (tentar sem ajuda a Binomial e a Exponencial da LMLE) e cobrir na lição só o que travar. Ele já tem: likelihood como função de θ, MLE = pico, derivar o log (é o atalho do MAP da 0003). Falta: likelihood i.i.d. (produto → soma no log), pmf/pdf da Exponencial e da Geométrica (P1), máximo na borda sem derivada (Uniforme 1..N, turma). Decidido (2026-11-08): o usuário termina de ler a 0003 e vai para a LMLE; a L03 fica para depois, abrindo com recordação da 0003.
+- Desvio consciente da ordem do MISSION (que manda terminar a L03 primeiro). A estrutura não muda: cada lição continua presa a um Mxx. Decidido (2026-11-08): a numeração segue a ordem de leitura do MIT, não a ordem em que as lições são feitas. 0000 = M10 (LMLE), autossuficiente, sem contar com 0001 a 0003; abre com diagnóstico, cita a 0003 só numa nota final de ligação; liga-se à 0001 (próxima) e a seção do MAP da 0003 ganha um link para ela. 0004 = M14 (L03 Q3). 0005 = M15 (L03 Q2.3 Beta-Binomial e Q4 Normal-Normal). As menções a "lição 0005" dentro da 0003 (Q2.3, regra da Beta) já estão certas.
+- A 0003 ganhou o quadro "O que é Beta(a, b)" (M15 §3 e §3.1 citados), a pedido do usuário, que não se sentia preparado para a Q2 sem saber o que é Beta. A Q2.2 agora fecha na 0003: posterior Beta(8,6), c = 10296, MAP 7/12. A 0005 abre com recordação desse quadro e ensina a regra de atualização (conjugação) e a Q2.3.
+- (Já usado na 0003, quadro da Beta) mostrar que as pdfs da 0003 já eram Betas sem o nome. Plana = Beta(1,1); 2θ = Beta(2,1); 3θ² = Beta(3,1); 12θ²(1−θ) = Beta(3,2); 20θ³(1−θ) = Beta(4,2); L03 Q2 cθ⁷(1−θ)⁵ = Beta(8,6), c = 10296. Cada cara soma 1 em a, cada coroa soma 1 em b. O usuário perguntou "o que é Beta(2,2)?" e gostou dessa tabela.
+- 0004: M14 (likelihood contínua) → L03 Q3. Abrir com recordação da 0003. Ligar a 0003 à 0004.
+- 0005: M15 (Beta, normalização §3.1, Beta-Binomial e Normal-Normal conjugadas) → L03 Q2.3 e Q4. Revisar a Normal da P1 antes. Abrir com recordação do quadro da Beta da 0003.
+- 0000 publicada em 2026-11-08 (diagnóstico da 6 e da 8 no topo, com tabela "travei em… → leia"). Ligada à 0001 (anterior) e à seção do MAP da 0003. LMLE e LMLEG são PDFs de imagem: baixar com download_file_content e renderizar com pymupdf. Respostas (LMLEG): 6a 62/100, 6b k/n, 7 max(yᵢ), 8 1/x̄, 9 x̄, 10 n = 7 (LMLEG usa 1/C(n,3), sem reposição). Pendente: o resultado do diagnóstico do usuário, para registrar num learning-record.
+- Lição de odds (M12, nota Odds) fica para quando chegar a L04 (PSet 7).
