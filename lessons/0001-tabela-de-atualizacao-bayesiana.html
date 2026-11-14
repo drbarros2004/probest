@@ -745,7 +745,7 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
   // Thickness multipliers for every tool, highlighter included.
   const SIZES = [{ m: 0.6, label: 'Fino' }, { m: 1, label: 'Médio' }, { m: 2, label: 'Grosso' }];
   const HOLD_MS = 500, HOLD_PX = 4, MIN_LINE_PX = 20; // hold-to-straighten
-  let on = true, tool = 0, size = 1, erasing = false, visible = true;
+  let on = false, tool = 0, size = 1, erasing = false, visible = true;
   let strokes = [];            // [{id, pts:[x,y,...], c, w, o}]
   let mine = [];               // ids this page drew, for undo
   let store = null;            // {add, remove} backend
@@ -911,15 +911,15 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
 :root{${vars('light')}}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${vars('dark')}}}
 :root[data-theme="dark"]{${vars('dark')}}
-.ink-bar{position:fixed;right:12px;bottom:12px;z-index:100;display:flex;gap:4px;align-items:center;padding:6px;border-radius:999px;
+.ink-bar{position:fixed;right:12px;bottom:12px;z-index:100;display:flex;gap:2px;align-items:center;padding:3px;border-radius:999px;
  background:var(--surface,#fff);border:1px solid var(--border,#ccc);box-shadow:0 4px 16px rgba(0,0,0,.15);font:14px system-ui,sans-serif}
-.ink-bar button{all:unset;cursor:pointer;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--fg,#222);font-size:18px}
+.ink-bar button{all:unset;cursor:pointer;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:var(--fg,#222);font-size:15px}
 .ink-bar button[aria-pressed=true]{background:var(--border,#ddd)}
 .ink-bar button:focus-visible{outline:2px solid var(--accent,#36f)}
 .ink-bar button.armed{background:#d1242f;color:#fff}
-.ink-bar .sw{width:18px;height:18px;border-radius:50%}
+.ink-bar .sw{width:14px;height:14px;border-radius:50%}
 .ink-bar.off>:not(.ink-main){display:none}
-.ink-msg{position:fixed;right:12px;bottom:64px;z-index:100;padding:6px 10px;border-radius:8px;background:var(--fg,#222);color:var(--bg,#fff);font:13px system-ui;display:none}
+.ink-msg{position:fixed;right:12px;bottom:52px;z-index:100;padding:6px 10px;border-radius:8px;background:var(--fg,#222);color:var(--bg,#fff);font:13px system-ui;display:none}
 @media print{.ink-bar,.ink-msg{display:none}}`;
   document.head.appendChild(css);
   const bar = document.createElement('div');
@@ -934,7 +934,7 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
   };
   const main = btn('✎', 'Caneta ligada/desligada', () => { on = !on; sync(); }, 'ink-main');
   const swatches = COLORS.map((t, i) => btn(`<span class="sw" style="background:var(--ink${i});opacity:${t.o < 1 ? 0.7 : 1}"></span>`, t.label, () => { tool = i; erasing = false; sync(); }));
-  const sizeBtns = SIZES.map((s, i) => btn(`<span class="sw" style="width:${4 + i * 5}px;height:${4 + i * 5}px;background:var(--fg,#222)"></span>`, s.label, () => { size = i; erasing = false; sync(); }));
+  const sizeBtns = SIZES.map((s, i) => btn(`<span class="sw" style="width:${4 + i * 4}px;height:${4 + i * 4}px;background:var(--fg,#222)"></span>`, s.label, () => { size = i; erasing = false; sync(); }));
   const eraser = btn('⌫', 'Borracha (ou segure o botão da S Pen)', () => { erasing = !erasing; sync(); });
   btn('↶', 'Desfazer', () => {
     const id = mine.pop(); if (!id) return;
