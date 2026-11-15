@@ -12,7 +12,9 @@
 
 - As lições bastam sozinhas para o que a P2 cobra. O MIT vira aprofundamento opcional, e cada lição termina com o quadro "o que ficou de fora do Mxx".
 - Trechos importantes do MIT entram **literais** com `quote()`, e não parafraseados. Exemplos são repetidos por inteiro. Só cito texto que veio limpo da extração do PDF; omissões aparecem como […].
+- Um assunto novo entra pela pergunta que ele responde: o que o método de até agora não resolve, ou a pergunta natural seguinte. Nunca por "a lista pede" ou "o MIT faz/insiste/tira". Ordem: o problema, depois a citação do MIT como fonte, e só então a ligação com a lista. Lista e prova aparecem no diagnóstico, nos exercícios e na seção "O objetivo". O usuário achou péssimo de ler (2026-11-15, 0000 "Dois problemas da LMLE têm parâmetro inteiro…").
 - Nenhum termo sem definição na primeira vez que aparece (prior, likelihood, MLE, normalizar, pmf...). Depois de um exemplo, ligar os números aos conceitos.
+- `bayes_square()` (build.py): o quadrado do 3Blue1Brown (largura = prior, altura pintada = likelihood, área = numerador, total pintado = P(D), barra = posterior). `display=` desenha fora de escala, e um assert garante que as proporções entre as áreas pintadas não mudam; `post=False` tira a barra; `wlabel`/`total` renomeiam os rótulos. Decidido (2026-11-15): entra na 0001 (doença no aquecimento, moedas na tabela) e na 0002 (prior e posterior predictive como área pintada). Na 0003 não entra (é a "ponte de faixas" que o usuário mandou tirar).
 - Diagrama de caixinhas (flow) não serve para fórmula: use a fórmula anotada (\underbrace/\overbrace). O `flow()` foi removido.
 
 ## Trabalho

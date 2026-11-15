@@ -57,7 +57,7 @@ Qual a chance de o próximo lançamento dar <em>coroa</em>?</b> """ + num("0.332
 
 # ---------------------------------------------------------------- revisão da P1
 revisao = r"""
-<p>A lição usa duas ferramentas da P1. Vale revê-las agora, porque a L03 Q2 depende das duas.</p>
+<p>A lição usa duas ferramentas da P1. Vale revê-las agora, porque tudo aqui é montado com as duas: a likelihood é uma Binomial, e a prior é uma pdf.</p>
 
 <h3 id="binomial">Binomial: contar caras em \(n\) lançamentos</h3>
 <p>Uma moeda dá cara com probabilidade \(\theta\). Jogamos 3 vezes. Qual a chance de sair exatamente 2 caras, com \(\theta = 0.6\)?</p>
@@ -338,7 +338,8 @@ $$\underbrace{\sum_H P(D_2 \mid H)\,P(H \mid D_1)}_{\text{hipóteses discretas (
 
 # ---------------------------------------------------------------- MAP
 map_ = r"""
-<p>A L03 Q2 pede o <b>máximo a posteriori</b> (MAP): o valor de \(\theta\) com a maior densidade posterior, ou seja, o ponto de máximo da
+<p>A posterior é uma curva inteira. Muitas vezes se quer um número só: o valor de \(\theta\) mais plausível depois dos dados. O candidato
+natural é o <b>máximo a posteriori</b> (MAP): o valor de \(\theta\) com a maior densidade posterior, ou seja, o ponto de máximo da
 curva posterior. Nesta lição, "pico" quer dizer esse ponto de máximo.
 No gráfico de HHT acima, o MAP é 0.75. O MIT13 não usa esse nome, mas o MIT11 já tinha registrado a ideia que o torna barato:</p>
 """ + quote(r"""<p>4. If all we care about is finding the most likely hypothesis, the Bayes numerator works as well as the normalized posterior.</p>""",
@@ -379,7 +380,7 @@ sem a prior. Para HHT, a likelihood \(\theta^2(1-\theta)\) tem pico em \(2/3\), 
 
 # ---------------------------------------------------------------- beta
 beta = r"""
-<p>A L03 Q2, na próxima seção, dá a prior só pelo nome: Beta(2,2). Esse nome vem do MIT15, que define a família inteira:</p>
+<p>Escrever uma prior em \([0, 1]\) por extenso dá trabalho. Em geral ela vem só com um nome e dois números, como Beta(2,2). O nome é de uma família de pdfs que o MIT15 define assim:</p>
 """ + quote(r"""<p>The beta distribution \(\text{Beta}(a, b)\) is a two-parameter distribution with range \([0, 1]\) and pdf</p>
 $$f(\theta) = \frac{(a+b-1)!}{(a-1)!\,(b-1)!}\,\theta^{a-1}(1-\theta)^{b-1}$$
 <p>[…] In 18.05 we will stick to integers \(a\) and \(b\) […]</p>""", src("§3", "MIT15")) + r"""
@@ -400,7 +401,7 @@ $$f(\theta) = \underbrace{\frac{(a+b-1)!}{(a-1)!\,(b-1)!}}_{\text{constante: faz
 <tr><td>\(12\theta^2(1-\theta)\), cara e depois coroa</td><td class="num">3</td><td class="num">2</td><td>\(\frac{4!}{2!\,1!} = 12\)</td></tr>
 <tr><td>\(20\theta^3(1-\theta)\), depois de HHT</td><td class="num">4</td><td class="num">2</td><td>\(\frac{5!}{3!\,1!} = 20\)</td></tr>
 </table>
-<p>O MIT15 tira daí uma regra que dispensa a integral do total:</p>
+<p>Daí sai uma regra que dispensa a integral do total:</p>
 """ + quote(r"""<p>If a pdf \(f(\theta)\) with range \([0, 1]\) has the form \(c\,\theta^{a-1}(1-\theta)^{b-1}\) then \(f(\theta)\) is a \(\text{Beta}(a, b)\)
 distribution and the normalizing constant must be</p>
 $$c = \frac{(a+b-1)!}{(a-1)!\,(b-1)!}.$$

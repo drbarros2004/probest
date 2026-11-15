@@ -32,6 +32,7 @@ Tudo vem da pasta do Google Drive: https://drive.google.com/drive/folders/1epRBr
 - [C1 - Roteiro por lista](https://docs.google.com/document/d/1TEbbXo-W38uhD2lZEM3bVrvpN0b4TvocoC7OszlU6k4/edit).
 
 ### Extras (só quando o MIT não cobrir, ou se pedido)
+- [3Blue1Brown, Bayes theorem, the geometry of changing beliefs](https://www.youtube.com/watch?v=HZGCoVF3YvM) (15 min, legendas em PT): o quadrado de áreas. Pedido pelo usuário; usado nas lições 0001 e 0002.
 - S1 (slides), B2 (Tsun 7.5, MAP), B1 (livro Pishro-Nik).
 
 ## Wisdom (Communities)
