@@ -257,18 +257,18 @@ SPEC = {
         {"id": "fontes", "heading": "O que ficou de fora do MIT12", "html": fontes},
     ],
     "quiz": [
-        {"question": "Há quatro probabilidades com nomes parecidos: prior, posterior, prior predictive e posterior predictive. Prior e posterior são probabilidades de hipóteses (por exemplo, qual dado foi escolhido). As duas predictive são probabilidades de quê?",
+        {"question": "Há quatro probabilidades com nomes parecidos: prior, posterior, prior predictive e posterior predictive. Quais duas são probabilidades de resultados (o que vai sair no próximo lançamento), e não de hipóteses?",
          "ref": [("quatro", "As quatro probabilidades")],
          "options": [
-             {"text": "De resultados de um experimento", "correct": True, "feedback": "Isso: preveem dados futuros, como a face do próximo lançamento."},
-             {"text": "De hipóteses depois de novos dados", "correct": False, "feedback": "Essas são as posteriores. As predictive são sobre resultados."},
-             {"text": "Da likelihood de cada hipótese", "correct": False, "feedback": "A likelihood entra na conta da predictive, mas a predictive é sobre o resultado."}]},
+             {"text": "As duas predictive", "correct": True, "feedback": "Isso: preveem dados futuros, como a face do próximo lançamento. Prior e posterior são sobre qual hipótese é a verdadeira."},
+             {"text": "Prior e prior predictive", "correct": False, "feedback": "A prior é sobre hipóteses (qual dado foi escolhido). Só as duas predictive são sobre resultados."},
+             {"text": "As duas posteriores", "correct": False, "feedback": "A posterior é sobre hipóteses (qual dado foi escolhido). Só as duas predictive são sobre resultados."}]},
         {"question": r"Gaveta com \(2\) moedas A (cara com \(0.5\)), \(1\) B (\(0.6\)) e \(1\) C (\(0.9\)), uma escolhida ao acaso. Antes de jogar, a chance de cara é \(0.625\) (a prior predictive). Se você montar a tabela de Bayes para o dado 'saiu cara', onde aparece esse \(0.625\)?",
          "ref": [("prior-predictive", "Antes de jogar: prior predictive")],
          "options": [
-             {"text": r"No total da coluna dos numeradores, \(P(D)\)", "correct": True, "feedback": r"Isso. \(\sum_H P(D \mid H)\,P(H)\) é ao mesmo tempo o \(P(D)\) da tabela e a prior predictive de \(D\)."},
-             {"text": "Na posterior da moeda mais provável", "correct": False, "feedback": r"A posterior de A é \(0.4\). O \(0.625\) é o total dos numeradores."},
-             {"text": "Na likelihood média sem pesos", "correct": False, "feedback": r"A média simples seria \(\frac{0.5 + 0.6 + 0.9}{3} \approx 0.667\). A predictive pondera pela prior."}]},
+             {"text": "No total da coluna dos numeradores", "correct": True, "feedback": r"Isso. \(\sum_H P(D \mid H)\,P(H)\) é ao mesmo tempo o \(P(D)\) da tabela e a prior predictive de \(D\)."},
+             {"text": "No numerador da moeda mais comum", "correct": False, "feedback": r"O numerador de A é \(0.5 \cdot 0.5 = 0.25\). O \(0.625\) é o total dos numeradores, \(P(D)\)."},
+             {"text": "Na média simples das likelihoods", "correct": False, "feedback": r"A média simples seria \(\frac{0.5 + 0.6 + 0.9}{3} \approx 0.667\). A predictive pondera pela prior."}]},
         {"question": r"A posterior predictive é \(P(D_2 \mid D_1) = \sum_H P(D_2 \mid H)\,P(H \mid D_1)\), em que \(D_1\) é o resultado já observado e \(D_2\) o próximo. Por que o termo é \(P(D_2 \mid H)\), e não \(P(D_2 \mid H, D_1)\)?",
          "ref": [("posterior-predictive", "Depois de jogar: posterior predictive")],
          "options": [
@@ -284,8 +284,8 @@ SPEC = {
         {"question": r"Gaveta com \(2\) moedas A (cara com \(0.5\)), \(1\) B (\(0.6\)) e \(1\) C (\(0.9\)), uma escolhida ao acaso. Antes de jogar, a chance de cara é \(0.625\). Depois de sair uma cara, a chance de cara no próximo lançamento sobe para \(0.668\). Por que a previsão sobe, se a chance de cara de cada moeda é fixa?",
          "ref": [("posterior-predictive", "Depois de jogar: posterior predictive")],
          "options": [
-             {"text": "O peso passou para moedas que dão mais cara", "correct": True, "feedback": r"Isso: a posterior de C subiu de \(0.25\) para \(0.36\), e C dá cara \(90\%\) das vezes."},
-             {"text": "A moeda ficou mais propensa a dar cara", "correct": False, "feedback": "Cada moeda tem chance fixa. O que mudou foi a crença sobre qual moeda é."},
+             {"text": "A crença passou para a moeda C", "correct": True, "feedback": r"Isso: a posterior de C subiu de \(0.25\) para \(0.36\), e C dá cara \(90\%\) das vezes."},
+             {"text": "A moeda ficou mais propensa a cara", "correct": False, "feedback": "Cada moeda tem chance fixa. O que mudou foi a crença sobre qual moeda é."},
              {"text": "Caras seguidas são mais prováveis", "correct": False, "feedback": "Dada a moeda, os lançamentos são independentes. O efeito vem da incerteza sobre a moeda."}]},
     ],
 }

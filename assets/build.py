@@ -9,6 +9,7 @@ Usage from a lesson source:  from build import build, prior_post, mc, quote
 """
 import html
 import importlib.util
+import random
 import re
 import sys
 from pathlib import Path
@@ -259,9 +260,36 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
 """
 
 
+def _visible(s):
+    """Rough visible text of an option: LaTeX delimiters, commands and braces dropped."""
+    s = re.sub(r"\\[()\[\],;! ]|[{}$]", "", s)
+    return re.sub(r"\\[a-zA-Z]+", "x", s).strip()  # a command such as \theta shows as one symbol
+
+
+def check_options(question, options):
+    """Refuse options that give the answer away by length (the "long correct answer" flaw):
+    the correct one may not be clearly the longest, and all must be about the same size.
+    options: [(text, correct)]."""
+    lens = [len(_visible(t)) for t, _ in options]
+    right = [n for n, (_, c) in zip(lens, options) if c]
+    wrong = [n for n, (_, c) in zip(lens, options) if not c]
+    assert len(right) == 1, f"one correct option expected: {question[:60]}"
+    problems = []
+    if right[0] > max(wrong) + 3:
+        problems.append("a certa é a mais longa")
+    if max(lens) - min(lens) > max(6, .25 * max(lens)):
+        problems.append("tamanhos muito diferentes")
+    if problems:
+        raise SystemExit(f"Quiz com pista ({', '.join(problems)}): {lens}\n  {question[:90]}")
+
+
 def mc(question, options):
     """Inline multiple-choice question (same widget as the renderer's end quiz).
-    options: [(text, correct, feedback)]. Order is kept as given."""
+    options: [(text, correct, feedback)], checked by check_options and shuffled with a seed taken
+    from the question, so the order is not a cue and a rebuild keeps it."""
+    check_options(question, [(t, c) for t, c, _ in options])
+    options = list(options)
+    random.Random(question).shuffle(options)
     btns = "".join(
         f'<button class="quiz-opt" data-correct="{"true" if c else "false"}" data-feedback="{html.escape(f)}">{t}</button>'
         for t, c, f in options)
@@ -272,6 +300,8 @@ def build(spec, out):
     """Render spec (render.py format) to the path out, with the extras injected."""
     spec.setdefault("math", True)
     spec.setdefault("_base", str(Path(out).parent))
+    for q in spec.get("quiz", []):
+        check_options(q["question"], [(o["text"], o["correct"]) for o in q["options"]])
     # The renderer shows quiz feedback as plain text, so math in it is rendered here, ahead of
     # time; QUIZ_MATH_JS then shows that feedback as HTML.
     for q in spec.get("quiz", []):

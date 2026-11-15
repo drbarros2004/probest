@@ -49,7 +49,7 @@ recordacao = f"""
 """ + mc(
     "A prior predictive e a posterior predictive de um mesmo resultado (por exemplo, \"sair cara\") são as duas uma média das likelihoods P(cara | H). O que muda de uma para a outra?",
     [("Os pesos: prior numa, posterior na outra", True, "Isso. A likelihood de cada hipótese é a mesma; muda a crença em cada hipótese."),
-     ("As likelihoods, que passam a depender do primeiro resultado", False, "Sabendo a hipótese, o primeiro resultado não muda a chance do próximo (independência condicional). O que muda são os pesos."),
+     ("As likelihoods: dependem do 1º resultado", False, "Sabendo a hipótese, o primeiro resultado não muda a chance do próximo (independência condicional). O que muda são os pesos."),
      ("Nada: as duas dão sempre o mesmo número", False, "Na gaveta de moedas da lição 0002 a prior predictive de cara era 0.625 e a posterior predictive, 0.668.")]) + check(
     r"""<p><b>Moedas A, B e C dão cara com probabilidade 0.5, 0.6 e 0.9. Depois de uma cara, as posteriores são 0.4, 0.24 e 0.36.
 Qual a chance de o próximo lançamento dar <em>coroa</em>?</b> """ + num("0.332", "0.002") + "</p>",
@@ -159,9 +159,9 @@ mais frequência que coroa, e, antes de jogar, a chance de a moeda escolhida ser
 <p>A likelihood não muda de natureza: o dado continua discreto (cara ou coroa), então ela continua uma probabilidade comum, só que escrita
 como fórmula, \(p(\text{cara} \mid \theta) = \theta\).</p>
 """ + mc("O MIT13 pergunta: X ~ Bernoulli(θ) (um lançamento: 1 com probabilidade θ, 0 senão), com θ desconhecido. Qual frase é verdadeira?",
-         [("O dado é discreto e o espaço de hipóteses é contínuo", True, "Isso: x vale 0 ou 1, e θ pode ser qualquer número em [0, 1]. É o caso do MIT13 inteiro."),
-          ("O dado é contínuo e as hipóteses são discretas", False, "É o contrário: x só vale 0 ou 1; θ é que varia num contínuo."),
-          ("Os dois são contínuos", False, "θ é contínuo, mas x só vale 0 ou 1. Dado contínuo é o assunto do MIT14.")])
+         [("Dado discreto, hipóteses num contínuo", True, "Isso: x vale 0 ou 1, e θ pode ser qualquer número em [0, 1]. É o caso do MIT13 inteiro."),
+          ("Dado contínuo, hipóteses discretas", False, "É o contrário: x só vale 0 ou 1; θ é que varia num contínuo."),
+          ("Dado contínuo, hipóteses num contínuo", False, "θ é contínuo, mas x só vale 0 ou 1. Dado contínuo é o assunto do MIT14.")])
 
 # ---------------------------------------------------------------- probabilidade total
 total = r"""
@@ -374,9 +374,9 @@ sem a prior. Para HHT, a likelihood \(\theta^2(1-\theta)\) tem pico em \(2/3\), 
 \(2\theta\) favorece valores altos. O MLE tem lição própria: a <a href="https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks">lição 0000</a>.</p>
 """ + mc(
     "Com prior plana f(θ) = 1, o numerador é a própria likelihood. O que isso diz sobre o MAP?",
-    [("Ele coincide com o MLE, o valor de θ que maximiza a likelihood", True, "Isso: posterior ∝ likelihood × 1. Uma prior não plana desloca o MAP para onde ela põe mais peso."),
-     ("Ele é sempre 0.5, o centro da prior plana", False, "A prior plana não tem pico; quem decide o pico é a likelihood."),
-     ("Ele não existe, porque a prior plana não favorece nenhum valor", False, "A posterior tem pico mesmo assim: o da likelihood.")])
+    [("Coincide com o MLE, o pico da likelihood", True, "Isso: posterior ∝ likelihood × 1. Uma prior não plana desloca o MAP para onde ela põe mais peso."),
+     ("Fica em 0.5, o centro da prior plana", False, "A prior plana não tem pico; quem decide o pico é a likelihood."),
+     ("Não existe: a prior plana não tem pico", False, "A posterior tem pico mesmo assim: o da likelihood.")])
 
 # ---------------------------------------------------------------- beta
 beta = r"""
@@ -560,36 +560,36 @@ SPEC = {
         {"id": "fontes", "heading": "O que ficou de fora do MIT13", "html": fontes},
     ],
     "quiz": [
-        {"question": r"A pdf de \(\theta\) vale \(f(0.9) = 1.8\). O que isso diz?",
+        {"question": r"A pdf de \(\theta\) vale cerca de \(1.8\) em toda a faixa de \(0.89\) a \(0.91\). Quanto vale \(P(0.89 < \theta < 0.91)\)?",
          "ref": [("pdf", "Densidade (pdf) de uma variável contínua")],
          "options": [
-             {"text": r"Que a probabilidade de \(\theta\) cair numa tira estreita de largura \(d\theta\) perto de \(0.9\) é cerca de \(1.8\,d\theta\)", "correct": True, "feedback": r"Isso: só a área \(f(\theta)\,d\theta\) é probabilidade."},
-             {"text": r"Que \(P(\theta = 0.9) = 1.8\), o que é impossível, então a pdf está errada", "correct": False, "feedback": r"Uma densidade pode passar de \(1\); o que não pode passar de \(1\) é a área total (que é exatamente \(1\))."},
-             {"text": r"Que \(P(\theta \le 0.9) = 1.8\)", "correct": False, "feedback": r"\(P(\theta \le 0.9)\) é a área de \(0\) a \(0.9\), uma integral, e é no máximo \(1\)."}]},
+             {"text": r"\(0.036\)", "correct": True, "feedback": r"Isso: probabilidade é área, \(f(\theta)\,d\theta = 1.8 \cdot 0.02\). A densidade pode passar de \(1\); a área não."},
+             {"text": r"\(1.8\)", "correct": False, "feedback": r"\(1.8\) é a densidade, não a probabilidade. Probabilidade é área: multiplique pela largura da faixa, \(0.02\)."},
+             {"text": r"\(0.018\)", "correct": False, "feedback": r"A largura da faixa é \(0.91 - 0.89 = 0.02\), não \(0.01\). A área é \(1.8 \cdot 0.02 = 0.036\)."}]},
         {"question": r"Moeda torta com prior \(f(\theta) = 2\theta\) em \([0, 1]\). Na tabela de Bayes contínua (uma linha só), a coluna 'total' do numerador é \(p(x) = \int p(x \mid \theta)\,f(\theta)\,d\theta\). No caso discreto, o que fazia esse papel?",
          "ref": [("total", "Probabilidade total vira integral"), ("tabela", "A tabela de Bayes com uma linha")],
          "options": [
-             {"text": r"A soma dos numeradores, \(P(D)\), que era também a prior predictive", "correct": True, "feedback": "Isso: a soma virou integral, e o papel é o mesmo, normalizar e prever."},
+             {"text": "A soma dos numeradores", "correct": True, "feedback": "Isso: P(D), que era também a prior predictive. A soma virou integral, e o papel é o mesmo, normalizar e prever."},
              {"text": "A soma das likelihoods", "correct": False, "feedback": r"A coluna das likelihoods não se soma (NO SUM). Somam-se os numeradores, likelihood \(\times\) prior."},
-             {"text": "A maior posterior da tabela", "correct": False, "feedback": "Essa seria a hipótese mais provável (a ideia do MAP), não o total."}]},
+             {"text": "A soma das posteriores", "correct": False, "feedback": r"As posteriores somam \(1\) depois de normalizar. O que normaliza é a soma dos numeradores, \(P(D)\)."}]},
         {"question": r"Prior \(2\theta\), dados HHT (cara, cara, coroa). O numerador é \(2\theta^3(1-\theta)\,d\theta\) e a posterior é \(20\,\theta^3(1-\theta)\). De onde vem o \(20\)?",
          "ref": [("tabela", "A tabela de Bayes com uma linha")],
          "options": [
-             {"text": r"De dividir o numerador por \(p(x) = \int_0^1 2\theta^3(1-\theta)\,d\theta = \frac{1}{10}\)", "correct": True, "feedback": r"Isso: normalizar para que a área da posterior seja \(1\)."},
-             {"text": r"Do coeficiente binomial de \(2\) caras em \(3\)", "correct": False, "feedback": r"Os dados são uma sequência específica (HHT), sem coeficiente. E esse coeficiente seria \(3\)."},
-             {"text": r"Da prior, que vale \(2\) em \(\theta = 1\), vezes \(10\) lançamentos", "correct": False, "feedback": r"Foram \(3\) lançamentos. O \(20\) é \(2 \div \frac{1}{10}\)."}]},
+             {"text": r"De \(2\) dividido por \(p(x) = \frac{1}{10}\)", "correct": True, "feedback": r"Isso: \(p(x) = \int_0^1 2\theta^3(1-\theta)\,d\theta = \frac{1}{10}\), e dividir por ela faz a área da posterior dar \(1\)."},
+             {"text": r"De \(2\) vezes o binomial \(\binom{5}{2} = 10\)", "correct": False, "feedback": r"A conta dá \(20\), mas por acaso. Os dados são uma sequência (HHT), sem coeficiente binomial; o \(20\) vem de normalizar: \(2 \div \frac{1}{10}\)."},
+             {"text": r"Da área do numerador, que vale \(20\)", "correct": False, "feedback": r"A área do numerador é \(p(x) = \frac{1}{10}\), e não \(20\). Dividir por ela é que multiplica por \(10\): \(2 \cdot 10 = 20\)."}]},
         {"question": r"Para achar o MAP de uma posterior contínua, por que não é preciso calcular a integral \(p(x)\)?",
          "ref": [("map", "MAP: o pico da posterior")],
          "options": [
-             {"text": r"Porque \(p(x)\) é uma constante: dividir por ela muda a altura da curva, não o lugar do pico", "correct": True, "feedback": r"Isso: maximize o numerador likelihood \(\times\) prior."},
-             {"text": r"Porque \(p(x)\) sempre vale \(1\)", "correct": False, "feedback": r"Quem integra \(1\) é a prior. \(p(x)\) foi \(\frac{1}{10}\) no exemplo de HHT."},
-             {"text": "Porque o MAP é sempre a fração observada de sucessos", "correct": False, "feedback": "Essa é o MLE. O MAP só coincide com ela quando a prior é plana."}]},
+             {"text": r"\(p(x)\) não depende de \(\theta\): só muda a escala", "correct": True, "feedback": r"Isso: dividir por uma constante muda a altura da curva, não o lugar do pico. Maximize o numerador likelihood \(\times\) prior."},
+             {"text": r"\(p(x)\) vale \(1\), pois a posterior integra \(1\)", "correct": False, "feedback": r"Quem integra \(1\) é a posterior, justamente por dividir por \(p(x)\). No exemplo de HHT, \(p(x) = \frac{1}{10}\)."},
+             {"text": r"\(p(x)\) é desprezível perto do numerador", "correct": False, "feedback": r"Não é desprezível (no exemplo de HHT, \(\frac{1}{10}\)). Ela é dispensável por outro motivo: não depende de \(\theta\)."}]},
         {"question": r"L03 Q2: prior \(6\theta(1-\theta)\) (pico em \(0.5\)), \(6\) de \(10\) pessoas preferem comédia. A posterior é proporcional a \(\theta^7(1-\theta)^5\) e o MAP é \(\frac{7}{12} \approx 0.583\). Por que ele fica entre \(0.5\) e \(0.6\)?",
          "ref": [("objetivo", "O objetivo: L03 Q2.1 e Q2.2")],
          "options": [
-             {"text": r"A prior puxa para \(0.5\) e a likelihood para \(0.6\); a posterior é o produto das duas", "correct": True, "feedback": "Isso. Com mais dados, o MAP se aproximaria da fração observada."},
-             {"text": "Porque o MAP é a média entre o pico da prior e a fração observada", "correct": False, "feedback": r"A média seria \(0.55\). O MAP \(\frac{7}{12}\) pesa mais os dados (\(10\) pessoas) que a prior (equivale a \(2\))."},
-             {"text": r"Por erro de arredondamento: o certo seria \(0.6\)", "correct": False, "feedback": r"\(0.6\) é o MLE, o pico da likelihood sozinha. A prior desloca o pico."}]},
+             {"text": r"A prior puxa a \(0.5\); os dados, a \(0.6\)", "correct": True, "feedback": "Isso: a posterior é o produto das duas, e o pico do produto fica entre os dois picos. Com mais dados, o MAP se aproximaria da fração observada."},
+             {"text": r"É a média simples de \(0.5\) e \(0.6\)", "correct": False, "feedback": r"A média seria \(0.55\). O MAP \(\frac{7}{12}\) pesa mais os dados (\(10\) pessoas) que a prior (equivale a \(2\))."},
+             {"text": "A posterior soma prior e likelihood", "correct": False, "feedback": r"A posterior é o produto, não a soma: \(\theta(1-\theta) \cdot \theta^6(1-\theta)^4 = \theta^7(1-\theta)^5\)."}]},
     ],
 }
 
