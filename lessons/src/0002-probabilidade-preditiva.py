@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
-from build import build, mc, quote, bayes_table  # noqa: E402
+from build import build, mc, quote, bayes_table, bayes_square  # noqa: E402
 
 MIT11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
 MIT12 = "https://drive.google.com/file/d/1Kpa0gQzUJ63kKbU5iG_hxIhTMJn6rWCV/view"
@@ -42,8 +42,8 @@ recordacao = rf"""
 """
 
 ideia = r"""
-<p>A lição 0001 respondeu "qual hipótese é a verdadeira?". A L03 Q1.2 faz outra pergunta: "qual vai ser o <em>próximo</em> resultado?".
-O MIT12 abre exatamente com essa mudança:</p>
+<p>A lição 0001 respondeu "qual hipótese é a verdadeira?". Muitas vezes o que interessa é outra pergunta: "qual vai ser o <em>próximo</em> resultado?".
+O MIT12 abre com essa mudança:</p>
 """ + quote(r"""<p>In the previous class we looked at updating the probability of hypotheses based on data. We can also use the data to update
 the probability of each possible outcome of a future experiment.</p>
 <p>[…] Probabilistic prediction simply means assigning a probability to each possible outcomes of an experiment.</p>""",
@@ -90,6 +90,12 @@ A conta é a mesma; muda o papel do número:</p>
 <li><b>dados:</b> \(P(D) = 0.085\) era a chance de tirar 5 antes de saber qual dado foi escolhido;</li>
 <li><b>doença:</b> \(P(+) = 0.02485\) era a chance de uma pessoa qualquer testar positivo.</li>
 </ul>
+<p>No <a href="https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa">quadrado da lição 0001</a> isso fica visível: a prior predictive é a <b>área pintada total</b>.
+Antes, ela era o denominador. Agora ela é a resposta.</p>
+""" + bayes_square(
+    [("A", .5, .5), ("B", .25, .6), ("C", .25, .9)],
+    "Gaveta de 4 moedas do MIT12. Largura = prior, altura pintada = chance de cara. A área pintada é a chance de cara antes de jogar.",
+    post=False, total="P(cara)") + r"""
 """ + uso("esta é a fórmula 1.") + r"""
 
 <h3 id="posterior-predictive">Depois de jogar: posterior predictive</h3>
@@ -118,6 +124,14 @@ $$P(D_2 \mid D_1) = \sum_{H} P(D_2 \mid H)\,P(H \mid D_1)$$
 $$\underbrace{P(D_2 \mid D_1)}_{\text{posterior predictive}} \;=\; \sum_{H} \underbrace{P(D_2 \mid H)}_{\text{likelihood do próximo resultado}} \cdot \underbrace{P(H \mid D_1)}_{\text{posterior}}$$
 <p>Trocando a posterior pela prior, sai a prior predictive. A conta é sempre a mesma: uma média das likelihoods das hipóteses, com
 pesos dados pela crença atual em cada uma.</p>
+<p>No quadrado: depois da primeira cara, só a área pintada sobrevive, e ela é esticada até virar um quadrado novo. As fatias dela
+(0.4, 0.24 e 0.36) são as larguras novas. Para prever o segundo lançamento, pinte de novo com as mesmas alturas, que são a chance de cara
+de cada moeda. A área pintada do quadrado novo é a posterior predictive:</p>
+""" + bayes_square(
+    [("A", .4, .5), ("B", .24, .6), ("C", .36, .9)],
+    "O mesmo desenho depois de uma cara: C ficou mais larga e B mais estreita. As alturas não mudaram, e a área pintada subiu de 0.625 para 0.668.",
+    post=False, wlabel="posterior", total="P(cara | cara)") + r"""
+<p>A previsão sobe sem que nenhuma moeda mude: a faixa mais alta (C) ficou mais larga.</p>
 """ + uso("esta é a fórmula 3; os pesos vêm da fórmula 2.") + r"""
 <p>Falta justificar um detalhe. A rigor, o termo seria \(P(D_2 \mid H, D_1)\), a chance do próximo resultado sabendo a hipótese <em>e</em>
 o primeiro resultado. Ele vira \(P(D_2 \mid H)\) porque, sabendo qual é a moeda, o primeiro lançamento não diz nada sobre o segundo.

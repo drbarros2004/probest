@@ -148,8 +148,8 @@ maximum.</p>""", src("§3, Note 3")) + r"""
 
 # ---------------------------------------------------------------- revisão P1
 revisao = r"""
-<p>Ferramentas da P1 que a LMLE usa. Leia só o que estiver enferrujado.</p>
-<h3 id="dists">As quatro distribuições da LMLE</h3>
+<p>Ferramentas da P1 que aparecem nas contas de MLE. Leia só o que estiver enferrujado.</p>
+<h3 id="dists">As quatro distribuições desta lição</h3>
 <p>Uma <b>pmf</b> (função de massa) dá \(P(X = x)\) para uma variável discreta. Uma <b>pdf</b> (densidade) \(f(x)\) faz o mesmo papel para
 uma variável contínua, mas \(f(x)\) não é probabilidade: probabilidade é área sob a curva.</p>
 <table>
@@ -163,7 +163,7 @@ uma variável contínua, mas \(f(x)\) não é probabilidade: probabilidade é á
 \(k\)") é o número de jeitos de escolher \(k\) itens entre \(n\): \(\binom{n}{k} = \frac{n!}{k!\,(n-k)!}\), por exemplo \(\binom{3}{2} = 3\).</p>
 
 <h3 id="logs">Regras de log e de derivada</h3>
-<p>\(\ln\) é o log natural (base \(e\)). As regras que a LMLE usa:</p>
+<p>\(\ln\) é o log natural (base \(e\)). As regras usadas nas derivadas abaixo:</p>
 <ul>
 <li>\(\ln(ab) = \ln a + \ln b\): produto vira soma;</li>
 <li>\(\ln(a^k) = k\ln a\): o expoente desce, por exemplo \(\ln\theta^{55} = 55\ln\theta\);</li>
@@ -215,8 +215,10 @@ o máximo. Por isso o MIT10 (§4) os descarta e usa só a pdf.</p>
 
 # ---------------------------------------------------------------- sem derivada
 borda = r"""
-<p>Dois problemas da LMLE (a Uniforme 1..\(N\) e a turma) têm parâmetro inteiro: não dá para derivar em \(N\). E a likelihood é zero em
-parte dos valores, então nem há um pico liso. O MIT10 faz um caso parecido, com a Uniforme contínua \(U(a, b)\):</p>
+<p>Até aqui o caminho foi sempre o mesmo: escrever a likelihood, derivar e igualar a zero. Isso só funciona se o parâmetro puder variar
+continuamente. E se ele for inteiro, como o \(N\) de um sorteio entre 1 e \(N\)? Não existe derivada em \(N\). Além disso, a likelihood vale
+zero para todo \(N\) menor que o maior dado, então nem há um pico liso para procurar. O MIT10 resolve um caso parecido, com a Uniforme
+contínua \(U(a, b)\):</p>
 """ + quote(r"""<p><b>Example 5. Uniform distributions</b> Suppose our data \(x_1, \dots, x_n\) are independently drawn from a uniform distribution
 \(U(a, b)\). Find the MLE for \(a\) and \(b\).</p>
 <p><b>Solution:</b> This example is different from the previous ones in that we won’t use calculus to find the MLE. The density for

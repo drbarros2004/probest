@@ -117,6 +117,60 @@ def prior_post(rows, caption="", top=None):
     return f'<figure><div class="diagram">{svg}</div>{cap}</figure>'
 
 
+def _g(x, d=3):
+    """Number without trailing zeros (0.4, 0.005, 0.199)."""
+    return f"{round(x, d):g}"
+
+
+def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", total="P(D)"):
+    """3Blue1Brown's Bayes square: column width = prior, shaded height = likelihood,
+    shaded area = Bayes numerator, total shaded = P(D), posterior = share of the shaded area.
+    cols: [(label, prior, likelihood)], drawn to scale by default.
+    display: [(width, height)] to draw out of scale (e.g. a 0.5% prior). The shaded areas must keep
+    the true proportions, so the posterior bar stays honest; this is asserted.
+    post: draw the posterior bar (the shaded pieces laid side by side).
+    wlabel / total: names for the widths and the shaded total (e.g. a posterior predictive)."""
+    num = [p * lk for _, p, lk in cols]
+    tot = sum(num)
+    shape = display or [(p, lk) for _, p, lk in cols]
+    dtot = sum(w * h for w, h in shape)
+    assert all(abs(w * h / dtot - n / tot) < .005 for (w, h), n in zip(shape, num)), "display distorts the posterior"
+    S, X0, Y0 = 250, 66, 24
+    ops = [.85, .5, .3, .7, .4]
+    W, H = (560 if post else S + 2 * X0), Y0 + S + 74
+    parts, x = [], X0
+    for i, ((label, p, lk), (w, h)) in enumerate(zip(cols, shape)):
+        cw, ch = w * S, h * S
+        top = Y0 + S - ch
+        inside = h > .85 and cw > 40
+        ly = top + 16 if inside else (Y0 - 6 if top - 6 < Y0 + 12 else top - 6)
+        parts.append(f'<g><title>{label}: prior {_g(p, 3)} × likelihood {_g(lk, 3)} = {_g(p*lk, 4)}</title>'
+                     f'<rect x="{x:.1f}" y="{Y0}" width="{cw:.1f}" height="{S}" fill="none" stroke="var(--border)" stroke-width="1.5"/>'
+                     f'<rect x="{x:.1f}" y="{top:.1f}" width="{cw:.1f}" height="{ch:.1f}" fill="var(--accent)" fill-opacity="{ops[i % 5]}"/>'
+                     f'<text x="{x+cw/2:.1f}" y="{ly:.1f}" text-anchor="middle" font-size="13" '
+                     f'fill="var(--fg)">{_g(lk, 3)}</text>'
+                     f'<text x="{x+cw/2:.1f}" y="{Y0+S+18}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)">{label}</text>'
+                     f'<text x="{x+cw/2:.1f}" y="{Y0+S+35}" text-anchor="middle" font-size="13" fill="var(--muted)">{_g(p, 3)}</text></g>')
+        x += cw
+    parts.append(f'<text x="{X0+S/2}" y="{Y0+S+60}" text-anchor="middle" font-size="14" fill="var(--fg)">'
+                 f'área pintada = {total} = {_g(tot, 5)}</text>'
+                 f'<text x="{X0-8}" y="{Y0+S+35}" text-anchor="end" font-size="12" fill="var(--muted)">{wlabel}</text>')
+    if post:
+        BX, BW, BY = 356, 190, 120
+        parts.append(f'<text x="{BX}" y="{BY-14}" font-size="14" fill="var(--muted)">só a área pintada, juntada:</text>')
+        bx = BX
+        for i, ((label, *_), n) in enumerate(zip(cols, num)):
+            sw = BW * n / tot
+            parts.append(f'<rect x="{bx:.1f}" y="{BY}" width="{sw:.1f}" height="34" fill="var(--accent)" fill-opacity="{ops[i % 5]}" stroke="var(--surface)"/>'
+                         f'<text x="{bx+sw/2:.1f}" y="{BY+52}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)">{label}</text>'
+                         f'<text x="{bx+sw/2:.1f}" y="{BY+69}" text-anchor="middle" font-size="13" fill="var(--fg)">{_g(n/tot, 3)}</text>')
+            bx += sw
+        parts.append(f'<text x="{BX}" y="{BY+94}" font-size="14" fill="var(--muted)">fatia de cada um = posterior</text>')
+    svg = f'<svg viewBox="0 0 {W} {H}" width="100%" role="img" style="max-width:{W}px;display:block;margin:auto;font-family:Georgia,serif">{"".join(parts)}</svg>'
+    cap = f"<figcaption>{caption}</figcaption>" if caption else ""
+    return f'<figure><div class="diagram">{svg}</div>{cap}</figure>'
+
+
 def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=200, xlabel="θ"):
     """Density curves on [0, 1] (prior/posterior pdfs of a parameter).
     curves: [(label, fn, color, dashed, label_x[, label_y])]; the label sits on the curve at label_x,

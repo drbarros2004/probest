@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
-from build import build, prior_post, mc, quote, bayes_table  # noqa: E402
+from build import build, prior_post, mc, quote, bayes_table, bayes_square  # noqa: E402
 
 MIT11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
@@ -48,6 +48,20 @@ $$P(H \mid D) = \frac{P(D \mid H)\,P(H)}{P(D)}, \qquad P(D) = \sum_{H} P(D \mid 
 \(P(\text{doente} \mid +) = 0.00495 / 0.02485 \approx 0.199\). O teste multiplicou a chance por 40,
 mas a doença continua improvável, porque ela é rara: só 0.5% da população tem. Esse 0.5% é a <b>taxa-base</b>.
 Quem chuta 99% caiu na <b>falácia da taxa-base</b>: ignorou a raridade e confundiu \(P(+ \mid \text{doente})\) com \(P(\text{doente} \mid +)\).</p>
+<p id="quadrado">Dá para <em>ver</em> esses 20%. Desenhe a população como um quadrado de área 1:</p>
+<ul>
+<li>cada hipótese é uma faixa vertical, e a <b>largura</b> da faixa é a chance dela antes do teste (0.005 e 0.995);</li>
+<li>dentro de cada faixa, a parte <b>pintada</b> são as pessoas que testam positivo, e a altura dela é a chance de positivo naquela faixa (0.99 e 0.02);</li>
+<li>o teste deu positivo, então a pessoa está em algum lugar da área pintada. Todo o resto do quadrado foi descartado.</li>
+</ul>
+""" + bayes_square(
+    [("doente", .005, .99), ("sadio", .995, .02)],
+    "Fora de escala: com 0.5% de largura, a faixa dos doentes não apareceria. As duas áreas pintadas foram ampliadas 20 vezes, "
+    "por igual, então a proporção entre elas (e a barra da direita) é a verdadeira.",
+    display=[(.1, .99), (.9, .442)]) + r"""
+<p>A faixa dos doentes é estreita e quase toda pintada. A dos sadios é enorme e só tem uma parte fina pintada embaixo. Mesmo assim, a área pintada dos sadios
+é maior: 0.995 · 0.02 = 0.0199 contra 0.005 · 0.99 = 0.00495. Dos positivos, só 1 em cada 5 está doente. O 99% é a altura
+da faixa dos doentes, mas a pergunta é sobre a <em>fatia</em> da área pintada.</p>
 
 <h3 id="termos">Dando nome às partes</h3>
 <p>Você acabou de fazer uma inferência bayesiana completa sem usar o vocabulário dela. Cada número da conta tem um nome, e o resto
@@ -83,7 +97,7 @@ Passar da prior para a posterior tem nome próprio:</p>
 """
 
 tabela = r"""
-<p>O MIT11 introduz a tabela com um exemplo pequeno. Este é o enunciado completo:</p>
+<p>A tabela fica clara num exemplo pequeno, com três hipóteses. O enunciado do MIT11, completo:</p>
 """ + quote(r"""<p>There are three types of coins which have different probabilities of landing heads when tossed.</p>
 <ul><li>Type \(A\) coins are fair, with probability 0.5 of heads</li>
 <li>Type \(B\) coins are bent and have probability 0.6 of heads</li>
@@ -99,7 +113,7 @@ a coin at random. Without showing you the coin I flip it once and get heads. Wha
 <li><b>likelihood</b>: 0.5, 0.6 e 0.9, a chance de cara para cada tipo;</li>
 <li><b>posterior</b>: é o que a questão pede.</li>
 </ul>
-<p>O MIT11 insiste num detalhe da likelihood: nela o dado fica fixo e o que varia é a hipótese.</p>
+<p>Um detalhe da likelihood: nela o dado fica fixo e o que varia é a hipótese.</p>
 """ + quote(r"""<p><b>Likelihood:</b> […] The likelihood function is \(P(D \mid \mathcal{H})\), i.e., the probability of the data assuming that
 the hypothesis is true. Most often we will consider the data as fixed and let the hypothesis vary.</p>""", src("§3")) + r"""
 <p>Para cada hipótese basta aplicar a regra de Bayes acima, e o denominador é o mesmo em todas. A tabela é essa conta organizada em
@@ -127,8 +141,26 @@ hipóteses, ponderada pela prior: \(0.4 \cdot 0.5 + 0.4 \cdot 0.6 + 0.2 \cdot 0.
 <b>a hipótese ganha probabilidade se a likelihood dela é maior que a média, e perde se é menor</b>.
 Assim, A (0.5) perde bastante (× 0.81), B (0.6) perde um pouco (× 0.97) e C (0.9) ganha (× 1.45).
 Mesmo multiplicada por 1.45, a prior baixa de C não alcança B, e B continua na frente.</p>
-""" + r"""
-<p>O MIT11 tira quatro lições da tabela. Antes, dois termos que elas usam. <b>Normalizar</b> é dividir cada numerador
+<p>A mesma tabela, no <a href="#quadrado">quadrado do aquecimento</a>, agora com três faixas e desenhado em escala:</p>
+""" + bayes_square(
+    [("A", .4, .5), ("B", .4, .6), ("C", .2, .9)],
+    "Moedas do MIT11 depois de uma cara. A faixa de C é a mais pintada, mas tem metade da largura de B.") + r"""
+<p>Cada coluna da tabela é uma peça do desenho:</p>
+<table>
+<tr><th>na tabela</th><th>no quadrado</th></tr>
+<tr><td>prior</td><td>largura da faixa (as larguras somam 1)</td></tr>
+<tr><td>likelihood</td><td>altura da parte pintada (cada faixa tem a sua, por isso não somam 1)</td></tr>
+<tr><td>numerador</td><td>área pintada da faixa, largura × altura</td></tr>
+<tr><td>\(P(D)\)</td><td>área pintada total</td></tr>
+<tr><td>posterior</td><td>fatia da área pintada que cai na faixa</td></tr>
+</table>
+<p><b>Normalizar</b> (o termo vem logo abaixo) é jogar fora a parte não pintada e esticar a pintada até virar área 1.
+O desenho serve para a intuição. Na prova, você faz a tabela.</p>
+""" + mc("No quadrado, onde aparece a regra 'ganha quem tem likelihood acima da média'?",
+         [("Faixa pintada acima da altura média", True, "Isso. A altura média ponderada pelas larguras é P(D) = 0.62; C (0.9) passa dela e ganha fatia."),
+          ("Faixa mais larga que a média delas", False, "A largura é a prior. Ela pesa, mas quem decide se a faixa ganha ou perde é a altura."),
+          ("Faixa com mais área não pintada", False, "A área não pintada é descartada: é o caso em que o dado teria sido coroa.")]) + r"""
+<p>A tabela ensina mais quatro coisas, que o MIT11 lista abaixo. Antes, dois termos que elas usam. <b>Normalizar</b> é dividir cada numerador
 por \(P(D)\), para que a coluna some 1 e vire probabilidade. O <b>MLE</b> (<em>maximum likelihood estimate</em>, estimativa de máxima
 verossimilhança) é escolher a hipótese de maior likelihood, sem olhar a prior.</p>
 """ + quote(r"""<ol start="4">
@@ -140,8 +172,8 @@ posterior, a large prior may be deflated by a small likelihood, and a small prio
 but you can see in this example that it is not the entire story, since type \(B\) has the greatest posterior probability.</li></ol>
 <p>[…] This leads to the most elegant form of Bayes’ theorem in the context of Bayesian updating:</p>
 <p style="text-align:center"><b>posterior \(\propto\) likelihood \(\times\) prior</b></p>""", src("§3.1, itens 4 a 7")) + r"""
-<p>Falta uma consequência que o MIT11 não lista, mas que a L03 vai usar: se o dado é impossível sob uma hipótese,
-\(P(D \mid H) = 0\) e o numerador dela zera, qualquer que seja a prior. Tirar 5 num dado de 4 lados, por exemplo.</p>
+<p>Mais uma consequência da tabela: se o dado é impossível sob uma hipótese, \(P(D \mid H) = 0\) e o numerador dela zera, qualquer que
+seja a prior. Tirar 5 num dado de 4 lados, por exemplo: essa hipótese sai do jogo de uma vez.</p>
 """ + mc("Na tabela, a coluna likelihood guarda:",
          [("\\(P(\\text{dado} \\mid \\text{hipótese})\\)", True, "Isso: a probabilidade do dado supondo que a hipótese é verdadeira."),
           ("\\(P(\\text{hipótese} \\mid \\text{dado})\\)", False, "Essa é a posterior, a última coluna."),
@@ -302,6 +334,8 @@ fontes = rf"""
 <tr><td>Problema 1 e extra 1 (doença, um dado de 4 contra 999 de 6)</td><td>repetem o aquecimento e a prática</td><td>não; servem de treino extra</td></tr>
 <tr><td>Problema 4, <em>probabilistic prediction</em>: com os cinco dados, a probabilidade de tirar 5 e, depois de um 5, a de o próximo lançamento dar 4</td><td>é o começo da posterior predictive</td><td>sim, na lição 0002 (MIT12)</td></tr>
 </table>
+<p>O <a href="#quadrado">quadrado</a> vem do vídeo <a href="https://www.youtube.com/watch?v=HZGCoVF3YvM">Bayes theorem, the geometry of changing beliefs</a>
+(3Blue1Brown, 15 min, com legendas em português). Ele é complementar: a conta continua sendo a do MIT11, e o vídeo ajuda a ver por que ela funciona.</p>
 <div class="callout">Se ficou alguma dúvida, pergunte ao seu professor, que é o agente nesta conversa. Vale um passo da conta, um termo ou "por que isso funciona?".</div>
 <p style="font-size:.8rem;color:var(--muted)">As citações em inglês são de J. Orloff e J. Bloom, <i>18.05 Introduction to Probability and Statistics</i>,
 Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos aparecem como […].</p>
