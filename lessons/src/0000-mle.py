@@ -65,12 +65,12 @@ heads.</p>
             "Isso: 62/100. A seção do MLE mostra por que a resposta é a fração de caras.") + mc(
     "6 (b): qual é o MLE de θ com k caras em n lançamentos?",
     [("θ̂ = k / n", True, "Isso: a fração de caras, como na (a)."),
-     ("θ̂ = n / k", False, "Isso passa de 1 (n ≥ k), e θ é uma probabilidade. Veja a seção do MLE."),
-     ("θ̂ = 1 / k", False, "Com mais caras, θ̂ deveria subir, não descer. Veja a seção do MLE.")]) + mc(
+     ("θ̂ = k / (n−k)", False, "Isso é caras por coroa (a chance, ou odds), e pode passar de 1. θ é uma probabilidade. Veja a seção do MLE."),
+     ("θ̂ = n / k", False, "Fração invertida: isso passa de 1 (n ≥ k), e θ é uma probabilidade. Veja a seção do MLE.")]) + mc(
     "8: qual é o MLE de λ para n dados de uma exp(λ)? (x̄ é a média dos dados.)",
     [("λ̂ = 1 / x̄", True, "Isso: n / (x₁ + … + xₙ), o inverso da média dos dados."),
-     ("λ̂ = n / x̄", False, "Sobra um n: a derivada do log dá n/λ = n·x̄. Veja a seção de dados independentes."),
-     ("λ̂ = x̄ / n", False, "Veja a seção de dados independentes: a derivada do log dá n/λ − (x₁ + … + xₙ) = 0.")]) + r"""
+     ("λ̂ = x̄", False, "x̄ estima a vida média, que na exp(λ) é 1/λ. λ é a taxa, o inverso dela. Veja a seção de dados independentes."),
+     ("λ̂ = n / x̄", False, "Sobra um n: a derivada do log dá n/λ = n·x̄. Veja a seção de dados independentes.")]) + r"""
 <p>Onde você travou decide o que ler:</p>
 <table>
 <tr><th>travei em…</th><th>leia</th></tr>
@@ -266,7 +266,7 @@ with range 1 to \(N\). Find the maximum likelihood estimate of \(N\).</p>""", lm
     "Qual é o MLE de N?",
     [("N̂ = max(yᵢ)", True, "Isso: é a fórmula 4. L(N) = (1/N)ⁿ se N ≥ max(yᵢ), e 0 se N < max(yᵢ)."),
      ("N̂ = min(yᵢ)", False, "Com N = min(yᵢ), os dados maiores seriam impossíveis: L = 0."),
-     ("N̂ = Σ yᵢ", False, "Com N = Σyᵢ a likelihood é positiva, mas (1/N)ⁿ é maior com um N menor.")]) + r"""
+     ("N̂ = 2ȳ − 1", False, "Esse estimador vem da média (a média de 1..N é (N+1)/2), não da likelihood. E pode ficar abaixo do maior dado, onde L = 0.")]) + r"""
 <details><summary>Solução escrita</summary>
 <ul>
 <li><b>likelihood</b> (fórmula 1): cada \(y_i\) tem chance \(1/N\) se \(y_i \le N\), então \(L(N) = (1/N)^n\) se \(N \ge \max(y_i)\), e \(L(N) = 0\) se \(N < \max(y_i)\);</li>
@@ -361,8 +361,8 @@ SPEC = {
         {"question": r"Por que se maximiza \(\ln L(\theta)\) em vez de \(L(\theta)\)?",
          "ref": [("mle", "O MLE"), ("logs", "Regras de log")],
          "options": [
-             {"text": r"\(\ln\) cresce, e produto vira soma", "correct": True, "feedback": "Isso: o máximo fica no mesmo lugar, e a derivada fica fácil."},
-             {"text": r"\(\ln\) muda o máximo para dentro", "correct": False, "feedback": r"Como \(\ln\) é crescente, o máximo não muda de lugar."},
+             {"text": r"\(\ln\) é crescente e troca produto por soma", "correct": True, "feedback": "Isso: o máximo fica no mesmo lugar, e a derivada fica fácil."},
+             {"text": r"\(\ln\) faz a likelihood somar \(1\) em \(\theta\)", "correct": False, "feedback": r"A likelihood não precisa somar \(1\), nem com log. Isso seria normalizar, e normalizar não muda o máximo."},
              {"text": r"\(\ln\) deixa a likelihood sempre positiva", "correct": False, "feedback": r"O log de um número entre \(0\) e \(1\) é negativo. O ganho é trocar produto por soma."}]},
         {"question": r"Cinco lâmpadas com vida \(\text{exp}(\lambda)\) duraram \(2\), \(3\), \(1\), \(3\) e \(4\) anos. Qual é o MLE de \(\lambda\)?",
          "ref": [("iid", "Dados independentes")],

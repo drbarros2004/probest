@@ -159,7 +159,7 @@ O desenho serve para a intuição. Na prova, você faz a tabela.</p>
 """ + mc("No quadrado, onde aparece a regra 'ganha quem tem likelihood acima da média'?",
          [("Faixa pintada acima da altura média", True, "Isso. A altura média ponderada pelas larguras é P(D) = 0.62; C (0.9) passa dela e ganha fatia."),
           ("Faixa mais larga que a média delas", False, "A largura é a prior. Ela pesa, mas quem decide se a faixa ganha ou perde é a altura."),
-          ("Faixa com mais área não pintada", False, "A área não pintada é descartada: é o caso em que o dado teria sido coroa.")]) + r"""
+          ("Faixa com a maior área pintada", False, "A maior área pintada dá a maior posterior, não o maior ganho. Ganhar é a fatia passar da largura (a prior), e isso depende só da altura.")]) + r"""
 <p>A tabela ensina mais quatro coisas, que o MIT11 lista abaixo. Antes, dois termos que elas usam. <b>Normalizar</b> é dividir cada numerador
 por \(P(D)\), para que a coluna some 1 e vire probabilidade. O <b>MLE</b> (<em>maximum likelihood estimate</em>, estimativa de máxima
 verossimilhança) é escolher a hipótese de maior likelihood, sem olhar a prior.</p>
@@ -355,36 +355,36 @@ SPEC = {
         {"id": "fontes", "heading": "O que ficou de fora do MIT11", "html": fontes},
     ],
     "quiz": [
-        {"question": r"Uma tabela de atualização bayesiana tem as colunas hipótese, prior, likelihood, numerador e posterior. Qual delas soma \(P(D)\)?",
+        {"question": r"Moedas com priores \(0.4\), \(0.4\) e \(0.2\) e chances de cara \(0.5\), \(0.6\) e \(0.9\). Saiu cara. Quanto vale \(P(D)\)?",
          "ref": [("tabela", "A tabela é a regra de Bayes, linha por linha")],
          "options": [
-             {"text": "A coluna dos numeradores", "correct": True, "feedback": r"Pela probabilidade total, \(P(D) = \sum_H P(D \mid H)\,P(H)\), que é exatamente a soma dos numeradores."},
-             {"text": "A coluna das likelihoods", "correct": False, "feedback": "A likelihood não tem soma com significado: o dado está fixo e a hipótese varia."},
-             {"text": "A coluna das posteriores", "correct": False, "feedback": r"As posteriores somam \(1\) por construção."}]},
+             {"text": r"\(0.62\)", "correct": True, "feedback": r"Soma dos numeradores: \(0.4 \cdot 0.5 + 0.4 \cdot 0.6 + 0.2 \cdot 0.9 = 0.62\), a likelihood média ponderada pela prior."},
+             {"text": r"\(2.00\)", "correct": False, "feedback": r"Essa é a soma das likelihoods, que não tem significado: o dado está fixo e a hipótese varia. Some os numeradores."},
+             {"text": r"\(0.67\)", "correct": False, "feedback": r"Essa é a média das likelihoods sem pesos. \(P(D)\) pondera cada uma pela prior: \(0.4 \cdot 0.5 + 0.4 \cdot 0.6 + 0.2 \cdot 0.9 = 0.62\)."}]},
         {"question": r"Há cinco dados (\(4\), \(6\), \(8\), \(12\) e \(20\) lados), e um foi escolhido ao acaso. O lançamento deu \(7\). O que acontece com a hipótese 'é o dado de \(6\) lados'?",
          "ref": [("pratica", "Prática: os cinco dados do MIT")],
          "options": [
              {"text": r"A posterior dela vira \(0\)", "correct": True, "feedback": r"A likelihood é \(0\), então o numerador é \(0\), qualquer que seja a prior."},
-             {"text": "A posterior dela cai à metade", "correct": False, "feedback": r"Não há meio-termo: \(P(7 \mid 6 \text{ lados}) = 0\) anula o numerador."},
-             {"text": "A posterior dela fica igual", "correct": False, "feedback": "Só ficaria igual se a likelihood fosse a mesma para todas as hipóteses."}]},
+             {"text": "A posterior cai, sem zerar", "correct": False, "feedback": r"Não há meio-termo: \(P(7 \mid 6 \text{ lados}) = 0\) anula o numerador, qualquer que seja a prior."},
+             {"text": "A posterior dela fica igual", "correct": False, "feedback": "Só ficaria igual se a likelihood dela fosse igual a P(D). Aqui ela é 0."}]},
         {"question": r"Gaveta com \(2\) moedas A (cara com \(0.5\)), \(2\) B (\(0.6\)) e \(1\) C (\(0.9\)); uma é escolhida ao acaso e dá cara. A posterior de B (\(0.387\)) fica acima da de C (\(0.290\)), embora C tenha a maior likelihood. Por quê?",
          "ref": [("tabela", "A tabela é a regra de Bayes, linha por linha")],
          "options": [
              {"text": "A prior de B é o dobro da de C", "correct": True, "feedback": r"Os numeradores são \(0.4 \cdot 0.6 = 0.24\) contra \(0.2 \cdot 0.9 = 0.18\). É o 'tug-of-war' do MIT11, e a prior venceu essa rodada."},
-             {"text": "A likelihood de B soma mais", "correct": False, "feedback": r"Likelihoods não se somam entre hipóteses, e a de C (\(0.9\)) é maior."},
-             {"text": "B foi a moeda mais jogada", "correct": False, "feedback": "Só houve um lançamento, de uma moeda só. O que pesa é a prior."}]},
+             {"text": "P(D) é menor na linha de B", "correct": False, "feedback": r"\(P(D)\) é um só para a tabela inteira (\(0.62\)): todas as linhas dividem pelo mesmo número."},
+             {"text": "0.6 fica mais perto de P(D)", "correct": False, "feedback": r"Ficar perto da média não faz ganhar: B até perde um pouco (\(\times 0.97\)). O que a põe na frente é a prior, \(0.4\) contra \(0.2\)."}]},
         {"question": r"Com dois lançamentos observados (por exemplo, \(9\) e depois \(5\)), há duas formas de atualizar: passo a passo, normalizando no meio, ou de uma vez, multiplicando as likelihoods. Elas dão:",
          "ref": [("repetidos", "Mais de um dado observado"), ("dois-lancamentos", "Dois lançamentos")],
          "options": [
-             {"text": "A mesma posterior final", "correct": True, "feedback": "Normalizar no meio só reescala, e a escala some no fim."},
+             {"text": "Exatamente a mesma posterior", "correct": True, "feedback": "Normalizar no meio só reescala, e a escala some no fim."},
              {"text": "Posteriores um pouco diferentes", "correct": False, "feedback": "São idênticas: normalizar no meio só reescala, e a escala some no fim."},
-             {"text": "Posteriores muito diferentes", "correct": False, "feedback": r"São idênticas. Na seção dos dois lançamentos, as duas formas dão \(0.735\) e \(0.265\)."}]},
+             {"text": "Posteriores bem diferentes", "correct": False, "feedback": r"São idênticas. Na seção dos dois lançamentos, as duas formas dão \(0.735\) e \(0.265\)."}]},
         {"question": r"Na L03 Q1, a caixa tem dados de \(4\), \(6\), \(8\), \(12\) e \(20\) lados na proporção \(1:2:10:2:1\). Por que a prior do dado de \(8\) lados é \(\frac{10}{16}\)?",
          "ref": [("objetivo", "O objetivo: L03 Q1.1")],
          "options": [
              {"text": r"Peso \(10\) dividido pela soma \(16\)", "correct": True, "feedback": r"A proporção \(1:2:10:2:1\) vira probabilidade quando dividida pelo total \(1+2+10+2+1 = 16\)."},
              {"text": r"Peso \(10\) dividido por \(5\) dados", "correct": False, "feedback": r"Dividir por \(5\) só serve para prior uniforme. Aqui os pesos são diferentes."},
-             {"text": r"Faces \(8\) dividido por \(16\)", "correct": False, "feedback": "O número de faces entra na likelihood, não na prior."}]},
+             {"text": r"Peso \(10\) dividido pelos outros \(6\)", "correct": False, "feedback": r"\(10:6\) é a chance (odds) contra os outros dados. A probabilidade divide pelo total, \(16\)."}]},
     ],
 }
 
