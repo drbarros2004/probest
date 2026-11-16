@@ -28,7 +28,7 @@ Os artifacts levam o número da lição no título, na ordem de leitura do MIT (
 | 0000 | Máxima verossimilhança (MLE) | MIT10, LMLE 6–10 | [abrir](https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks) |
 | 0001 | Tabela de atualização bayesiana | MIT11, L03 Q1.1 | [abrir](https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa) |
 | 0002 | Probabilidade preditiva | MIT12, L03 Q1.2–1.3 | [abrir](https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z) |
-| 0003 | Prior contínua e MAP | MIT13, L03 Q2.1–2.2 | [abrir](https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT) |
+| 0003 | Prior contínua e MAP | MIT13, L03 Q2 | [abrir](https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT) |
 
 Os artifacts são privados. O HTML de cada lição também está em [lessons/](lessons/) e abre direto no navegador.
 
