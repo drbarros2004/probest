@@ -107,7 +107,13 @@ pratica = r"""
     lik_header=r"likelihood \(\phi(7 \mid \theta)\)", total=r"\(\phi(7)\)") + r"""
 <p>O \(\phi(7) = 0.0625\) não é a chance de o ônibus atrasar exatamente 7 minutos (essa é 0). É a densidade do atraso em 7, antes de saber
 \(\theta\), e só serve para normalizar.</p>
-"""
+<p id="exponencial"><b>A regra não é "\(1/\theta\)".</b> A regra é "altura da pdf do dado"; \(1/\theta\) é só a altura da Uniforme. Com outra
+distribuição, a coluna muda e o resto da tabela fica igual. As lâmpadas da <a href="{LESSON0}">lição 0000</a> duram \(X\) anos, com \(X\)
+Exponencial(\(\lambda\)), pdf \(\lambda e^{-\lambda x}\). A taxa \(\lambda\) é 1 ou 2, com prior 1/2 para cada. Uma lâmpada durou 1 ano.</p>
+""".replace("{LESSON0}", LESSON0) + bayes_table(
+    [(r"\(\lambda = 1\)", "0.5", "0.3679", "0.5761"), (r"\(\lambda = 2\)", "0.5", "0.2707", "0.4239")],
+    ok="Isso: 1·e⁻¹ ≈ 0.368 e 2·e⁻² ≈ 0.271. Com λ = 1 a lâmpada dura 1 ano em média, então um ano de vida favorece λ = 1 (posterior ≈ 0.576).",
+    lik_header=r"likelihood \(\lambda e^{-\lambda \cdot 1}\)", total=r"\(\phi(1)\)")
 
 # ---------------------------------------------------------------- receita
 receita = r"""
@@ -115,7 +121,7 @@ receita = r"""
 <ol class="spaced">
 <li><b>Unidades.</b> Escreva o dado na mesma unidade de \(\theta\) (minutos ou horas, nunca misturados).</li>
 <li><b>Likelihood = altura da pdf do dado no ponto observado</b>, uma conta por hipótese. Uniforme em \([0, \theta]\): \(1/\theta\) se
-\(0 \le x \le \theta\), senão 0. Pode passar de 1.</li>
+\(0 \le x \le \theta\), senão 0. Exponencial(\(\lambda\)): \(\lambda e^{-\lambda x}\). Pode passar de 1.</li>
 <li><b>Numerador, soma e divisão</b> como na lição 0001. A soma é uma densidade e pode passar de 1; as posteriores somam 1.</li>
 <li><b>Mais de um dado:</b> multiplique as likelihoods (\(\phi(x_1 \mid \theta)\,\phi(x_2 \mid \theta)\)), ou use a posterior do primeiro como
 prior do segundo. Dá o mesmo.</li>
@@ -155,11 +161,11 @@ pelo MIT15.</p>
 
 # ---------------------------------------------------------------- fontes
 fontes = rf"""
-<p>O <a href="{MIT14}">MIT14</a> é curto. Esta lição usou o §4 (a troca da pmf pela pdf) e aplicou a troca à tabela discreta da lição 0001. O que ficou de fora:</p>
+<p>O <a href="{MIT14}">MIT14</a> é curto. Esta lição usou do §4 a troca da pmf pela pdf e o papel do \(dx\), e aplicou a troca à tabela discreta da lição 0001. O que ficou de fora:</p>
 <table>
 <tr><th>trecho do MIT14</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
 <tr><td>§3: revisão dos casos discreto-discreto e contínuo-discreto</td><td>são as lições 0001 e 0003</td><td>não</td></tr>
-<tr><td>§4: a tabela com \(\theta\) e \(x\) contínuos (prior \(f(\theta)\,d\theta\), total \(\int \phi(x \mid \theta) f(\theta)\,d\theta\))</td><td>a L03 só tem esse caso na Q4, que é Normal-Normal</td><td>sim, na lição 0005</td></tr>
+<tr><td>§4: a tabela com \(\theta\) <em>também</em> contínuo (prior \(f(\theta)\,d\theta\), total \(\int \phi(x \mid \theta) f(\theta)\,d\theta\))</td><td>a L03 só tem esse caso na Q4, que é Normal-Normal</td><td>sim, na lição 0005</td></tr>
 <tr><td>§5: digressão sobre notação (\(\phi\) × \(f\); muitos livros usam \(f\) para tudo)</td><td>só notação</td><td>não</td></tr>
 <tr><td>§6, exemplos 3 e 4: prior N(2, 1), dado N(\(\theta\), 1), completar quadrado; posterior N(7/2, 1/2)</td><td>é a L03 Q4</td><td>sim, na lição 0005, junto com a regra Normal-Normal do MIT15</td></tr>
 </table>
@@ -201,7 +207,7 @@ SPEC = {
              {"text": r"A mais larga, \(\theta = 3/4\)", "correct": False, "feedback": r"Cobrir mais valores espalha a área \(1\) e baixa a pdf: \(4/3\) contra \(4\)."},
              {"text": r"Nenhuma: ficam empatadas", "correct": False, "feedback": r"Ficariam empatadas se as likelihoods fossem iguais, mas \(1/\theta\) dá \(4\) e \(4/3\)."}]},
         {"question": r"Na tabela da Q3 com \(x = 1/6\), a soma dos numeradores deu \(8/3\), maior que \(1\). O que isso indica?",
-         "ref": [("pratica", "Prática: o atraso do ônibus")],
+         "ref": [("exemplo", "Um exemplo com números")],
          "options": [
              {"text": "Nada: a soma é uma densidade", "correct": True, "feedback": r"Isso: é a densidade de \(x\) antes de saber \(\theta\). Ela serve só para dividir, e as posteriores somam \(1\)."},
              {"text": "Erro: a soma devia dar 1", "correct": False, "feedback": r"Quem soma \(1\) é a coluna das posteriores. A dos numeradores soma \(P(D)\), aqui uma densidade."},
