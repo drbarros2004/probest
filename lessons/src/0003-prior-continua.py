@@ -19,6 +19,7 @@ L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
 L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
 LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
 LESSON2 = "https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z"
+LESSON4 = "https://claude.ai/artifact/ULdAerrDUzGftPBWRQvrbC"
 
 ACC, MUT, FG = "var(--accent)", "var(--muted)", "var(--fg)"
 
@@ -599,7 +600,7 @@ conventions</em> e os problemas em sala. Esta lição cobre a nota principal at�
 <tr><td>Problema 2(c): esboçar a prior e as duas posteriores do <em>Bent coin 1</em></td><td>o gráfico de HHT mostra o mesmo efeito</td><td>não</td></tr>
 <tr><td>Problema "Bent coin 2": prior plana, 15 caras em 27; escrever a posterior com a constante \(T\) sem calculá-la</td><td>é a mesma ideia da Q2.2, que esta lição faz</td><td>como treino: posterior \(\binom{{27}}{{15}}\theta^{{15}}(1-\theta)^{{12}}/T\), MAP 15/27</td></tr>
 </table>
-<p>Fica para as próximas lições: a L03 Q3, em que o dado é contínuo (lição 0004, MIT14); a regra de atualização da Beta e a L03 Q4 (lição 0005, MIT15).</p>
+<p>Fica para as próximas lições: a L03 Q3, em que o dado é contínuo (<a href="{LESSON4}">lição 0004</a>, MIT14); a regra de atualização da Beta e a L03 Q4 (lição 0005, MIT15).</p>
 <div class="callout">Se ficou alguma dúvida, pergunte ao seu professor, que é o agente nesta conversa. Vale um passo da conta, um termo ou "por que isso funciona?".</div>
 <p style="font-size:.8rem;color:var(--muted)">As citações em inglês são de J. Orloff e J. Bloom, <i>18.05 Introduction to Probability and Statistics</i>,
 Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos aparecem como […]. No texto extraído do PDF do MIT13, os símbolos
@@ -609,7 +610,8 @@ matemáticos saíram corrompidos; a prosa é literal, e as fórmulas foram reesc
 SPEC = {
     "title": "0003 · Prior contínua e MAP",
     "subtitle": "Lição 0003 · COE241 P2 · MIT13 · hipóteses num contínuo · meta: resolver a L03 Q2 (pmf, posterior, MAP e previsão)",
-    "crumbs": f'COE241 · P2 · Lição 0003 &nbsp;·&nbsp; anterior: <a href="{LESSON2}">0002, probabilidade preditiva</a>',
+    "crumbs": f'COE241 · P2 · Lição 0003 &nbsp;·&nbsp; anterior: <a href="{LESSON2}">0002, probabilidade preditiva</a>'
+              f' &nbsp;·&nbsp; próxima: <a href="{LESSON4}">0004, likelihood contínua</a>',
     "sections": [
         {"id": "recordacao", "heading": "Recordação da lição 0002", "html": recordacao},
         {"id": "revisao", "heading": "Revisão da P1: Binomial e pdf", "html": revisao},

@@ -2,8 +2,9 @@
 
 The look (CSS, light/dark theme, KaTeX, quiz) comes from
 ~/.claude/skills/explain-diff-html/render.py. This wrapper only adds what the
-renderer lacks: numeric answer inputs (assets/check.js), Portuguese UI strings and the
-pen layer from ~/.claude/skills/explain-diff-html-ink/ink.js.
+renderer lacks: numeric answer inputs (assets/check.js), Portuguese UI strings, the
+pen layer from ~/.claude/skills/explain-diff-html-ink/ink.js and the post-it notes layer
+(~/.claude/skills/explain-diff-html-notes/add_notes.py).
 
 Usage from a lesson source:  from build import build, prior_post, mc, quote
 """
@@ -11,6 +12,7 @@ import html
 import importlib.util
 import random
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -19,6 +21,8 @@ SKILLS = Path.home() / ".claude" / "skills"
 RENDER = SKILLS / "explain-diff-html" / "render.py"
 # Pen layer from explain-diff-html-ink: strokes saved in the artifact db (collection "ink").
 INK_JS = SKILLS / "explain-diff-html-ink" / "ink.js"
+# Post-it notes layer from explain-diff-html-notes: notes saved in the artifact db (collection "notes").
+ADD_NOTES = SKILLS / "explain-diff-html-notes" / "add_notes.py"
 
 _spec = importlib.util.spec_from_file_location("render", RENDER)
 render = importlib.util.module_from_spec(_spec)
@@ -72,6 +76,8 @@ EXTRA_CSS = """
   details { margin: .5rem 0; } summary { cursor: pointer; color: var(--accent); }
   nav.crumbs { font-size: .85rem; color: var(--muted); }
   nav.crumbs a { color: var(--accent); }
+  /* The notes toggle sits bottom-left too, so the pen button moves up above it. */
+  body .ink-ui { bottom: 56px; }
 """
 
 
@@ -292,6 +298,9 @@ def mc(question, options):
     check_options(question, [(t, c) for t, c, _ in options])
     options = list(options)
     random.Random(question).shuffle(options)
+    # Math in a feedback attribute is rendered now: the page-wide KaTeX pass would put raw HTML
+    # (with quotes) inside the attribute and break the button. QUIZ_MATH_JS shows it as HTML.
+    options = [(t, c, render.render_math(html.escape(f, quote=False)) if "\\(" in f else f) for t, c, f in options]
     btns = "".join(
         f'<button class="quiz-opt" data-correct="{"true" if c else "false"}" data-feedback="{html.escape(f)}">{t}</button>'
         for t, c, f in options)
@@ -333,7 +342,7 @@ def build(spec, out):
     if spec.get("crumbs"):
         page = page.replace("<h1>", f'<nav class="crumbs">{spec["crumbs"]}</nav>\n<h1>', 1)
     Path(out).write_text(page, encoding="utf-8")
-    print(out)
+    subprocess.run([sys.executable, str(ADD_NOTES), str(out)], check=True)
 
 
 if __name__ == "__main__":

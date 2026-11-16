@@ -27,10 +27,11 @@
 - 0001 tabela bayesiana: https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa
 - 0002 probabilidade preditiva: https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z
 - 0003 prior contínua e MAP: https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT
+- 0004 likelihood contínua (M14 §4, L03 Q3): https://claude.ai/artifact/ULdAerrDUzGftPBWRQvrbC
 - Links entre lições usam a URL do artifact (links relativos quebram no artifact).
 - O `title` de cada lição começa com o número ("0004 · ..."), para a ordem aparecer no artifact. Toda lição nova entra também na tabela do README.md.
 - Repositório: github.com/drbarros2004/probest (privado). Os HTML gerados entram no repo.
-- As lições levam a caneta da explain-diff-html-ink (build.py injeta o ink.js). Publicar com capabilities {"db": {}}; num republish, omitir capabilities.
+- As lições levam a caneta da explain-diff-html-ink (ink.js, coleção `ink`) e, desde 2026-11-16, as notas da explain-diff-html-notes (add_notes.py, coleção `notes`), as duas injetadas pelo build.py. Pedido do usuário: "todos os artifacts de probest com essa skill"; a caneta ficou para não sumir com os traços já salvos, e o botão dela subiu (`.ink-ui` bottom 56px) para não cobrir o das notas. Ler as notas: ArtifactData list, coleção `notes`. Publicar com capabilities {"db": {}}; num republish, omitir capabilities.
 
 - L03 Q2 (calculado): MAP = 7/12 ≈ 0.583 (posterior ∝ θ⁷(1−θ)⁵ = Beta(8,6), constante 10296); Q2.3 P(maioria ≥ 6 de 10) = 8203/14858 ≈ 0.552. Q3: MAP 1/4 h após 10 min; 3/4 h após 30 min.
 - Decisão (usuário): 0003 = M13 + Q2.1 + MAP da Q2.2. A Q2.3 ia para a 0005 (M15), porque a integral dependia da normalização da Beta (M15 §3.1). Revisto (2026-11-16, usuário): com o quadro da Beta e a "integral da Beta" (#integral-beta) já na 0003, a Q2.3 passou para a 0003 (#q23), com a dica de intervalos (#intervalo). A Q3 vai com o M14 (0004); a Q4 (Normal-Normal) vai com o M15 (0005).
@@ -43,7 +44,8 @@
 - Desvio consciente da ordem do MISSION (que manda terminar a L03 primeiro). A estrutura não muda: cada lição continua presa a um Mxx. Decidido (2026-11-08): a numeração segue a ordem de leitura do MIT, não a ordem em que as lições são feitas. 0000 = M10 (LMLE), autossuficiente, sem contar com 0001 a 0003; abre com diagnóstico, cita a 0003 só numa nota final de ligação; liga-se à 0001 (próxima) e a seção do MAP da 0003 ganha um link para ela. 0004 = M14 (L03 Q3). 0005 = M15 (regra da Beta-Binomial e L03 Q4 Normal-Normal). A Q2.3 foi para a 0003 em 2026-11-16.
 - A 0003 ganhou o quadro "O que é Beta(a, b)" (M15 §3 e §3.1 citados), a pedido do usuário, que não se sentia preparado para a Q2 sem saber o que é Beta. A Q2.2 agora fecha na 0003: posterior Beta(8,6), c = 10296, MAP 7/12. A 0005 abre com recordação desse quadro e ensina a regra de atualização (conjugação); a Q2.3 já está na 0003.
 - (Já usado na 0003, quadro da Beta) mostrar que as pdfs da 0003 já eram Betas sem o nome. Plana = Beta(1,1); 2θ = Beta(2,1); 3θ² = Beta(3,1); 12θ²(1−θ) = Beta(3,2); 20θ³(1−θ) = Beta(4,2); L03 Q2 cθ⁷(1−θ)⁵ = Beta(8,6), c = 10296. Cada cara soma 1 em a, cada coroa soma 1 em b. O usuário perguntou "o que é Beta(2,2)?" e gostou dessa tabela.
-- 0004: M14 (likelihood contínua) → L03 Q3. Abrir com recordação da 0003. Ligar a 0003 à 0004.
+- 0004 feita em 2026-11-16 (curta de propósito: o usuário disse que o tamanho da 0003 é exceção, não padrão). Prior discreta + dado contínuo = tabela da 0001 com likelihood = altura da pdf; o §6 do MIT14 (Normal-Normal) ficou para a 0005. Q3 conferida: 10 min → posteriores 3/4, 1/4, MAP 1/4; 30 min → MAP 3/4.
+- Tamanho: lições na faixa da 0000–0002 (~300 linhas de fonte). A 0003 (~670) é exceção.
 - 0005: M15 (Beta, normalização §3.1, Beta-Binomial e Normal-Normal conjugadas) → L03 Q4 (a Q2.3 já está na 0003). Revisar a Normal da P1 antes. Abrir com recordação do quadro da Beta da 0003.
 - 0000 publicada em 2026-11-08 (diagnóstico da 6 e da 8 no topo, com tabela "travei em… → leia"). Ligada à 0001 (anterior) e à seção do MAP da 0003. LMLE e LMLEG são PDFs de imagem: baixar com download_file_content e renderizar com pymupdf. Respostas (LMLEG): 6a 62/100, 6b k/n, 7 max(yᵢ), 8 1/x̄, 9 x̄, 10 n = 7 (LMLEG usa 1/C(n,3), sem reposição). Pendente: o resultado do diagnóstico do usuário, para registrar num learning-record.
 - Lição de odds (M12, nota Odds) fica para quando chegar a L04 (PSet 7).
