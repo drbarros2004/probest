@@ -48,7 +48,7 @@ O MIT12 abre com essa mudança:</p>
 the probability of each possible outcome of a future experiment.</p>
 <p>[…] Probabilistic prediction simply means assigning a probability to each possible outcomes of an experiment.</p>""",
             src("§2 e §3")) + r"""
-<p>O exemplo é uma variação das moedas da lição 0001. Atenção, porque a gaveta é outra (4 moedas, e não 5):</p>
+<p id="gaveta">O exemplo é uma variação das moedas da lição 0001. Atenção, porque a gaveta é outra (4 moedas, e não 5):</p>
 """ + quote(r"""<p>Recall the coin example from the previous class notes: there are three types of coins which are indistinguishable apart from
 their probability of landing heads when tossed.</p>
 <ul><li>Type \(A\) coins are fair, with probability 0.5 of heads</li>
@@ -122,15 +122,15 @@ are computed after collecting data and updating the prior to the posterior, they
 $$P(D_2 \mid D_1) = \sum_{H} P(D_2 \mid H)\,P(H \mid D_1)$$
 <p>Com as partes nomeadas:</p>
 $$\underbrace{P(D_2 \mid D_1)}_{\text{posterior predictive}} \;=\; \sum_{H} \underbrace{P(D_2 \mid H)}_{\text{likelihood do próximo resultado}} \cdot \underbrace{P(H \mid D_1)}_{\text{posterior}}$$
-<p>Trocando a posterior pela prior, sai a prior predictive. A conta é sempre a mesma: uma média das likelihoods das hipóteses, com
-pesos dados pela crença atual em cada uma.</p>
-<p>No quadrado: depois da primeira cara, só a área pintada sobrevive, e ela é esticada até virar um quadrado novo. As fatias dela
-(0.4, 0.24 e 0.36) são as larguras novas. Para prever o segundo lançamento, pinte de novo com as mesmas alturas, que são a chance de cara
-de cada moeda. A área pintada do quadrado novo é a posterior predictive:</p>
+<p>Com a prior no lugar da posterior, a mesma soma dá a prior predictive. Nos dois casos, a previsão é uma média ponderada das
+likelihoods, e o peso de cada hipótese é o quanto acreditamos nela naquele momento.</p>
+<p>No quadrado, a primeira cara descarta a parte sem pintura. O que sobra é esticado até preencher um quadrado inteiro, e a fatia de
+cada moeda vira a largura nova dela: 0.4, 0.24 e 0.36. As alturas pintadas continuam as mesmas, porque a chance de cara de cada moeda não
+mudou. A área pintada desse quadrado novo é a posterior predictive:</p>
 """ + bayes_square(
     [("A", .4, .5), ("B", .24, .6), ("C", .36, .9)],
     "O mesmo desenho depois de uma cara: C ficou mais larga e B mais estreita. As alturas não mudaram, e a área pintada subiu de 0.625 para 0.668.",
-    post=False, wlabel="posterior", total="P(cara | cara)") + r"""
+    post=False, wlabel="posterior", total="P(cara no 2º | cara no 1º)") + r"""
 <p>A previsão sobe sem que nenhuma moeda mude: a faixa mais alta (C) ficou mais larga.</p>
 """ + uso("esta é a fórmula 3; os pesos vêm da fórmula 2.") + r"""
 <p>Falta justificar um detalhe. A rigor, o termo seria \(P(D_2 \mid H, D_1)\), a chance do próximo resultado sabendo a hipótese <em>e</em>
@@ -148,16 +148,16 @@ equation holds for every hypothesis \(H\).</p>""", src("nota Odds, §4.1")) + r"
 predictive probability of heads, the weights are given by the prior probabilities of the hypotheses. For the posterior predictive probability
 of heads, the weights are given by the posterior probabilities of the hypotheses.</p>
 <p>Remember: Prior and posterior probabilities are for hypotheses. Prior predictive and posterior predictive probabilities are for outcomes.
-To keep this straight, remember that the predictive probabilities are used to predict future outcomes, i.e. data.</p>""", src("§3.3")) + r"""
+To keep this straight, remember that the predictive probabilities are used to predict future outcomes, i.e. data.</p>""", src("§3.3")) + mc(r'Uma <a href="#gaveta">gaveta</a> tem 4 moedas: 2 do tipo A (cara com 0.5), 1 do tipo B (cara com 0.6) e 1 do tipo C (cara com 0.9). Você tira uma ao acaso e joga: deu cara. Para prever o segundo lançamento, você faz uma média das chances de cara de cada tipo. Que pesos entram nessa média?',
+         [("As posteriores: 0.4, 0.24 e 0.36", True, "Isso: depois da primeira cara, cada tipo pesa o quanto você acredita nele agora. Dá 0.668, a posterior predictive."),
+          ("As priors: 0.5, 0.25 e 0.25", False, "Isso ignora a cara que já saiu. Com esses pesos sai a prior predictive, 0.625, que serve para o primeiro lançamento."),
+          ("Os numeradores: 0.25, 0.15 e 0.225", False, "Esses são os numeradores de Bayes. Falta dividir por 0.625: eles somam 0.625, e não 1.")]) + r"""
 <table>
 <tr><th></th><th>é probabilidade de…</th><th>antes do dado</th><th>depois do dado</th></tr>
 <tr><td><b>hipótese</b></td><td>qual moeda é</td><td>prior \(P(H)\): 0.5; 0.25; 0.25</td><td>posterior \(P(H \mid D)\): 0.4; 0.24; 0.36</td></tr>
 <tr><td><b>resultado</b></td><td>o que sai no próximo lançamento</td><td>prior predictive \(P(D_H)\) = 0.625</td><td>posterior predictive \(P(D_H \mid D)\) = 0.668</td></tr>
 </table>
-""" + mc("No exemplo, 0.668 é a probabilidade de quê?",
-         [("De sair cara no segundo lançamento, sabendo que o primeiro deu cara", True, "Isso: é uma posterior predictive, uma probabilidade de resultado."),
-          ("De a moeda ser do tipo C, sabendo que o primeiro lançamento deu cara", False, "Essa é a posterior de C, 0.36. É uma probabilidade de hipótese."),
-          ("De sair cara no primeiro lançamento, antes de qualquer informação", False, "Essa é a prior predictive, 0.625.")])
+"""
 
 pratica = r"""
 <p>Os cinco dados da lição 0001 (4, 6, 8, 12 e 20 lados, um escolhido ao acaso, ou seja, prior 1/5 para cada) voltam com uma
@@ -166,16 +166,20 @@ pergunta de previsão:</p>
 \(D_1\) = result of first roll, \(D_2\) = result of second roll</p>
 <p>(a) Find \(P(D_1 = 5)\).</p>
 <p>(b) Find \(P(D_2 = 4 \mid D_1 = 5)\).</p>""", src("problemas em sala, problema 4", "MIT11")) + r"""
-<p><b>(a)</b> é uma prior predictive, e a resposta já apareceu em <a href="#prior-predictive">Antes de jogar</a>: é o \(P(D)\) da tabela "tirei 5" da lição 0001, 0.085.
-Para treinar a conta, calcule a prior predictive de outro resultado: a chance de o primeiro lançamento dar <b>4</b>.</p>
-<details><summary>Dica</summary><p>Monte a tabela de Bayes como se o dado fosse "tirei 4" e some os numeradores: prior 1/5 para cada dado, likelihood \(P(4 \mid H)\). Agora o dado de 4 lados também entra.</p></details>
-<div class="check-group" data-ok="Isso: 1/5 · (1/4 + 1/6 + 1/8 + 1/12 + 1/20) ≈ 0.135. É maior que a chance de tirar 5 (0.085), porque o dado de 4 lados também pode dar 4.">
+<p><b>(a)</b> é uma prior predictive: antes de lançar, some sobre os dados a chance de dar 5 vezes a prior.</p>
+<details><summary>Dica</summary><p>Monte a tabela de Bayes como se o dado observado fosse "tirei 5" e some os numeradores. O dado de 4 lados não pode dar 5, então a likelihood dele é 0.</p></details>
+<div class="check-group" data-ok="Isso: 1/5 · (0 + 1/6 + 1/8 + 1/12 + 1/20) ≈ 0.085. É o P(D) da tabela &quot;tirei 5&quot; da lição 0001.">
+<p>\(P(D_1 = 5)\) = <input data-answer="0.085" data-tol="0.0005"></p>
+<button class="check">Verificar</button><div class="feedback"></div>
+</div>
+<p><b>Para comparar com a (b)</b>, calcule também a chance de o primeiro lançamento dar <b>4</b>. A (b) pergunta sobre o 4 no segundo lançamento, e vamos ver como o 5 muda essa chance.</p>
+<div class="check-group" data-ok="Isso: 1/5 · (1/4 + 1/6 + 1/8 + 1/12 + 1/20) ≈ 0.135. Agora o dado de 4 lados também entra.">
 <p>\(P(D_1 = 4)\) = <input data-answer="0.135" data-tol="0.0005"></p>
 <button class="check">Verificar</button><div class="feedback"></div>
 </div>
 <p><b>(b)</b> é uma posterior predictive. Os pesos são as posteriores depois do 5, que você calculou na lição 0001. Tente lembrá-las
-antes de usar o botão "Preencher anteriores", que coloca esses valores na tabela. A segunda coluna, \(P(D_2 = 4 \mid H)\), é a mesma likelihood \(P(4 \mid H)\) que você usou na (a): sabendo qual é o dado,
-cada lançamento tem as mesmas chances, e o 5 anterior não muda isso (independência condicional). Entre a (a) e a (b), só os pesos mudam:
+antes de usar o botão "Preencher anteriores", que coloca esses valores na tabela. A segunda coluna, \(P(D_2 = 4 \mid H)\), é a mesma likelihood \(P(4 \mid H)\) que você usou na conta do 4: sabendo qual é o dado,
+cada lançamento tem as mesmas chances, e o 5 anterior não muda isso (independência condicional). Entre a conta do 4 e a (b), só os pesos mudam:
 prior 1/5 lá, posterior depois do 5 aqui. Os produtos e a soma se calculam sozinhos.</p>
 """ + bayes_table(
     [("4 lados", "0", "1/4", None), ("6 lados", "0.3922", "1/6", None), ("8 lados", "0.2941", "1/8", None),

@@ -66,6 +66,8 @@ EXTRA_CSS = """
   [data-show] { font-family: KaTeX_Math, serif; font-style: italic; }
   [data-show].shown { font-family: inherit; font-style: normal; color: var(--accent); font-weight: 700; }
   /* "Na prova:" pointer from an explanation to the formula to use. */
+  /* Lists whose items are long explanations get room between items. */
+  ul.spaced > li, ol.spaced > li { margin-bottom: .7rem; }
   p.uso { font-size: .9rem; color: var(--muted); border-left: 3px solid var(--accent); padding-left: .7rem; }
   details { margin: .5rem 0; } summary { cursor: pointer; color: var(--accent); }
   nav.crumbs { font-size: .85rem; color: var(--muted); }

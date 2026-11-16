@@ -137,6 +137,20 @@ infinitas respostas possíveis.</p>
 <li><b>prior</b> \(f(\theta)\): agora uma <b>pdf</b> sobre as hipóteses;</li>
 <li><b>likelihood</b> \(p(x \mid \theta)\): continua uma <b>pmf</b>, porque o dado \(x\) é discreto (cara ou coroa, número de pessoas).</li>
 </ul>
+<div class="callout" id="letras"><p><b>Qual letra usar.</b> São quatro, e cada uma tem um papel:</p>
+<ul class="spaced">
+<li>\(P(\ldots)\), maiúscula: probabilidade de um <b>evento</b>, algo que acontece ou não. Entre os parênteses vai uma afirmação:
+\(P(H)\), \(P(D \mid H)\), \(P(\theta > 0.5)\). O valor fica sempre entre 0 e 1.</li>
+<li>\(p(x)\), minúscula: a <b>pmf</b> de uma variável <b>discreta</b>, \(p(x) = P(X = x)\). Entre os parênteses vai um valor. Continua sendo
+uma probabilidade, entre 0 e 1. Exemplo: a likelihood \(p(x \mid \theta)\) de cara ou coroa.</li>
+<li>\(f(x)\): a <b>pdf</b> de uma variável <b>contínua</b>. É densidade, não probabilidade, e pode passar de 1: a prior \(2\theta\) vale 1.8 em
+\(\theta = 0.9\). Probabilidade é a área, \(\int_c^d f(x)\,dx\), ou \(f(x)\,dx\) numa tira.</li>
+<li>\(F(x)\), maiúscula: a <b>cdf</b> (função de distribuição acumulada), \(F(x) = P(X \le x)\). Vale para discreta e contínua; na contínua,
+\(F(x) = \int_{-\infty}^{x} f(t)\,dt\). Ainda não apareceu nas lições, mas resolve contas como a da prior \(2\theta\): \(F(\theta) = \theta^2\),
+então \(P(\theta > 0.5) = 1 - F(0.5) = 0.75\).</li>
+</ul>
+<p>Para decidir: se entre os parênteses vai uma afirmação, é \(P\). Se vai um valor, é \(p\) (discreta) ou \(f\) (contínua). Se a pergunta é
+"até tal valor", é \(F\).</p></div>
 <p>O exemplo que atravessa a nota inteira:</p>
 """ + quote(r"""<p><b>Example 4.</b> Suppose we have a bent coin with unknown probability \(\theta\) of heads. […] The value of \(\theta\) is random and
 could be anywhere between 0 and 1. For this and the examples that follow we’ll suppose that the value of \(\theta\) follows a distribution with
@@ -153,7 +167,7 @@ each of these hypotheses had a prior probability.</p>""", src("§6")) + r"""
 exato de \(\theta\) tivesse probabilidade positiva, a soma passaria de 1. Então a chance de \(\theta\) ser <em>exatamente</em> 0.7313 é 0. O que tem
 probabilidade positiva é um intervalo, e essa probabilidade é uma área sob a pdf, como na <a href="#pdf">revisão</a>.</p>
 <p>A prior \(f(\theta) = 2\theta\) é a mesma pdf do gráfico da revisão, com \(\theta\) no lugar de \(x\). Ela diz que a fábrica produz mais
-moedas com tendência a cara: \(P(\theta > 0.5) = \int_{0.5}^1 2\theta\,d\theta = 0.75\). Ou seja, 75% das moedas da fábrica dão cara com
+moedas com tendência a cara: \(P(\theta > 0.5) = \int_{0.5}^1 2\theta\,d\theta = 0.75\), a mesma conta que o quadro <a href="#letras">Qual letra usar</a> fez com \(F\). Ou seja, 75% das moedas da fábrica dão cara com
 mais frequência que coroa, e, antes de jogar, a chance de a moeda escolhida ser uma delas é 0.75.</p>
 
 <p>A likelihood não muda de natureza: o dado continua discreto (cara ou coroa), então ela continua uma probabilidade comum, só que escrita
@@ -184,7 +198,8 @@ So the total probability of \(x = 1\) is</p>
 $$p(x = 1) = \int_0^1 p(x = 1 \mid \theta)\,f(\theta)\,d\theta = \int_0^1 \theta \cdot 2\theta\,d\theta = \int_0^1 2\theta^2\,d\theta = \frac{2}{3}.$$
 <p>Since the prior is weighted towards higher probabilities of heads, so is the total probability of heads.</p>""", src("§7")) + r"""
 <p>A última integral, passo a passo: \(\int_0^1 2\theta^2\,d\theta = \big[\tfrac{2\theta^3}{3}\big]_0^1 = \tfrac{2}{3}\). Toda integral desta lição
-é desse tipo, um polinômio em \(\theta\) de 0 a 1, e sai com a regra \(\int_0^1 \theta^k\,d\theta = \frac{1}{k+1}\).</p>
+é desse tipo, um polinômio em \(\theta\) de 0 a 1, e sai com a regra \(\int_0^1 \theta^k\,d\theta = \frac{1}{k+1}\). Quando o integrando tem a forma \(\theta^m(1-\theta)^n\), há um
+atalho que dispensa expandir: a <a href="#integral-beta">integral da Beta</a>, mais adiante.</p>
 """ + uso("esta integral volta na fórmula 5, a da previsão. Para normalizar a posterior, a fórmula 3 dispensa a integral quando a posterior tem forma de Beta.") + r"""
 <p id="hipotese-resultado">Repare que há dois números parecidos sobre a mesma prior \(2\theta\), e eles medem coisas diferentes:</p>
 <table>
@@ -219,14 +234,16 @@ uma tira, \(f(\theta)\,d\theta\), é.</div>
 $$\begin{aligned} \text{discreto:} \quad P(H \mid D) &= \frac{P(D \mid H)\,P(H)}{\sum_H P(D \mid H)\,P(H)} \\[22pt] \text{contínuo:} \quad f(\theta \mid x) &= \frac{p(x \mid \theta)\,f(\theta)}{\int_a^b p(x \mid \theta)\,f(\theta)\,d\theta} \end{aligned}$$
 <p>Os passos são os mesmos: numerador = likelihood × prior; total = somar (ou integrar) os numeradores; posterior = numerador ÷ total.
 Mudam só duas coisas: probabilidade vira densidade, e soma vira integral.</p>
-""" + uso("a tabela desta seção se resume à fórmula 2 (o numerador) e à fórmula 3 (a constante). O resto da seção mostra por que elas funcionam.") + r"""
-<p><b>O que o próximo exemplo quer.</b> A moeda é jogada três vezes e sai cara, cara, coroa. A pergunta é: <em>depois de ver isso, no que
-passo a acreditar sobre \(\theta\)?</em> Antes de jogar, a crença era a prior \(2\theta\). A resposta é uma curva nova, a <b>posterior</b>, que diz
-quais valores de \(\theta\) ficaram mais ou menos plausíveis. Na lição 0001 a resposta eram três números (um por moeda); aqui é uma curva,
-porque as moedas possíveis são infinitas. A tabela é só o caminho até ela: os mesmos passos da lição 0001 (prior, likelihood, numerador,
-total, posterior).</p>
-<p>No exemplo a seguir, o dado é a sequência HHT, que o MIT13 escreve codificada como \(x = 1, 1, 0\) (1 = cara, 0 = coroa). Então
-\(p(x = 1,1,0 \mid \theta)\) é a chance de sair H, H, T com uma moeda de tipo \(\theta\): \(\theta \cdot \theta \cdot (1-\theta)\).</p>
+""" + uso('a tabela desta seção se resume à fórmula 2 (o numerador) e à fórmula 3 (a constante, que a seção da <a href="#beta">família Beta</a> ensina a achar sem integral). O resto da seção mostra por que elas funcionam.') + r"""
+<h3 id="hht">Exemplo: cara, cara, coroa</h3>
+<p>A moeda é a mesma das seções anteriores: a chance de cara \(\theta\) é desconhecida, e a prior é \(2\theta\) (a
+<a href="#continuas">fábrica</a> faz mais moedas com tendência a cara). Agora ela é jogada três vezes e sai cara, cara, coroa (HHT).
+A pergunta é o que esses três lançamentos dizem sobre \(\theta\).</p>
+<p>O MIT13 escreve esse dado como \(x = 1, 1, 0\) (1 = cara, 0 = coroa). A likelihood é a chance de sair H, H, T com uma moeda de
+tipo \(\theta\): \(p(x = 1,1,0 \mid \theta) = \theta \cdot \theta \cdot (1-\theta)\).</p>
+<p>A resposta é uma curva nova, a <b>posterior</b>, que mostra quais valores de \(\theta\) ficaram mais plausíveis e quais ficaram menos.
+Na lição 0001, a posterior eram três números, um para cada tipo de moeda. Aqui ela é uma curva, porque \(\theta\) pode ser qualquer número
+entre 0 e 1. Os passos até ela são os mesmos da lição 0001: prior, likelihood, numerador, total e posterior. A tabela do MIT13 faz exatamente isso:</p>
 """ + quote(r"""<p>1. The table for continuous priors is very simple: since we cannot have a row for each of an infinite number of hypotheses we’ll
 have just one row which uses a variable to stand for all hypotheses \(H_\theta\).</p>
 <p>2. By including \(d\theta\), all the entries in the table are probabilities and all our usual probability rules apply.</p>
@@ -242,17 +259,13 @@ updating for this particular example. In later examples we will skip that abstra
 <tr><td>total</td><td>\([0, 1]\)</td><td>\(\int_a^b f(\theta)\,d\theta\)<br>\(= 1\)</td><td>no sum</td><td>\(p(x = 1,1,0)\)<br>\(= \int_0^1 2\theta^3(1-\theta)\,d\theta\)<br>\(= 1/10\)</td><td>1</td></tr>
 </table>
 <p>Therefore the posterior pdf (after seeing HHT) is \(f(\theta \mid x) = 20\theta^3(1-\theta)\).</p>""", src("§9")) + r"""
-<p>A primeira linha funciona como um cabeçalho: diz o que vai em cada coluna. A segunda é uma fórmula que gera qualquer linha. Troque
-\(\theta\) por um número e sai a linha daquela moeda, como na tabela da lição 0001:</p>
-<table>
-<tr><th class="num">\(\theta\) (moeda)</th><th class="num">prior \(2\theta\)</th><th class="num">likelihood \(\theta^2(1-\theta)\)</th><th class="num">numerador \(2\theta^3(1-\theta)\)</th><th class="num">posterior \(20\theta^3(1-\theta)\)</th></tr>
-<tr><td class="num">0.5</td><td class="num">1</td><td class="num">0.125</td><td class="num">0.125</td><td class="num">1.25</td></tr>
-<tr><td class="num">0.75</td><td class="num">1.5</td><td class="num">0.141</td><td class="num">0.211</td><td class="num">2.11</td></tr>
-<tr><td class="num">0.9</td><td class="num">1.8</td><td class="num">0.081</td><td class="num">0.146</td><td class="num">1.46</td></tr>
-</table>
-<p>Em cada linha, a posterior é o numerador × 10, porque o total é 1/10.</p>
+<p>A primeira linha funciona como um cabeçalho: diz o que vai em cada coluna. A segunda é uma fórmula que gera qualquer linha: troque
+\(\theta\) por um número e sai a linha daquela moeda, como na tabela da lição 0001. Com \(\theta = 0.75\), por exemplo, a prior vale 1.5, a
+likelihood 0.141, o numerador 0.211 e a posterior 2.11, que é o numerador × 10, porque o total é 1/10. Na prova, a linha abstrata e as linhas
+com números não aparecem: você escreve só a linha da fórmula (prior × likelihood = numerador) e segue com as fórmulas 2 e 3 da
+<a href="#receita">receita</a>.</p>
 <p>Os números da tabela, um a um:</p>
-<ul>
+<ul class="spaced">
 <li><b>likelihood</b> \(p(x = 1,1,0 \mid \theta) = \theta^2(1-\theta)\): a chance da sequência HHT para uma moeda de tipo \(\theta\) (duas caras, uma coroa). É uma sequência
 específica, então não há coeficiente binomial;</li>
 <li><b>numerador</b> \(p(x \mid \theta)\,f(\theta)\): likelihood × prior, \(\theta^2(1-\theta) \cdot 2\theta = 2\theta^3(1-\theta) = 2\theta^3 - 2\theta^4\);</li>
@@ -269,9 +282,8 @@ posterior, a área volta a ser 1.</li>
     ymax=2.4,
     caption="A coroa no fim de HHT multiplica a prior por \\((1-\\theta)\\), que zera em \\(\\theta = 1\\): a moeda que só dá cara fica impossível. "
             "As duas caras multiplicam por \\(\\theta^2\\), que zera perto de 0. O que sobra é um morro com pico (ponto de máximo) em 0.75, que a <a href='#map'>seção do MAP</a> ensina a achar, um pouco acima da fração de caras observada (2/3), porque a prior 2θ favorece valores altos.") + r"""
-<p>Duas observações do MIT13 sobre a tabela:</p>
-""" + quote(r"""<p>2. The posterior pdf for \(\theta\) is found by removing the \(d\theta\) from the posterior probability in the table. […]</p>
-<p>5. Regarding both sides as functions of \(\theta\), we can again express Bayes’ theorem in the form:
+<p>Uma observação do MIT13 sobre a tabela:</p>
+""" + quote(r"""<p>[…] 5. Regarding both sides as functions of \(\theta\), we can again express Bayes’ theorem in the form:
 \(f(\theta \mid x) \propto p(x \mid \theta) \cdot f(\theta)\)</p>
 <p>posterior \(\propto\) likelihood × prior.</p>""", src("§9, comentários")) + r"""
 <p>O símbolo \(\propto\) ("proporcional a") quer dizer "igual, a menos de uma constante que não depende de \(\theta\)". Aqui a constante é
@@ -333,7 +345,8 @@ $$\sum_H P(D_2 \mid H)\,P(H \mid D_1) \quad\longrightarrow\quad \int_a^b p(x_2 \
 $$\underbrace{\sum_H P(D_2 \mid H)\,P(H \mid D_1)}_{\text{hipóteses discretas (lição 0002)}} \quad\longrightarrow\quad \underbrace{\int_a^b p(x_2 \mid \theta)\,f(\theta \mid x_1)\,d\theta}_{\text{hipóteses contínuas}}$$
 """ + uso("esta é a fórmula 5.") + check(
     r"""<p><b>Depois de HHT, a posterior é \(20\theta^3(1-\theta)\). Qual a chance de o próximo lançamento dar cara?</b> """ + num("2/3", "0.002") + "</p>"
-    + r"""<details><summary>Dica</summary><p>\(\int_0^1 \theta \cdot 20\theta^3(1-\theta)\,d\theta = 20\int_0^1 (\theta^4 - \theta^5)\,d\theta\).</p></details>""",
+    + r"""<details><summary>Dica</summary><p>\(\int_0^1 \theta \cdot 20\theta^3(1-\theta)\,d\theta = 20\int_0^1 (\theta^4 - \theta^5)\,d\theta\). Ou, sem expandir:
+\(\theta^4(1-\theta)\) é a forma da Beta(5, 2), então a integral é \(\frac{4!\,1!}{6!} = \frac{1}{30}\) (<a href="#integral-beta">integral da Beta</a>).</p></details>""",
     "Isso: 20 (1/5 − 1/6) = 20/30 = 2/3. É menor que os 3/4 depois de uma cara só, porque a coroa puxou θ para baixo.")
 
 # ---------------------------------------------------------------- MAP
@@ -414,7 +427,22 @@ the formula for the beta distribution.</p>""", src("§3.1", "MIT15")) + r"""
     + r"""</sup> \((1-\theta)\)<sup>""" + num("2", "0.01", "2.6rem") + r"""</sup></p>
 <p><b>Uma pdf da forma \(c\,\theta^4(1-\theta)^2\):</b> é Beta(""" + num("5", "0.01", "2.6rem") + ", " + num("3", "0.01", "2.6rem")
     + r"""), com \(c\) = """ + num("105", "0.01", "3.5rem") + "</p>",
-    "Isso. Beta(3,3): 5!/(2!·2!) = 120/4 = 30, forma θ²(1−θ)². E θ⁴(1−θ)² tem a − 1 = 4 e b − 1 = 2, então é Beta(5,3), com c = 7!/(4!·2!) = 5040/48 = 105.")
+    "Isso. Beta(3,3): 5!/(2!·2!) = 120/4 = 30, forma θ²(1−θ)². E θ⁴(1−θ)² tem a − 1 = 4 e b − 1 = 2, então é Beta(5,3), com c = 7!/(4!·2!) = 5040/48 = 105.") + r"""
+<p id="integral-beta"><b>A mesma regra, ao contrário: uma integral sem integrar.</b> Como a área de uma Beta é 1, a constante vezes a integral da forma dá 1:</p>
+$$\frac{(a+b-1)!}{(a-1)!\,(b-1)!}\int_0^1 \theta^{a-1}(1-\theta)^{b-1}\,d\theta = 1$$
+<p>Passando a constante para o outro lado:</p>
+$$\int_0^1 \theta^{a-1}(1-\theta)^{b-1}\,d\theta = \frac{(a-1)!\,(b-1)!}{(a+b-1)!}$$
+<p>Ou seja, <b>a integral da forma é o inverso da constante.</b> Exemplo: a tabela acima diz que \(12\theta^2(1-\theta)\) é uma Beta(3,2). Então
+\(\int_0^1 \theta^2(1-\theta)\,d\theta = 1/12\), sem fazer conta.</p>
+<p>Isso serve em dois lugares:</p>
+<ul class="spaced">
+<li><b>o total da tabela de Bayes</b>, quando a questão pede \(p(x)\) explicitamente. O numerador quase sempre tem a forma constante × \(\theta^m(1-\theta)^n\);</li>
+<li><b>a previsão do próximo dado (fórmula 5).</b> A integral de likelihood × posterior vira um número vezes \(\theta^m(1-\theta)^n\), e essa integral sai daqui.
+A <a href="#q23">L03 Q2.3</a> é exatamente isso.</li>
+</ul>
+<p>O jeito de usar é igual ao da fórmula 3: leia os expoentes, ache \(a\) e \(b\) (expoente + 1) e calcule com os fatoriais. A diferença é que na
+fórmula 3 você <b>multiplica</b> pela constante, porque quer a pdf, e aqui você <b>divide</b> por ela, porque quer a área.</p>
+"""
 
 # ---------------------------------------------------------------- receita
 receita = r"""
@@ -444,8 +472,18 @@ dado <em>fingindo que você já sabe \(\theta\)</em>.</p>
 <tr><td>2</td><td>posterior, a menos da constante</td><td>\(f(\theta \mid x) \propto p(x \mid \theta)\,f(\theta)\): multiplique e some os expoentes</td></tr>
 <tr><td>3</td><td>a constante</td><td>se \(f = c\,\theta^{a-1}(1-\theta)^{b-1}\), é Beta(\(a, b\)) e \(c = \frac{(a+b-1)!}{(a-1)!\,(b-1)!}\)<br>(sem essa forma: divida o numerador pela sua integral)</td></tr>
 <tr><td>4</td><td>MAP</td><td>ponto de máximo de \(\theta^m(1-\theta)^n\): \(\frac{m}{m+n}\)<br>(discreto: a hipótese com o maior numerador)</td></tr>
-<tr><td>5</td><td>previsão do próximo dado</td><td>\(p(x_2 \mid x_1) = \int p(x_2 \mid \theta)\,f(\theta \mid x_1)\,d\theta\)</td></tr>
+<tr><td>5</td><td>previsão do próximo dado</td><td>\(p(x_2 \mid x_1) = \int p(x_2 \mid \theta)\,f(\theta \mid x_1)\,d\theta\)<br>(a integral sai pelo <a href="#integral-beta">inverso da constante da Beta</a>)</td></tr>
 </table></div>
+<p id="intervalo"><b>Quando a pergunta é um intervalo</b> ("a maioria", "pelo menos 6", \(x_2 \ge 6\)): a fórmula 5 dá a chance de <b>um valor de
+cada vez</b>. Então:</p>
+<ol class="spaced">
+<li><b>liste os valores que contam.</b> "Maioria de 10" é 6, 7, 8, 9 e 10, porque 5 é empate;</li>
+<li><b>faça a fórmula 5 para cada um.</b> A posterior é a mesma em todas as contas, e só a likelihood muda com \(k\). Os dois expoentes se movem
+juntos: um sobe 1 e o outro desce 1, então o \(a + b - 1\) do fatorial de cima não muda. A integral de cada conta sai pela
+<a href="#integral-beta">integral da Beta</a>;</li>
+<li><b>some.</b></li>
+</ol>
+<p>Se o intervalo tiver mais valores do que o lado de fora, use o complemento: \(P(x_2 \ge 6) = 1 - P(x_2 \le 5)\). Faça a conta no lado com menos termos.</p>
 """
 
 # ---------------------------------------------------------------- objetivo
@@ -460,10 +498,8 @@ Beta(2,2), onde \(\theta\) é a porcentagem das pessoas que preferem comédia.</
 <p>2. Calcule a posterior de \(\theta\) dado que \(x_1 = 6\). Qual o máximo a posteriori (MAP) de \(\theta\)?</p>
 <p>3. É feita uma nova pesquisa com mais dez pessoas. Calcule a posterior predictive probability de que a maioria das pessoas da segunda amostra
 prefira comédia.</p>""", f'<a href="{L03}">L03</a>, questão 2', lang="pt-BR") + r"""
-<p>Esta lição resolve a Q2.1 e a Q2.2 (a posterior e o MAP). A Q2.3 fica para a lição 0005 (MIT15), que traz a ferramenta que torna aquela
-integral viável.</p>
-
-<p>A Q2.1 usa a fórmula 1; a Q2.2 usa as fórmulas 2, 3 e 4. A fórmula 5 é a da Q2.3, na lição 0005.</p>
+<p>Esta lição resolve as três partes. A Q2.1 usa a fórmula 1; a Q2.2 usa as fórmulas 2, 3 e 4; a Q2.3 usa a fórmula 5, com a
+<a href="#integral-beta">integral da Beta</a> e a dica de <a href="#intervalo">intervalos</a>.</p>
 <p><b>A prior.</b> Pela <a href="#beta">seção anterior</a>, Beta(2,2) é \(6\theta(1-\theta)\): um morro simétrico com pico em 0.5. Antes da
 pesquisa, a crença é que o grupo provavelmente está dividido, sem certeza.</p>
 <h3 id="q21">Q2.1: a pmf de \(x_1\)</h3>
@@ -518,6 +554,34 @@ $$\theta_{\text{MAP}} = \frac{7}{12} \approx 0.583$$
             "A altura da posterior usa a constante 10296; o pico não depende dela.") + r"""
 <p>A prior Beta(2,2) funciona como se já tivéssemos visto 1 pessoa que prefere comédia e 1 que prefere ação: somando essas "pseudo-observações"
 aos dados, ficam 7 e 5, e o MAP é \(7/(7+5)\). A lição 0005 transforma essa leitura numa regra geral.</p>
+
+<h3 id="q23">Q2.3: a maioria na segunda pesquisa</h3>
+<p>Seja \(x_2\) o número de pessoas da segunda amostra de 10 que preferem comédia. "A maioria" é \(x_2 \ge 6\), uma pergunta de
+<a href="#intervalo">intervalo</a>: faça a fórmula 5 para cada \(k = 6, 7, 8, 9, 10\) e some. Os pesos são a posterior da Q2.2, e a
+likelihood de cada \(k\) é a Binomial da Q2.1, agora para a segunda amostra:</p>
+$$P(x_2 = k \mid x_1 = 6) = \int_0^1 \binom{10}{k}\theta^k(1-\theta)^{10-k} \cdot 10296\,\theta^7(1-\theta)^5\,d\theta
+= \binom{10}{k} \cdot 10296 \int_0^1 \theta^{k+7}(1-\theta)^{15-k}\,d\theta$$
+<p>A integral é a forma de uma Beta(\(k+8\), \(16-k\)), sem a constante. Pela <a href="#integral-beta">integral da Beta</a>:</p>
+$$\int_0^1 \theta^{k+7}(1-\theta)^{15-k}\,d\theta = \frac{(k+7)!\,(15-k)!}{23!}$$
+<p>O 6 de \(x_1 = 6\) e o 6 de \(k = 6\) são coisas diferentes: o primeiro é o dado da primeira pesquisa, que já está dentro da posterior; o
+segundo é um resultado possível da segunda.</p>
+""" + check(
+    r"""<table>
+<tr><th class="num">\(k\)</th><th class="num">\(\binom{10}{k}\)</th><th>Beta da integral</th><th class="num">\(P(x_2 = k \mid x_1 = 6)\)</th></tr>
+<tr><td class="num">6</td><td class="num">210</td><td>(14, 10)</td><td>""" + num("0.1890", "0.0005", "5rem") + r"""</td></tr>
+<tr><td class="num">7</td><td class="num">120</td><td>(15, 9)</td><td>""" + num("0.1680", "0.0005", "5rem") + r"""</td></tr>
+<tr><td class="num">8</td><td class="num">45</td><td>(16, 8)</td><td>""" + num("0.1181", "0.0005", "5rem") + r"""</td></tr>
+<tr><td class="num">9</td><td class="num">10</td><td>(17, 7)</td><td>""" + num("0.0600", "0.0005", "5rem") + r"""</td></tr>
+<tr><td class="num">10</td><td class="num">1</td><td>(18, 6)</td><td>""" + num("0.0170", "0.0005", "5rem") + r"""</td></tr>
+<tr><th colspan="3">\(P(x_2 \ge 6 \mid x_1 = 6)\)</th><th>""" + num("0.552", "0.002", "5rem") + r"""</th></tr>
+</table>
+<details><summary>Dica</summary><p>Para \(k = 6\): \(210 \cdot 10296 \cdot \frac{13!\,9!}{23!}\). A constante da Beta(14, 10) é \(\frac{23!}{13!\,9!} = 11\,440\,660\),
+então a conta é \(2\,162\,160 / 11\,440\,660 \approx 0.189\).</p></details>""",
+    f"Isso. As cinco parcelas somam 8203/14858 ≈ 0.552. Confira no <a href='{L03G}'>L03G</a>, questão 2.") + r"""
+<p>A resposta escrita da Q2.3:</p>
+$$P(x_2 \ge 6 \mid x_1 = 6) = \sum_{k=6}^{10} \binom{10}{k} \cdot 10296 \cdot \frac{(k+7)!\,(15-k)!}{23!} = \frac{8203}{14858} \approx 0.552$$
+<p>Faz sentido: a posterior tem pico em 7/12, um pouco acima da metade, então a chance de a maioria preferir comédia na próxima amostra fica um
+pouco acima de 50%.</p>
 """
 
 # ---------------------------------------------------------------- fontes
@@ -527,7 +591,7 @@ conventions</em> e os problemas em sala. Esta lição cobre a nota principal at�
 <table>
 <tr><th>trecho do MIT13</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
 <tr><td>§3, exemplos 2 e 3: tempo de vida exponencial e Normal com parâmetros desconhecidos</td><td>são só exemplos de hipóteses contínuas, sem conta</td><td>não; a Normal volta no MIT14/MIT15 (L03 Q4)</td></tr>
-<tr><td>§4 e a nota <em>Notational conventions</em>: letras grandes (\(P(H)\), \(P(D \mid H)\)) e pequenas (\(f(\theta)\), \(p(x \mid \theta)\))</td><td>a lição usa a notação sem a tabela-resumo</td><td>não; é só notação</td></tr>
+<tr><td>§4 e a nota <em>Notational conventions</em>: letras grandes (\(P(H)\), \(P(D \mid H)\)) e pequenas (\(f(\theta)\), \(p(x \mid \theta)\))</td><td>o quadro <a href="#letras">Qual letra usar</a> resume o essencial</td><td>não; é só notação</td></tr>
 <tr><td>§11 (opcional): do discreto ao contínuo, cortando \([0, 1]\) em 4, 8 e 20 hipóteses e vendo os histogramas da prior e da posterior convergirem para a pdf</td><td>é intuição, sem conta nova</td><td>não, mas ajuda se o \(d\theta\) ainda parecer estranho</td></tr>
 <tr><td>§9.2, Example 8: probabilidade de um intervalo pela posterior, \(P(\theta > 0.5 \mid x = 1) = \int_{0.5}^1 2\theta\,d\theta = 3/4\)</td><td>nenhuma lista nem prova pede probabilidade de intervalo da posterior</td><td>não; é a mesma conta de área da revisão de pdf</td></tr>
 <tr><td>Exemplo em sala 1: três moedas (0.25, 0.5, 0.75) na proporção 1:2:1, duas coroas</td><td>é a tabela discreta da lição 0001</td><td>como treino: posterior de 0.25 dá 0.5</td></tr>
@@ -535,7 +599,7 @@ conventions</em> e os problemas em sala. Esta lição cobre a nota principal at�
 <tr><td>Problema 2(c): esboçar a prior e as duas posteriores do <em>Bent coin 1</em></td><td>o gráfico de HHT mostra o mesmo efeito</td><td>não</td></tr>
 <tr><td>Problema "Bent coin 2": prior plana, 15 caras em 27; escrever a posterior com a constante \(T\) sem calculá-la</td><td>é a mesma ideia da Q2.2, que esta lição faz</td><td>como treino: posterior \(\binom{{27}}{{15}}\theta^{{15}}(1-\theta)^{{12}}/T\), MAP 15/27</td></tr>
 </table>
-<p>Fica para as próximas lições: a L03 Q3, em que o dado é contínuo (lição 0004, MIT14); a regra de atualização da Beta, a L03 Q2.3 e a Q4 (lição 0005, MIT15).</p>
+<p>Fica para as próximas lições: a L03 Q3, em que o dado é contínuo (lição 0004, MIT14); a regra de atualização da Beta e a L03 Q4 (lição 0005, MIT15).</p>
 <div class="callout">Se ficou alguma dúvida, pergunte ao seu professor, que é o agente nesta conversa. Vale um passo da conta, um termo ou "por que isso funciona?".</div>
 <p style="font-size:.8rem;color:var(--muted)">As citações em inglês são de J. Orloff e J. Bloom, <i>18.05 Introduction to Probability and Statistics</i>,
 Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos aparecem como […]. No texto extraído do PDF do MIT13, os símbolos
@@ -544,7 +608,7 @@ matemáticos saíram corrompidos; a prosa é literal, e as fórmulas foram reesc
 
 SPEC = {
     "title": "0003 · Prior contínua e MAP",
-    "subtitle": "Lição 0003 · COE241 P2 · MIT13 · hipóteses num contínuo · meta: resolver a L03 Q2.1 e Q2.2 (posterior e MAP)",
+    "subtitle": "Lição 0003 · COE241 P2 · MIT13 · hipóteses num contínuo · meta: resolver a L03 Q2 (pmf, posterior, MAP e previsão)",
     "crumbs": f'COE241 · P2 · Lição 0003 &nbsp;·&nbsp; anterior: <a href="{LESSON2}">0002, probabilidade preditiva</a>',
     "sections": [
         {"id": "recordacao", "heading": "Recordação da lição 0002", "html": recordacao},
@@ -556,7 +620,7 @@ SPEC = {
         {"id": "map", "heading": "MAP: o pico da posterior", "html": map_},
         {"id": "beta", "heading": "A família Beta", "html": beta},
         {"id": "receita", "heading": "Como resolver: passo zero e as 5 fórmulas", "html": receita},
-        {"id": "objetivo", "heading": "O objetivo: L03 Q2.1 e Q2.2", "html": objetivo},
+        {"id": "objetivo", "heading": "O objetivo: L03 Q2", "html": objetivo},
         {"id": "fontes", "heading": "O que ficou de fora do MIT13", "html": fontes},
     ],
     "quiz": [
@@ -584,12 +648,24 @@ SPEC = {
              {"text": r"\(p(x)\) não depende de \(\theta\): só muda a escala", "correct": True, "feedback": r"Isso: dividir por uma constante muda a altura da curva, não o lugar do pico. Maximize o numerador likelihood \(\times\) prior."},
              {"text": r"\(p(x)\) vale \(1\), pois a posterior integra \(1\)", "correct": False, "feedback": r"Quem integra \(1\) é a posterior, justamente por dividir por \(p(x)\). No exemplo de HHT, \(p(x) = \frac{1}{10}\)."},
              {"text": r"\(p(x)\) é desprezível perto do numerador", "correct": False, "feedback": r"Não é desprezível (no exemplo de HHT, \(\frac{1}{10}\)). Ela é dispensável por outro motivo: não depende de \(\theta\)."}]},
-        {"question": r"L03 Q2: prior \(6\theta(1-\theta)\) (pico em \(0.5\)), \(6\) de \(10\) pessoas preferem comédia. A posterior é proporcional a \(\theta^7(1-\theta)^5\) e o MAP é \(\frac{7}{12} \approx 0.583\). Por que ele fica entre \(0.5\) e \(0.6\)?",
-         "ref": [("objetivo", "O objetivo: L03 Q2.1 e Q2.2")],
+        {"question": r"Na L03 Q2, a prior Beta(2,2) tem pico em \(0.5\), e na amostra \(6\) de \(10\) pessoas preferem comédia, uma fração de \(0.6\). O MAP da posterior é \(\frac{7}{12} \approx 0.583\). Por que ele fica entre \(0.5\) e \(0.6\)?",
+         "ref": [("objetivo", "O objetivo: L03 Q2")],
          "options": [
              {"text": r"A prior puxa a \(0.5\); os dados, a \(0.6\)", "correct": True, "feedback": "Isso: a posterior é o produto das duas, e o pico do produto fica entre os dois picos. Com mais dados, o MAP se aproximaria da fração observada."},
              {"text": r"É a média simples de \(0.5\) e \(0.6\)", "correct": False, "feedback": r"A média seria \(0.55\). O MAP \(\frac{7}{12}\) pesa mais os dados (\(10\) pessoas) que a prior (equivale a \(2\))."},
              {"text": "A posterior soma prior e likelihood", "correct": False, "feedback": r"A posterior é o produto, não a soma: \(\theta(1-\theta) \cdot \theta^6(1-\theta)^4 = \theta^7(1-\theta)^5\)."}]},
+        {"question": r"Quanto vale \(\int_0^1 \theta^3(1-\theta)^2\,d\theta\), sem expandir o polinômio?",
+         "ref": [("integral-beta", "A mesma regra, ao contrário: uma integral sem integrar")],
+         "options": [
+             {"text": r"\(\frac{3!\,2!}{6!} = \frac{1}{60}\)", "correct": True, "feedback": r"Isso: é a forma da Beta(4, 3), cuja constante é \(\frac{6!}{3!\,2!} = 60\). A integral é o inverso dela."},
+             {"text": r"\(\frac{6!}{3!\,2!} = 60\)", "correct": False, "feedback": r"Essa é a constante da Beta(4, 3). A integral da forma é o inverso dela, \(\frac{1}{60}\): a constante vezes a integral dá 1."},
+             {"text": r"\(\frac{2!\,1!}{4!} = \frac{1}{12}\)", "correct": False, "feedback": r"Aqui os expoentes foram usados como \(a\) e \(b\). Os expoentes são \(a - 1\) e \(b - 1\): \(a = 4\), \(b = 3\), e a integral é \(\frac{3!\,2!}{6!} = \frac{1}{60}\)."}]},
+        {"question": r"L03 Q2.3: numa nova amostra de \(10\) pessoas, quais valores de \(x_2\) contam como 'a maioria prefere comédia'?",
+         "ref": [("q23", "Q2.3: a maioria na segunda pesquisa")],
+         "options": [
+             {"text": r"De \(6\) a \(10\)", "correct": True, "feedback": r"Isso: \(5\) de \(10\) é empate. Faça a fórmula 5 para cada valor de \(6\) a \(10\) e some."},
+             {"text": r"De \(5\) a \(10\)", "correct": False, "feedback": r"Com \(5\), metade prefere comédia e metade ação: é empate, não maioria."},
+             {"text": r"Só \(x_2 = 6\)", "correct": False, "feedback": r"O \(6\) é o dado da primeira pesquisa. 'A maioria' inclui todos os valores de \(6\) a \(10\), e as cinco chances se somam."}]},
     ],
 }
 
