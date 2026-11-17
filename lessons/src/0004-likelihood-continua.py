@@ -108,11 +108,17 @@ pratica = r"""
 <p>O \(\phi(7) = 0.0625\) não é a chance de o ônibus atrasar exatamente 7 minutos (essa é 0). É a densidade do atraso em 7, antes de saber
 \(\theta\), e só serve para normalizar.</p>
 <p id="exponencial"><b>A regra não é "\(1/\theta\)".</b> A regra é "altura da pdf do dado"; \(1/\theta\) é só a altura da Uniforme. Com outra
-distribuição, a coluna muda e o resto da tabela fica igual. As lâmpadas da <a href="{LESSON0}">lição 0000</a> duram \(X\) anos, com \(X\)
-Exponencial(\(\lambda\)), pdf \(\lambda e^{-\lambda x}\). A taxa \(\lambda\) é 1 ou 2, com prior 1/2 para cada. Uma lâmpada durou 1 ano.</p>
+distribuição, a coluna muda e o resto da tabela fica igual.</p>
+<p>Para ver isso, troque a Uniforme pela <b>Exponencial</b>, a distribuição de tempos de vida. Se o tempo de vida \(X\) de uma lâmpada,
+em anos, é Exponencial(\(\lambda\)), a pdf é \(\lambda e^{-\lambda x}\) para \(x \ge 0\), e a vida média é \(1/\lambda\) anos.
+(É o mesmo modelo das lâmpadas da LMLE, na <a href="{LESSON0}">lição 0000</a>; lá a pergunta era o MLE de \(\lambda\), aqui é a posterior.)</p>
+<p>Uma caixa de lâmpadas veio de uma de duas fábricas. Na fábrica A, as lâmpadas duram em média 1 ano (\(\lambda = 1\)); na B, meio ano
+(\(\lambda = 2\)). Você não sabe de qual fábrica é a caixa e acha as duas igualmente prováveis (prior 1/2 para cada). Você testa uma
+lâmpada, e ela dura 1 ano. A tabela é a mesma de antes; só a likelihood agora é a altura da pdf da Exponencial em \(x = 1\),
+ou seja, \(\lambda e^{-\lambda \cdot 1}\):</p>
 """.replace("{LESSON0}", LESSON0) + bayes_table(
     [(r"\(\lambda = 1\)", "0.5", "0.3679", "0.5761"), (r"\(\lambda = 2\)", "0.5", "0.2707", "0.4239")],
-    ok="Isso: 1·e⁻¹ ≈ 0.368 e 2·e⁻² ≈ 0.271. Com λ = 1 a lâmpada dura 1 ano em média, então um ano de vida favorece λ = 1 (posterior ≈ 0.576).",
+    ok="Isso: 1·e⁻¹ ≈ 0.368 e 2·e⁻² ≈ 0.271. A fábrica A (vida média de 1 ano) explica melhor uma lâmpada que durou 1 ano: posterior ≈ 0.576.",
     lik_header=r"likelihood \(\lambda e^{-\lambda \cdot 1}\)", total=r"\(\phi(1)\)")
 
 # ---------------------------------------------------------------- receita
