@@ -807,19 +807,22 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
 (function () {
   const body = document.body;
   if (getComputedStyle(body).position === 'static') body.style.position = 'relative';
-  const hasHL = !!(window.CSS && CSS.highlights && window.Highlight);
 
   const css = document.createElement('style');
   // Notes are violet (underline), highlights yellow (fill). Tokens follow the page theme (data-theme wins over the OS setting, like the page itself).
-  const LIGHT = '--nt-hl: rgba(110,80,200,.07); --nt-line: rgba(110,80,200,.55); --nt-hl-on: rgba(110,80,200,.18); --nt-tint: #6e50c8; --nt-ink: #6a4fc4; --nt-sh: rgba(40,20,80,.10); --nt-mark: rgba(255,210,0,.38); --nt-mark-blk: rgba(235,185,0,.6);';
-  const DARK = '--nt-hl: rgba(170,150,255,.10); --nt-line: rgba(170,150,255,.6); --nt-hl-on: rgba(170,150,255,.22); --nt-tint: #aa96ff; --nt-ink: #b4a4ff; --nt-sh: rgba(0,0,0,.35); --nt-mark: rgba(240,190,60,.26); --nt-mark-blk: rgba(240,190,60,.5);';
+  const LIGHT = '--nt-hl: rgba(110,80,200,.07); --nt-line: rgba(110,80,200,.55); --nt-hl-on: rgba(110,80,200,.18); --nt-tint: #6e50c8; --nt-ink: #6a4fc4; --nt-sh: rgba(40,20,80,.10); --nt-mark: rgba(255,210,0,.38); --nt-mark-blk: rgba(235,185,0,.6); --nt-blend: multiply;';
+  const DARK = '--nt-hl: rgba(170,150,255,.10); --nt-line: rgba(170,150,255,.6); --nt-hl-on: rgba(170,150,255,.22); --nt-tint: #aa96ff; --nt-ink: #b4a4ff; --nt-sh: rgba(0,0,0,.35); --nt-mark: rgba(240,190,60,.26); --nt-mark-blk: rgba(240,190,60,.5); --nt-blend: screen;';
   css.textContent = `
   :root { ${LIGHT} }
   @media screen and (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { ${DARK} } }
   :root[data-theme="dark"] { ${DARK} }
-  ::highlight(notes) { background-color: var(--nt-hl); text-decoration: underline 1.5px var(--nt-line); text-underline-offset: 3px; }
-  ::highlight(notes-on) { background-color: var(--nt-hl-on); }
-  ::highlight(marks) { background-color: var(--nt-mark); }
+  /* Text notes/highlights: one box per line drawn over the text. No z-index on the container, so the
+     boxes blend with the page (multiply on light, screen on dark) and never tint the glyphs. */
+  .nt-hls { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+  .nt-hls > div { position: absolute; mix-blend-mode: var(--nt-blend); border-radius: 2px; }
+  .nt-hls .nt-n { background: var(--nt-hl); box-shadow: inset 0 -1.5px var(--nt-line); }
+  .nt-hls .nt-n.on { background: var(--nt-hl-on); }
+  .nt-hls .nt-m { background: var(--nt-mark); }
   /* Blocks (diagram boxes, figures, code, tables): a note draws a dashed ring, a highlight a solid one. */
   .nt-b-note { outline: 1.5px dashed var(--nt-line); outline-offset: 4px; }
   .nt-b-note.on { outline-style: solid; outline-color: var(--nt-ink); }
@@ -838,7 +841,7 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
   .nt-view:empty::before { content: 'Clique para escrever'; color: var(--muted); }
   .nt-view .katex, .nt-prev .katex { font-size: 1.08em; }
   .nt-view .katex-display, .nt-prev .katex-display { margin: .4em 0; overflow-x: auto; overflow-y: hidden; }
-  .nt-card textarea { width: 100%; box-sizing: border-box; min-height: 64px; resize: vertical; font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+  .nt-card textarea { width: 100%; box-sizing: border-box; min-height: 64px; resize: none; overflow: hidden; font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
     background: var(--surface); color: var(--fg); border: 1px solid var(--border); border-radius: 5px; padding: 6px 8px; }
   .nt-card textarea:focus { outline: 2px solid color-mix(in srgb, var(--nt-ink) 60%, transparent); outline-offset: 0; border-color: transparent; }
   .nt-prev { margin-top: 8px; padding-top: 6px; border-top: 1px dashed var(--border); overflow-wrap: anywhere; }
@@ -863,26 +866,27 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
   .nt-toggle { position: fixed; left: 12px; bottom: 12px; z-index: 70; font: 12.5px system-ui; padding: 6px 10px; border-radius: 999px; cursor: pointer;
     display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); box-shadow: 0 2px 8px var(--nt-sh); }
   .nt-toggle:hover { color: var(--fg); }
-  .nt-badge:focus-visible, .nt-bar button:focus-visible, .nt-toggle:focus-visible, .nt-x:focus-visible { outline: 2px solid var(--nt-ink); outline-offset: 2px; }
-  body.nt-hidden .nt-layer, body.nt-hidden .nt-gap { display: none; }
+  .nt-view:focus-visible, .nt-badge:focus-visible, .nt-bar button:focus-visible, .nt-toggle:focus-visible, .nt-x:focus-visible { outline: 2px solid var(--nt-ink); outline-offset: 2px; }
+  body.nt-hidden .nt-layer, body.nt-hidden .nt-gap, body.nt-hidden .nt-hls { display: none; }
   @media (prefers-reduced-motion: reduce) { .nt-card { transition: none; } .nt-bar { animation: none; } }
   @media print { .nt-bar, .nt-toggle, .nt-badge, .nt-gap { display: none; } }`;
   document.head.appendChild(css);
 
   // Speech-bubble glyph, drawn in currentColor so it follows the theme.
   const ICON = '<svg class="nt-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M3 2.75h10a1.25 1.25 0 0 1 1.25 1.25v6A1.25 1.25 0 0 1 13 11.25H8L4.75 14v-2.75H3A1.25 1.25 0 0 1 1.75 10V4A1.25 1.25 0 0 1 3 2.75z"/><path d="M5 6h6M5 8.25h4"/></svg>';
+  const hls = document.createElement('div'); hls.className = 'nt-hls'; body.appendChild(hls);
   const layer = document.createElement('div'); layer.className = 'nt-layer'; body.appendChild(layer);
   const MARK = '<svg class="nt-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M9.6 2.4l4 4-6.1 6.1H3.5v-4z"/><path d="M2 14.6h7"/></svg>';
   const XICON = '<svg class="nt-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg>';
   // One floating bar for every action: on a selection or a block (Nota / Destacar), on a highlight (Nota / Remover).
   const bar = document.createElement('div'); bar.className = 'nt-bar'; bar.hidden = true;
-  bar.innerHTML = `<button type="button" data-a="note" title="Nota">${ICON}<span class="lbl">Nota</span></button>`
-    + `<button type="button" data-a="mark" title="Destacar">${MARK}<span class="lbl">Destacar</span></button>`
+  bar.innerHTML = `<button type="button" data-a="note" title="Nota (N)">${ICON}<span class="lbl">Nota</span></button>`
+    + `<button type="button" data-a="mark" title="Destacar (H)">${MARK}<span class="lbl">Destacar</span></button>`
     + `<button type="button" data-a="unmark" title="Remover destaque">${XICON}<span class="lbl">Remover</span></button>`;
   const [bNote, bMark, bUnmark] = bar.children;
   body.appendChild(bar);
   const toggle = document.createElement('button'); toggle.className = 'nt-toggle'; toggle.type = 'button'; body.appendChild(toggle);
-  const ours = (n) => n && (n.closest ? n : n.parentElement)?.closest('.nt-layer,.nt-bar,.nt-toggle,.nt-gap,script,style,.theme-toggle');
+  const ours = (n) => n && (n.closest ? n : n.parentElement)?.closest('.nt-hls,.nt-layer,.nt-bar,.nt-toggle,.nt-gap,script,style,.theme-toggle');
 
   let notes = [];             // [{id, q, n, pre, suf, y, text, t, h?: highlight only, b?: whole block}]
   const cards = new Map();    // note id -> {el, range, at, blk, ...}
@@ -972,15 +976,15 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
   // --- cards
   function makeCard(note) {
     const el = document.createElement('div'); el.className = 'nt-card';
-    el.innerHTML = '<div class="nt-q"></div><button class="nt-x" type="button" title="Apagar (clique duas vezes)">✕</button><div class="nt-view"></div>';
+    el.innerHTML = '<div class="nt-q"></div><button class="nt-x" type="button" title="Apagar (clique duas vezes)">✕</button><div class="nt-view" tabindex="0"></div>';
     const c = { el, note, view: el.querySelector('.nt-view'), editing: false };
-    el.querySelector('.nt-q').textContent = '“' + note.q.trim().replace(/\s+/g, ' ') + '”';
     const x = el.querySelector('.nt-x'); let armT = 0;
     x.onclick = () => {
       if (x.classList.contains('arm')) { clearTimeout(armT); remove(note.id); return; }
       x.classList.add('arm'); x.textContent = 'Apagar?'; armT = setTimeout(() => { x.classList.remove('arm'); x.textContent = '✕'; }, 3000);
     };
     c.view.onclick = () => edit(c);
+    c.view.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); edit(c); } };
     el.onmouseenter = () => setActive(note.id);
     el.onmouseleave = () => setActive(null);
     const badge = document.createElement('button'); badge.className = 'nt-badge'; badge.type = 'button'; badge.innerHTML = ICON; badge.setAttribute('aria-label', 'Abrir nota');
@@ -994,12 +998,13 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
     if (c.editing) return;
     c.editing = true; c.open = true;
     const ta = document.createElement('textarea'), prev = document.createElement('div'), hint = document.createElement('div');
-    prev.className = 'nt-prev'; hint.className = 'nt-hint'; hint.textContent = 'LaTeX: $x^2$ ou $$\\sum_i x_i$$ · Ctrl/⌘+Enter salva · Esc cancela';
+    prev.className = 'nt-prev'; hint.className = 'nt-hint'; hint.textContent = 'LaTeX: $x^2$ ou $$\\sum_i x_i$$ · Enter salva · Shift+Enter quebra linha · Esc cancela';
     ta.value = c.note.text || '';
     let raf = 0;
-    ta.oninput = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { prev.innerHTML = ta.value.search(MATH) >= 0 ? renderText(ta.value) : ''; layout(); }); };
+    ta.oninput = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 2 + 'px'; cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { prev.innerHTML = ta.value.search(MATH) >= 0 ? renderText(ta.value) : ''; layout(); }); };
     const done = (save) => {
       if (!c.editing) return; c.editing = false;
+      const kb = document.activeElement === ta; // saved from the keyboard: give focus back to the note
       const text = save ? ta.value.trim() : (c.note.text || '');
       ta.remove(); prev.remove(); hint.remove(); c.view.style.display = '';
       if (!text && c.fromMark) { c.fromMark = false; c.note.h = 1; store.update(c.note.id, { h: 1 }); render(); return; }
@@ -1007,14 +1012,15 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
       c.fromMark = false;
       if (text !== c.note.text) { c.note.text = text; store.update(c.note.id, { text }); }
       c.view.innerHTML = renderText(text); layout();
+      if (kb) c.view.focus({ preventScroll: true });
     };
     ta.onkeydown = (e) => {
-      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); done(true); }
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); done(true); }
       if (e.key === 'Escape') { e.preventDefault(); done(false); }
     };
     ta.onblur = () => done(true);
     c.view.style.display = 'none'; c.el.append(ta, prev, hint);
-    ta.oninput(); ta.focus(); layout();
+    layout(); ta.oninput(); ta.focus(); // layout first: on narrow screens the card is hidden until then, and a hidden textarea can't be sized or focused
   }
 
   // Reconcile cards with notes by id; a card being edited is never clobbered.
@@ -1041,12 +1047,14 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
       if (!c.editing) c.note = note;
       c.at = at;
       c.range = at && rangeAt(ix, at);
+      // The quote as the reader sees it: q also holds KaTeX's hidden copies of each formula.
+      c.el.querySelector('.nt-q').textContent = '“' + ((c.range && texText(c.range)) ?? c.note.q).trim().replace(/\s+/g, ' ') + '”';
       c.blk = c.note.b && c.range ? tag(blkOfRange(c.range), 'nt-b-note') : null;
       c.el.classList.toggle('lost', !at);
       if (at) heal(c.note, anchorAt(ix.full, ...at), c);
     }
     for (const [id, c] of cards) if (!keep.has(id)) { c.el.remove(); c.badge.remove(); c.gap?.remove(); cards.delete(id); }
-    paintHL(); layout();
+    layout();
     const hid = body.classList.contains('nt-hidden');
     toggle.innerHTML = ICON + cards.size + (hid ? ' · ocultas' : '');
     toggle.setAttribute('aria-label', hid ? 'Mostrar notas' : 'Ocultar notas');
@@ -1056,17 +1064,50 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
   function heal(note, a, c) {
     if (a.q === note.q && a.n === note.n && a.pre === note.pre && a.suf === note.suf) return;
     Object.assign(note, a);
-    if (c) c.el.querySelector('.nt-q').textContent = '“' + a.q.trim().replace(/\s+/g, ' ') + '”';
     if (!String(note.id).startsWith('tmp')) Promise.resolve(store.update(note.id, a)).catch(() => {});
   }
+  // One box per line, as tall as the line's plain text: math and code inside widen it but never
+  // change its height (the CSS Highlight API painted each font's own box, so heights jumped).
+  function lineBoxes(range) {
+    const root = range.commonAncestorContainer, nodes = [];
+    if (root.nodeType === 3) nodes.push(root);
+    else for (let w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n; (n = w.nextNode());) if (range.intersectsNode(n)) nodes.push(n);
+    const plain = [], other = [];
+    for (const n of nodes) {
+      const el = n.parentElement;
+      if (!el || el.closest('.katex-mathml')) continue; // KaTeX's hidden MathML copy
+      const r = document.createRange(); r.selectNodeContents(n);
+      if (n === range.startContainer) r.setStart(n, range.startOffset);
+      if (n === range.endContainer) r.setEnd(n, range.endOffset);
+      for (const b of r.getClientRects()) if (b.width) (el.closest('.katex, code, kbd') ? other : plain).push(b);
+    }
+    const lines = [];
+    for (const b of plain) {
+      const L = lines.find((L) => b.top < L.b && b.bottom > L.t);
+      if (L) Object.assign(L, { l: Math.min(L.l, b.left), r: Math.max(L.r, b.right), t: Math.min(L.t, b.top), b: Math.max(L.b, b.bottom) });
+      else lines.push({ l: b.left, r: b.right, t: b.top, b: b.bottom });
+    }
+    for (const b of other.sort((x, y) => y.height - x.height)) { // math/code joins the line its middle sits on
+      const m = (b.top + b.bottom) / 2, L = lines.find((L) => m >= L.t && m <= L.b);
+      if (L) { L.l = Math.min(L.l, b.left); L.r = Math.max(L.r, b.right); } else lines.push({ l: b.left, r: b.right, t: b.top, b: b.bottom });
+    }
+    return lines;
+  }
   function paintHL() {
-    if (!hasHL) return;
-    if (body.classList.contains('nt-hidden')) { CSS.highlights.clear(); return; }
-    const text = (xs) => xs.filter((x) => x.range && !x.note.b).map((x) => x.range);
-    CSS.highlights.set('notes', new Highlight(...text([...cards.values()])));
-    CSS.highlights.set('marks', new Highlight(...text([...marks.values()])));
-    const a = active && cards.get(active);
-    if (a && a.range && !a.note.b) CSS.highlights.set('notes-on', new Highlight(a.range)); else CSS.highlights.delete('notes-on');
+    hls.textContent = '';
+    if (body.classList.contains('nt-hidden')) return;
+    const br = body.getBoundingClientRect(), frag = document.createDocumentFragment();
+    const draw = (x, cls) => {
+      if (!x.range || x.note.b) return;
+      for (const L of lineBoxes(x.range)) {
+        const d = document.createElement('div'); d.className = cls;
+        d.style.cssText = `left:${L.l - br.left}px;top:${L.t - br.top}px;width:${L.r - L.l}px;height:${L.b - L.t}px`;
+        frag.append(d);
+      }
+    };
+    for (const [id, c] of cards) draw(c, id === active ? 'nt-n on' : 'nt-n');
+    for (const m of marks.values()) draw(m, 'nt-m');
+    hls.append(frag);
   }
   function setActive(id) {
     active = id;
@@ -1112,6 +1153,7 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
       c.el.style.top = top + 'px';
       if (wide) floor = top + c.el.offsetHeight;
     }
+    paintHL();
   }
   new ResizeObserver(() => layout()).observe(body);
   addEventListener('resize', layout);
@@ -1144,23 +1186,30 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
   document.addEventListener('copy', (e) => {
     const s = getSelection();
     if (!s.rangeCount || s.isCollapsed || e.target.closest?.('textarea, input')) return;
-    const r = s.getRangeAt(0).cloneRange();
+    const t = texText(s.getRangeAt(0));
+    if (t == null) return;
+    e.clipboardData.setData('text/plain', t);
+    e.preventDefault();
+  });
+  // Range -> its text with each formula as $..$ / $$..$$ (a half-covered one counts whole), or null
+  // when it holds no formula.
+  function texText(range) {
+    const r = range.cloneRange();
     const kOf = (n) => { const el = n.nodeType === 3 ? n.parentElement : n; return el?.closest('.katex-display') || el?.closest('.katex'); };
     const a = kOf(r.startContainer), b = kOf(r.endContainer);
     if (a) r.setStartBefore(a);
     if (b) r.setEndAfter(b); // a half-selected formula copies whole
     const frag = r.cloneContents();
     const ks = [...frag.querySelectorAll('.katex')];
-    if (!ks.length) return;
+    if (!ks.length) return null;
     for (const k of ks) {
       const tex = k.querySelector('annotation[encoding="application/x-tex"]')?.textContent;
       if (tex == null) continue;
       const d = k.closest('.katex-display');
       (d || k).replaceWith(d ? '$$' + tex.trim() + '$$' : '$' + tex.trim() + '$');
     }
-    e.clipboardData.setData('text/plain', frag.textContent);
-    e.preventDefault();
-  });
+    return frag.textContent;
+  }
 
   // --- the bar
   let ctx = null; // {mode: 'sel', range} | {mode: 'blk', el} | {mode: 'mark', id}
@@ -1181,17 +1230,19 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
   }
   function hideBar() { bar.hidden = true; ctx = null; }
 
+  // Bar goes above the selection's first line (at its right end), so it never covers selected text;
+  // with no room above, it drops below the whole selection.
+  const selRect = (r) => { const b = r.getBoundingClientRect(), f = [...r.getClientRects()].find((x) => x.width) || b; return { top: f.top, right: f.right, bottom: b.bottom }; };
   function onSel() {
     const s = getSelection();
     if (!s.rangeCount || s.isCollapsed || ours(s.anchorNode) || ours(s.focusNode)) { if (ctx?.mode === 'sel') hideBar(); return; }
     const range = s.getRangeAt(0).cloneRange(), span = spanOf(textIndex(), range);
     if (!span) return;
-    const rs = range.getClientRects();
-    showBar({ mode: 'sel', range, overNote: notesIn(span) }, rs[rs.length - 1] || range.getBoundingClientRect());
+    showBar({ mode: 'sel', range, overNote: notesIn(span) }, selRect(range));
   }
   let selT = 0;
   document.addEventListener('selectionchange', () => { clearTimeout(selT); selT = setTimeout(onSel, 120); });
-  addEventListener('scroll', () => { if (ctx?.mode === 'sel') onSel(); else if (ctx) hideBar(); }, { passive: true });
+  addEventListener('scroll', () => { if (ctx?.mode === 'sel') showBar(ctx, selRect(ctx.range)); else if (ctx) hideBar(); }, { passive: true });
   // Mouse: resting on a block for a moment offers the bar at its corner.
   let hoverT = 0;
   document.addEventListener('pointermove', (e) => {
@@ -1211,6 +1262,15 @@ document.querySelectorAll('.quiz-opt').forEach(function (o) {
     if (!a || !c) return;
     hideBar();
     act(a, c);
+  });
+
+  // Keyboard: while the bar is up, N = note, H = highlight, Esc = close it (and drop the selection).
+  document.addEventListener('keydown', (e) => {
+    if (!ctx || e.ctrlKey || e.metaKey || e.altKey || e.target.closest?.('textarea, input, [contenteditable]')) return;
+    if (e.key === 'Escape') { e.preventDefault(); if (ctx.mode === 'sel') getSelection().removeAllRanges(); hideBar(); return; }
+    const k = e.key.toLowerCase(), a = k === 'n' ? 'note' : k === 'h' && !bMark.hidden ? 'mark' : null;
+    if (!a) return;
+    e.preventDefault(); const c = ctx; hideBar(); act(a, c);
   });
 
   function act(a, c) {
