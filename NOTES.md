@@ -8,7 +8,7 @@
 - Global (CLAUDE.md): explicar em camadas (o que faz + exemplo numérico, depois a versão ingênua, depois os atalhos), dizendo quando algo é atalho e não outra formulação.
 
 - Visual: o usuário achou feio o HTML feito à mão. Toda lição e ficha usa o renderer do explain-diff-html via `assets/build.py`. O fonte fica em `lessons/src/*.py` e `reference/src/*.py`. Build: `python lessons/src/<arquivo>.py`.
-- Componentes de `build.py`: `flow()` (diagrama de caixas), `prior_post()` (barras prior × posterior), `mc()` (múltipla escolha no meio da lição), `.check-group` com `<input data-answer>` (resposta numérica, via check.js) e `quiz` no spec (quiz final, com opções embaralhadas).
+- Componentes de `build.py`: `prior_post()` (barras prior × posterior), `bayes_square()`, `bayes_table()` (tabela de Bayes para preencher), `pdf_plot()` (curvas de pdf; `fills` pinta ou hachura a área sob cada curva, `marks` com "ur" põe o rótulo acima e à direita do ponto), `mc()` (múltipla escolha no meio da lição; fórmulas no feedback são renderizadas no build), `.check-group` com `<input data-answer>` (resposta numérica, via check.js) e `quiz` no spec (quiz final, com opções embaralhadas).
 
 - As lições bastam sozinhas para o que a P2 cobra. O MIT vira aprofundamento opcional, e cada lição termina com o quadro "o que ficou de fora do Mxx".
 - Trechos importantes do MIT entram **literais** com `quote()`, e não parafraseados. Exemplos são repetidos por inteiro. Só cito texto que veio limpo da extração do PDF; omissões aparecem como […].
@@ -17,8 +17,14 @@
 - Nenhum termo sem definição na primeira vez que aparece (prior, likelihood, MLE, normalizar, pmf...). Depois de um exemplo, ligar os números aos conceitos.
 - `bayes_square()` (build.py): o quadrado do 3Blue1Brown (largura = prior, altura pintada = likelihood, área = numerador, total pintado = P(D), barra = posterior). `display=` desenha fora de escala, e um assert garante que as proporções entre as áreas pintadas não mudam; `post=False` tira a barra; `wlabel`/`total` renomeiam os rótulos. Decidido (2026-11-15): entra na 0001 (doença no aquecimento, moedas na tabela) e na 0002 (prior e posterior predictive como área pintada). Na 0003 não entra (é a "ponte de faixas" que o usuário mandou tirar).
 - Diagrama de caixinhas (flow) não serve para fórmula: use a fórmula anotada (\underbrace/\overbrace). O `flow()` foi removido.
+- Exemplo novo: uma frase de ligação com o que veio antes ("Para ver isso…") e o enunciado completo. Nunca só "o exemplo da lição X" sem repetir o exemplo (2026-11-17, Exponencial da 0004).
+- Depois de uma tabela ou conta com um passo novo: mostrar como sai cada número, passo a passo (substituir o parâmetro, substituir o dado, fazer a conta) e, no fim, a intuição (2026-11-17, "não achei muito fácil" a likelihood da Exponencial).
+- Quando o enunciado mistura papéis, dizer o que é hipótese, prior e posterior. Ex.: L03 Q3, "a prior para θ é 1/4 ou 3/4 com a mesma probabilidade": 1/4 e 3/4 são as hipóteses, e a prior é 1/2. O MAP é o valor do parâmetro, e não a posterior dele.
+- Fórmula longa em linha própria ($$…$$, aligned se forem várias), e não no meio do parágrafo, onde quebra mal.
 
 ## Trabalho
+- Revisão antes do PR: comparar a lição com o Mxx dela **e** com os exercícios relacionados (listas, provas, MEX2): citações literais, as ideias principais que os exercícios exigem, a cobertura do que eles cobram e o quadro "o que ficou de fora". Pedido do usuário (2026-11-17).
+- Antes de publicar: testar todos os exercícios no navegador (preview "licoes" do .claude/launch.json) e conferir os gráficos: nenhum rótulo encostando em linha, áreas sobrepostas legíveis.
 - L03G: as soluções são imagens no PDF. As respostas das lições foram calculadas com frações exatas (Python). Pedir ao usuário que confira no PDF.
 - L03 Q1.1 (calculado): posterior = 0, 0.2435, 0.6847, 0.0609, 0.0110 (dados de 4/6/8/12/20 lados). Q1.2 P(5) = 0.1318; Q1.3 P(15) = 0.000548.
 
@@ -31,7 +37,7 @@
 - Links entre lições usam a URL do artifact (links relativos quebram no artifact).
 - O `title` de cada lição começa com o número ("0004 · ..."), para a ordem aparecer no artifact. Toda lição nova entra também na tabela do README.md.
 - Repositório: github.com/drbarros2004/probest (privado). Os HTML gerados entram no repo.
-- As lições levam a caneta da explain-diff-html-ink (ink.js, coleção `ink`) e, desde 2026-11-16, as notas da explain-diff-html-notes (add_notes.py, coleção `notes`), as duas injetadas pelo build.py. Pedido do usuário: "todos os artifacts de probest com essa skill"; a caneta ficou para não sumir com os traços já salvos, e o botão dela subiu (`.ink-ui` bottom 56px) para não cobrir o das notas. Ler as notas: ArtifactData list, coleção `notes`. Publicar com capabilities {"db": {}}; num republish, omitir capabilities.
+- As lições levam a caneta da explain-diff-html-ink (ink.js, coleção `ink`) e, desde 2026-11-16, as notas da explain-diff-html-notes (add_notes.py, coleção `notes`), as duas injetadas pelo build.py. Pedido do usuário: "todos os artifacts de probest com essa skill"; a caneta ficou para não sumir com os traços já salvos, e o botão dela subiu (`.ink-ui` bottom 56px) para não cobrir o das notas. Ler as notas: ArtifactData list, coleção `notes`. Ao republicar uma lição com notas: listar a coleção `notes` antes e depois e conferir que o `q` de cada nota continua na página; se um trecho marcado for reescrito, manter as frases marcadas ou reapontar a nota (nunca apagar). Publicar com capabilities {"db": {}}; num republish, omitir capabilities.
 
 - L03 Q2 (calculado): MAP = 7/12 ≈ 0.583 (posterior ∝ θ⁷(1−θ)⁵ = Beta(8,6), constante 10296); Q2.3 P(maioria ≥ 6 de 10) = 8203/14858 ≈ 0.552. Q3: MAP 1/4 h após 10 min; 3/4 h após 30 min.
 - Decisão (usuário): 0003 = M13 + Q2.1 + MAP da Q2.2. A Q2.3 ia para a 0005 (M15), porque a integral dependia da normalização da Beta (M15 §3.1). Revisto (2026-11-16, usuário): com o quadro da Beta e a "integral da Beta" (#integral-beta) já na 0003, a Q2.3 passou para a 0003 (#q23), com a dica de intervalos (#intervalo). A Q3 vai com o M14 (0004); a Q4 (Normal-Normal) vai com o M15 (0005).
