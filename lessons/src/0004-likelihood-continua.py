@@ -77,8 +77,9 @@ se cancela na divisão. Pode-se escrever só \(\phi(x \mid \theta)\).</p>
 <h3 id="exemplo">Um exemplo com números</h3>
 <p>Um sorteio dá um número uniforme em \([0, \theta]\). Você não sabe se \(\theta = 1/2\) ou \(\theta = 1\) e acha as duas igualmente
 prováveis (prior 1/2 para cada). Saiu \(x = 0.4\). A likelihood de cada hipótese é a altura da pdf dela em \(x = 0.4\):</p>
-""" + pdf_plot(ex, "As duas pdfs possíveis do dado. A linha tracejada em x = 0.4 encontra a de θ = 1/2 na altura 2 e a de θ = 1 na altura 1.",
-               ymax=2.5, marks=[(.4, unif(.5), "2", ACC), (.4, unif(1), "1", MUT)], xlabel="x") + r"""
+""" + pdf_plot(ex, "As duas pdfs possíveis do dado. As duas áreas valem 1, então a mais estreita (θ = 1/2) é a mais alta. Em x = 0.4, a altura é 2 numa e 1 na outra.",
+               ymax=2.5, marks=[(.4, unif(.5), "2", ACC, "ur"), (.4, unif(1), "1", MUT, "ur")], xlabel="x", n=1000,
+               fills=[(unif(.5), ACC, "área 1", .25, 1.5), (unif(1), MUT, "área 1", .75, .5, "hatch")]) + r"""
 <table>
 <tr><th>hipótese</th><th class="num">prior</th><th class="num">likelihood \(\phi(0.4 \mid \theta)\)</th><th class="num">numerador</th><th class="num">posterior</th></tr>
 <tr><td>\(\theta = 1/2\)</td><td class="num">1/2</td><td class="num">2</td><td class="num">1</td><td class="num">2/3</td></tr>
@@ -108,12 +109,32 @@ pratica = r"""
 <p>O \(\phi(7) = 0.0625\) não é a chance de o ônibus atrasar exatamente 7 minutos (essa é 0). É a densidade do atraso em 7, antes de saber
 \(\theta\), e só serve para normalizar.</p>
 <p id="exponencial"><b>A regra não é "\(1/\theta\)".</b> A regra é "altura da pdf do dado"; \(1/\theta\) é só a altura da Uniforme. Com outra
-distribuição, a coluna muda e o resto da tabela fica igual. As lâmpadas da <a href="{LESSON0}">lição 0000</a> duram \(X\) anos, com \(X\)
-Exponencial(\(\lambda\)), pdf \(\lambda e^{-\lambda x}\). A taxa \(\lambda\) é 1 ou 2, com prior 1/2 para cada. Uma lâmpada durou 1 ano.</p>
+distribuição, a coluna muda e o resto da tabela fica igual.</p>
+<p>Para ver isso, troque a Uniforme pela <b>Exponencial</b>, a distribuição de tempos de vida. Se o tempo de vida \(X\) de uma lâmpada,
+em anos, é Exponencial(\(\lambda\)), a pdf é \(\lambda e^{-\lambda x}\) para \(x \ge 0\), e a vida média é \(1/\lambda\) anos.
+(É o mesmo modelo das lâmpadas da LMLE, na <a href="{LESSON0}">lição 0000</a>; lá a pergunta era o MLE de \(\lambda\), aqui é a posterior.)</p>
+<p>Uma caixa de lâmpadas veio de uma de duas fábricas. Na fábrica A, as lâmpadas duram em média 1 ano (\(\lambda = 1\)); na B, meio ano
+(\(\lambda = 2\)). Você não sabe de qual fábrica é a caixa e acha as duas igualmente prováveis (prior 1/2 para cada). Você testa uma
+lâmpada, e ela dura 1 ano. A tabela é a mesma de antes; só a likelihood agora é a altura da pdf da Exponencial em \(x = 1\),
+ou seja, \(\lambda e^{-\lambda \cdot 1}\):</p>
 """.replace("{LESSON0}", LESSON0) + bayes_table(
     [(r"\(\lambda = 1\)", "0.5", "0.3679", "0.5761"), (r"\(\lambda = 2\)", "0.5", "0.2707", "0.4239")],
-    ok="Isso: 1·e⁻¹ ≈ 0.368 e 2·e⁻² ≈ 0.271. Com λ = 1 a lâmpada dura 1 ano em média, então um ano de vida favorece λ = 1 (posterior ≈ 0.576).",
-    lik_header=r"likelihood \(\lambda e^{-\lambda \cdot 1}\)", total=r"\(\phi(1)\)")
+    ok="Isso: 1·e⁻¹ ≈ 0.368 e 2·e⁻² ≈ 0.271. A fábrica A (vida média de 1 ano) explica melhor uma lâmpada que durou 1 ano: posterior ≈ 0.576.",
+    lik_header=r"likelihood \(\lambda e^{-\lambda \cdot 1}\)", total=r"\(\phi(1)\)") + r"""
+<p id="calc-lik"><b>Como sai cada likelihood.</b> A likelihood de uma hipótese é a pdf do dado no valor observado, fingindo que a
+hipótese é verdadeira. Para cada linha da tabela, são dois passos:</p>
+<ol class="spaced">
+<li><b>Escreva a pdf com a hipótese no lugar do parâmetro.</b> A pdf é \(\lambda e^{-\lambda x}\). Para \(\lambda = 1\), ela vira
+\(1 \cdot e^{-1 \cdot x}\); para \(\lambda = 2\), vira \(2\,e^{-2x}\).</li>
+<li><b>Ponha o dado no lugar de \(x\)</b> (a lâmpada durou \(x = 1\) ano) <b>e faça a conta</b>, com \(e \approx 2.718\):
+$$\begin{aligned} \phi(1 \mid \lambda = 1) &= 1 \cdot e^{-1} = 1/e \approx 0.368 \\ \phi(1 \mid \lambda = 2) &= 2\,e^{-2} = 2/e^2 \approx 2 \cdot 0.135 = 0.271 \end{aligned}$$</li>
+</ol>
+<p>Daí em diante é a tabela de sempre: numeradores \(0.5 \cdot 0.368 = 0.184\) e \(0.5 \cdot 0.271 = 0.135\), soma \(\phi(1) \approx 0.319\),
+posteriores \(0.184 / 0.319 \approx 0.576\) e \(0.135 / 0.319 \approx 0.424\).</p>
+<p>Por que \(\lambda = 2\) perde, se a pdf dela começa mais alta (2, contra 1)? Porque ela cai mais rápido: o fator \(e^{-2x}\) encolhe
+duas vezes mais depressa que \(e^{-x}\). As lâmpadas da fábrica B quase sempre queimam cedo. Em \(x = 1\), a pdf de B já está abaixo da
+de A, e uma lâmpada que durou 1 ano é mais típica da fábrica A.</p>
+"""
 
 # ---------------------------------------------------------------- receita
 receita = r"""
@@ -141,7 +162,11 @@ para valor de θ é 1/4 ou 3/4 com a mesma probabilidade.</p>
 """ + bayes_table(
     [(r"\(\theta = 1/4\)", "0.5", "4", "0.75"), (r"\(\theta = 3/4\)", "0.5", "4/3", "0.25")],
     ok="Isso: posteriores 3/4 e 1/4, então o MAP é θ = 1/4 h (15 min). As duas cobrem 10 min, e a mais estreita vence.",
-    lik_header=r"likelihood \(\phi(1/6 \mid \theta)\)", total=r"\(\phi(1/6)\)") + check(
+    lik_header=r"likelihood \(\phi(1/6 \mid \theta)\)", total=r"\(\phi(1/6)\)") + r"""
+<p><b>MAP com hipóteses discretas.</b> Na <a href="{LESSON3}">lição 0003</a>, \(\theta\) era contínuo, a posterior era uma curva, e o MAP
+era o \(\theta\) do pico, achado pela derivada. Aqui há só duas hipóteses, e a posterior é um número para cada uma. O MAP é a hipótese de
+maior posterior (ou de maior numerador, que dá no mesmo). A resposta é o valor de \(\theta\), e não a posterior dele.</p>
+""".replace("{LESSON3}", LESSON3) + check(
     r"<p>MAP de \(\theta\) depois de 10 min, em horas: " + num("0.25", "0.001") + "</p>",
     f"Isso: θ = 1/4. Confira no <a href='{L03G}'>L03G</a>, questão 3 (a solução é imagem; compare com o PDF aberto).") + r"""
 <p><b>Segundo item.</b> Agora Maria chega 30 minutos atrasada. Use a posterior do primeiro item como prior (o botão "Preencher anteriores"

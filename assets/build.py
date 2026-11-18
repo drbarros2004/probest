@@ -180,14 +180,16 @@ def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", tota
     return f'<figure><div class="diagram">{svg}</div>{cap}</figure>'
 
 
-def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=200, xlabel="θ"):
+def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=200, xlabel="θ", fills=()):
     """Density curves on [0, 1] (prior/posterior pdfs of a parameter).
     curves: [(label, fn, color, dashed, label_x[, label_y])]; the label sits on the curve at label_x,
     or at (label_x, label_y) in data units when the curve is crowded there.
     shade: (a, b, fn, text) fills the area under fn on [a, b] (a probability as area).
     strip: (x, width, fn, text) draws one thin bar of height fn(x) (the f(x) dx idea).
-    marks: [(x, fn, text, color)] vertical dashed line from the axis to fn(x), labelled on top
-    (e.g. where a posterior peaks)."""
+    marks: [(x, fn, text, color[, "ur"])] vertical dashed line from the axis to fn(x), labelled on top
+    (e.g. where a posterior peaks); "ur" puts the label up-right of the point, clear of the lines through it.
+    fills: [(fn, color, text, tx, ty[, "hatch"])] the whole area under fn, lightly filled (or hatched),
+    with text at (tx, ty) (e.g. "área 1" inside each pdf)."""
     W, H, X0, X1, Y0, Y1 = 560, 300, 48, 530, 28, 262
     top = ymax or max(fn(i / n) for _, fn, *_ in curves for i in range(n + 1)) * 1.12
     sx = lambda x: X0 + (X1 - X0) * x  # noqa: E731
@@ -208,6 +210,16 @@ def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=
         pts = " ".join(f"{sx(a + (b-a)*i/n):.1f},{sy(fn(a + (b-a)*i/n)):.1f}" for i in range(n + 1))
         parts.append(f'<polygon points="{sx(a):.1f},{Y1} {pts} {sx(b):.1f},{Y1}" fill="var(--accent)" fill-opacity=".18" stroke="none"/>'
                      f'<text x="{sx((a+b)/2):.1f}" y="{Y1-14}" text-anchor="middle" fill="var(--fg)" font-size="14">{text}</text>')
+    for k, (fn, color, text, tx, ty, *style) in enumerate(fills):
+        pts = " ".join(f"{sx(i/n):.1f},{sy(fn(i/n)):.1f}" for i in range(n + 1))
+        paint = f'fill="{color}" fill-opacity=".14"'
+        if style == ["hatch"]:  # diagonal lines, so an area that overlaps a filled one still reads as its own shape
+            pid = f"hatch{k}-{abs(hash(color)) % 10**6}"
+            parts.append(f'<defs><pattern id="{pid}" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
+                         f'<line x1="0" y1="0" x2="0" y2="7" stroke="{color}" stroke-width="1.5" stroke-opacity=".55"/></pattern></defs>')
+            paint = f'fill="url(#{pid})"'
+        parts.append(f'<polygon points="{X0},{Y1} {pts} {X1},{Y1}" {paint} stroke="none"/>'
+                     f'<text x="{sx(tx):.1f}" y="{sy(ty):.1f}" text-anchor="middle" fill="{color}" font-size="14">{text}</text>')
     if strip:
         x, w, fn, text = strip
         parts.append(f'<rect x="{sx(x-w/2):.1f}" y="{sy(fn(x)):.1f}" width="{sx(w)-X0:.1f}" height="{Y1-sy(fn(x)):.1f}" fill="var(--accent)" fill-opacity=".55"/>'
@@ -218,10 +230,11 @@ def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=
         dash = ' stroke-dasharray="6 5"' if dashed else ""
         parts.append(f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="2.5"{dash}/>'
                      f'<text x="{tx:.1f}" y="{ty:.1f}" fill="{color}" font-size="15" font-weight="700">{label}</text>')
-    for x, fn, text, color in marks:
+    for x, fn, text, color, *pos in marks:
+        lx, ly, anchor = (sx(x) + 8, sy(fn(x)) - 8, "start") if pos == ["ur"] else (sx(x), sy(fn(x)) - 12, "middle")
         parts.append(f'<line x1="{sx(x):.1f}" y1="{Y1}" x2="{sx(x):.1f}" y2="{sy(fn(x)):.1f}" stroke="{color}" stroke-width="1.5" stroke-dasharray="3 3"/>'
                      f'<circle cx="{sx(x):.1f}" cy="{sy(fn(x)):.1f}" r="4.5" fill="{color}"/>'
-                     f'<text x="{sx(x):.1f}" y="{sy(fn(x))-12:.1f}" text-anchor="middle" fill="{color}" font-size="13" font-weight="700">{text}</text>')
+                     f'<text x="{lx:.1f}" y="{ly:.1f}" text-anchor="{anchor}" fill="{color}" font-size="13" font-weight="700">{text}</text>')
     svg = (f'<svg viewBox="0 0 {W} {H}" width="100%" role="img" style="max-width:{W}px;display:block;margin:auto;'
            f'font-family:Georgia,serif">{"".join(parts)}</svg>')
     cap = f"<figcaption>{caption}</figcaption>" if caption else ""
