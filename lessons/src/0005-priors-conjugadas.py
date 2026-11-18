@@ -49,10 +49,10 @@ $$\text{{Beta}}(a, b):\quad f(\theta) = \underbrace{{\frac{{(a+b-1)!}}{{(a-1)!\,
 <p>E a regra que dispensa a integral: se uma pdf em \([0, 1]\) tem a forma \(c\,\theta^{{a-1}}(1-\theta)^{{b-1}}\), ela é Beta(\(a, b\)), e o \(c\) é a
 constante acima. Basta ler os expoentes e somar 1.</p>
 """ + check(
-    r"""<p><b>1.</b> Uma pdf da forma \(c\,\theta^2(1-\theta)^5\) é Beta(""" + num("3", "0.01", "2.6rem") + ", " + num("6", "0.01", "2.6rem") + r""").</p>
-<p><b>2.</b> Na L03 Q2.2, a prior era Beta(2,2) e 6 de 10 pessoas preferiram comédia. A posterior foi Beta(""" + num("8", "0.01", "2.6rem")
+    r"""<p>Na L03 Q2.2, a prior era Beta(2,2) e 6 de 10 pessoas preferiram comédia. Prior vezes likelihood deu o numerador
+\(1260\,\theta^7(1-\theta)^5\). Que Beta é a posterior? Beta(""" + num("8", "0.01", "2.6rem")
     + ", " + num("6", "0.01", "2.6rem") + ").</p>",
-    "Isso. Expoentes 2 e 5 dão Beta(3, 6). Na Q2.2, o numerador foi 1260 θ⁷(1−θ)⁵, então Beta(8, 6).")
+    "Isso: expoente 7 = a − 1 e expoente 5 = b − 1, então Beta(8, 6). O 1260 não importa: a constante sai da fórmula da Beta.")
 
 # ---------------------------------------------------------------- regra da Beta
 regra = r"""
