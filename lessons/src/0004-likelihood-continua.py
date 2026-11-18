@@ -77,8 +77,9 @@ se cancela na divisão. Pode-se escrever só \(\phi(x \mid \theta)\).</p>
 <h3 id="exemplo">Um exemplo com números</h3>
 <p>Um sorteio dá um número uniforme em \([0, \theta]\). Você não sabe se \(\theta = 1/2\) ou \(\theta = 1\) e acha as duas igualmente
 prováveis (prior 1/2 para cada). Saiu \(x = 0.4\). A likelihood de cada hipótese é a altura da pdf dela em \(x = 0.4\):</p>
-""" + pdf_plot(ex, "As duas pdfs possíveis do dado. A linha tracejada em x = 0.4 encontra a de θ = 1/2 na altura 2 e a de θ = 1 na altura 1.",
-               ymax=2.5, marks=[(.4, unif(.5), "2", ACC), (.4, unif(1), "1", MUT)], xlabel="x") + r"""
+""" + pdf_plot(ex, "As duas pdfs possíveis do dado. As duas áreas valem 1, então a mais estreita (θ = 1/2) é a mais alta. Em x = 0.4, a altura é 2 numa e 1 na outra.",
+               ymax=2.5, marks=[(.4, unif(.5), "2", ACC, "ur"), (.4, unif(1), "1", MUT, "ur")], xlabel="x", n=1000,
+               fills=[(unif(.5), ACC, "área 1", .25, 1.5), (unif(1), MUT, "área 1", .75, .5, "hatch")]) + r"""
 <table>
 <tr><th>hipótese</th><th class="num">prior</th><th class="num">likelihood \(\phi(0.4 \mid \theta)\)</th><th class="num">numerador</th><th class="num">posterior</th></tr>
 <tr><td>\(\theta = 1/2\)</td><td class="num">1/2</td><td class="num">2</td><td class="num">1</td><td class="num">2/3</td></tr>
@@ -161,7 +162,11 @@ para valor de θ é 1/4 ou 3/4 com a mesma probabilidade.</p>
 """ + bayes_table(
     [(r"\(\theta = 1/4\)", "0.5", "4", "0.75"), (r"\(\theta = 3/4\)", "0.5", "4/3", "0.25")],
     ok="Isso: posteriores 3/4 e 1/4, então o MAP é θ = 1/4 h (15 min). As duas cobrem 10 min, e a mais estreita vence.",
-    lik_header=r"likelihood \(\phi(1/6 \mid \theta)\)", total=r"\(\phi(1/6)\)") + check(
+    lik_header=r"likelihood \(\phi(1/6 \mid \theta)\)", total=r"\(\phi(1/6)\)") + r"""
+<p><b>MAP com hipóteses discretas.</b> Na <a href="{LESSON3}">lição 0003</a>, \(\theta\) era contínuo, a posterior era uma curva, e o MAP
+era o \(\theta\) do pico, achado pela derivada. Aqui há só duas hipóteses, e a posterior é um número para cada uma. O MAP é a hipótese de
+maior posterior (ou de maior numerador, que dá no mesmo). A resposta é o valor de \(\theta\), e não a posterior dele.</p>
+""".replace("{LESSON3}", LESSON3) + check(
     r"<p>MAP de \(\theta\) depois de 10 min, em horas: " + num("0.25", "0.001") + "</p>",
     f"Isso: θ = 1/4. Confira no <a href='{L03G}'>L03G</a>, questão 3 (a solução é imagem; compare com o PDF aberto).") + r"""
 <p><b>Segundo item.</b> Agora Maria chega 30 minutos atrasada. Use a posterior do primeiro item como prior (o botão "Preencher anteriores"
