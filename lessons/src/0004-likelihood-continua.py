@@ -119,7 +119,21 @@ ou seja, \(\lambda e^{-\lambda \cdot 1}\):</p>
 """.replace("{LESSON0}", LESSON0) + bayes_table(
     [(r"\(\lambda = 1\)", "0.5", "0.3679", "0.5761"), (r"\(\lambda = 2\)", "0.5", "0.2707", "0.4239")],
     ok="Isso: 1·e⁻¹ ≈ 0.368 e 2·e⁻² ≈ 0.271. A fábrica A (vida média de 1 ano) explica melhor uma lâmpada que durou 1 ano: posterior ≈ 0.576.",
-    lik_header=r"likelihood \(\lambda e^{-\lambda \cdot 1}\)", total=r"\(\phi(1)\)")
+    lik_header=r"likelihood \(\lambda e^{-\lambda \cdot 1}\)", total=r"\(\phi(1)\)") + r"""
+<p id="calc-lik"><b>Como sai cada likelihood.</b> A likelihood de uma hipótese é a pdf do dado no valor observado, fingindo que a
+hipótese é verdadeira. Para cada linha da tabela, são dois passos:</p>
+<ol class="spaced">
+<li><b>Escreva a pdf com a hipótese no lugar do parâmetro.</b> A pdf é \(\lambda e^{-\lambda x}\). Para \(\lambda = 1\), ela vira
+\(1 \cdot e^{-1 \cdot x}\); para \(\lambda = 2\), vira \(2\,e^{-2x}\).</li>
+<li><b>Ponha o dado no lugar de \(x\)</b> (a lâmpada durou \(x = 1\) ano) <b>e faça a conta</b>, com \(e \approx 2.718\):
+$$\begin{aligned} \phi(1 \mid \lambda = 1) &= 1 \cdot e^{-1} = 1/e \approx 0.368 \\ \phi(1 \mid \lambda = 2) &= 2\,e^{-2} = 2/e^2 \approx 2 \cdot 0.135 = 0.271 \end{aligned}$$</li>
+</ol>
+<p>Daí em diante é a tabela de sempre: numeradores \(0.5 \cdot 0.368 = 0.184\) e \(0.5 \cdot 0.271 = 0.135\), soma \(\phi(1) \approx 0.319\),
+posteriores \(0.184 / 0.319 \approx 0.576\) e \(0.135 / 0.319 \approx 0.424\).</p>
+<p>Por que \(\lambda = 2\) perde, se a pdf dela começa mais alta (2, contra 1)? Porque ela cai mais rápido: o fator \(e^{-2x}\) encolhe
+duas vezes mais depressa que \(e^{-x}\). As lâmpadas da fábrica B quase sempre queimam cedo. Em \(x = 1\), a pdf de B já está abaixo da
+de A, e uma lâmpada que durou 1 ano é mais típica da fábrica A.</p>
+"""
 
 # ---------------------------------------------------------------- receita
 receita = r"""
