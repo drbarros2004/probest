@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
-from build import build, mc, quote, pdf_plot  # noqa: E402
+from build import build, mc, quote, pdf_plot, slider  # noqa: E402
 
 MIT11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
 MIT13 = "https://drive.google.com/file/d/1JZzKI6Iad26Wgm2oNSGRJQ4Eex-6gPiP/view"
@@ -429,6 +429,21 @@ the formula for the beta distribution.</p>""", src("§3.1", "MIT15")) + r"""
 <p><b>Uma pdf da forma \(c\,\theta^4(1-\theta)^2\):</b> é Beta(""" + num("5", "0.01", "2.6rem") + ", " + num("3", "0.01", "2.6rem")
     + r"""), com \(c\) = """ + num("105", "0.01", "3.5rem") + "</p>",
     "Isso. Beta(3,3): 5!/(2!·2!) = 120/4 = 30, forma θ²(1−θ)². E θ⁴(1−θ)² tem a − 1 = 4 e b − 1 = 2, então é Beta(5,3), com c = 7!/(4!·2!) = 5040/48 = 105.") + r"""
+<p>Para ver o que \(a\) e \(b\) fazem com a curva, mexa nos controles. Comece pelas Betas da tabela: (1,1), (2,1), (3,1), (3,2), (4,2).</p>
+<div class="playground">
+<div class="controls">
+""" + slider("a", r"\(a\)", 1, 6, 1, 2) + slider("b", r"\(b\)", 1, 6, 1, 2) + r"""
+</div>
+<svg class="plot" data-xlabel="θ" data-ylabel="densidade f(θ)" data-fn="beta(x, a, b)" data-x="0 1" data-y="0 6" role="img" aria-label="pdf da Beta(a, b)"></svg>
+</div>
+$$\text{Beta}(\live{a}, \live{b}):\quad f(\theta) = \frac{\live{a+b-1}!}{\live{a-1}!\;\live{b-1}!}\,\theta^{\live{a-1}}(1-\theta)^{\live{b-1}}
+= \live{fact(a+b-1)/(fact(a-1)*fact(b-1))}\,\theta^{\live{a-1}}(1-\theta)^{\live{b-1}}$$
+<div class="stats">
+<div class="stat"><div class="stat-label">pico (MAP)</div><div class="stat-value" data-expr="a + b > 2 ? (a-1)/(a+b-2) : 'sem pico'"></div></div>
+<div class="stat"><div class="stat-label">constante</div><div class="stat-value" data-expr="fact(a+b-1)/(fact(a-1)*fact(b-1))"></div></div>
+</div>
+<p>O \(a\) puxa a curva para a direita (para perto de \(\theta = 1\)), e o \(b\) puxa para a esquerda. Com os dois grandes, ela fica estreita: muitas
+caras e coroas já vistas, mais certeza sobre \(\theta\).</p>
 <p id="integral-beta"><b>A mesma regra, ao contrário: uma integral sem integrar.</b> Como a área de uma Beta é 1, a constante vezes a integral da forma dá 1:</p>
 $$\frac{(a+b-1)!}{(a-1)!\,(b-1)!}\int_0^1 \theta^{a-1}(1-\theta)^{b-1}\,d\theta = 1$$
 <p>Passando a constante para o outro lado:</p>

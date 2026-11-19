@@ -5,13 +5,12 @@ CC BY-NC-SA 4.0). The extracted text kept the prose clean but garbled the math s
 quoted word for word and the formulas are restored in LaTeX from context. The LMLE problems are quoted from
 the list PDF (an image; transcribed by hand). Answers checked against LMLEG and MEX2G problems 5 to 9.
 """
-import math
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
-from build import build, mc, quote, pdf_plot  # noqa: E402
+from build import build, mc, quote, slider  # noqa: E402
 
 MIT10 = "https://drive.google.com/file/d/1KlxN6zAnv-MLnhpaTUvTBKVZ5aame8yM/view"
 LMLE = "https://drive.google.com/file/d/17yRyo--qjCsMfsi2MPj322gUagn193bd/view"
@@ -19,7 +18,6 @@ LMLEG = "https://drive.google.com/file/d/1ZyJsivcY8yYgSM0Ull_rAWnWQEcg6D7X/view"
 LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
 LESSON3 = "https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT"
 
-ACC, MUT, FG = "var(--accent)", "var(--muted)", "var(--fg)"
 
 
 def src(where):
@@ -82,15 +80,6 @@ heads.</p>
 """
 
 # ---------------------------------------------------------------- MLE
-L55 = math.lgamma(102) - math.lgamma(56) - math.lgamma(46)  # log of the constant that gives theta^55 (1-theta)^45 area 1
-
-
-def lik55(t):
-    if t <= 0 or t >= 1:
-        return 0.0
-    return math.exp(L55 + 55 * math.log(t) + 45 * math.log(1 - t))
-
-
 mle = r"""
 <p>Um <b>parâmetro</b> é o número que fixa uma distribuição: a chance de cara \(\theta\) de uma moeda, por exemplo. Na estatística, os dados
 são conhecidos e o parâmetro não. O MIT10 propõe um jeito de estimar o parâmetro a partir dos dados:</p>
@@ -117,11 +106,16 @@ alguns valores:</p>
 <li>\(\theta = 0.7\): \(P(55 \text{ caras} \mid 0.7) \approx 0.0006\).</li>
 </ul>
 <p>O MLE, escrito \(\hat\theta\), é o \(\theta\) em que essa função chega ao máximo:</p>
-""" + pdf_plot(
-    [("likelihood θ⁵⁵(1−θ)⁴⁵ (reescalada)", lik55, ACC, False, 0.62, 6.5)],
-    marks=[(0.55, lik55, "máximo em 0.55", ACC)],
-    caption="A likelihood de 55 caras em 100, como função de θ. Ela foi multiplicada por uma constante para caber no gráfico; "
-            "isso muda a altura, não o lugar do máximo. Ela vale 0 em θ = 0 e em θ = 1 (com θ = 0 nunca sai cara; com θ = 1 nunca sai coroa).") + r"""
+<p>Procure o máximo com a mão: mova \(\theta\) e veja quando \(L(\theta)\) para de crescer. Depois mude o número de caras \(k\).</p>
+<div class="playground">
+<div class="controls">
+""" + slider("t", r"\(\theta\)", 0.01, 0.99, 0.01, 0.5) + slider("k", r"\(k\) caras", 0, 100, 1, 55) + r"""
+</div>
+<svg class="plot marker" data-xlabel="θ (chance de cara)" data-ylabel="L(θ) = P(k caras | θ)" data-fn="fact(100)/(fact(k)*fact(100-k)) * pow(x, k) * pow(1-x, 100-k)" data-x="0 1" data-y="0 0.15"
+  data-shade-from="t-0.004" data-shade-to="t+0.004" role="img" aria-label="Likelihood de k caras em 100 lançamentos, como função de theta"></svg>
+</div>
+$$L(\theta) = P(\live{k} \text{ caras} \mid \theta) = \binom{100}{\live{k}}\,\live{t}^{\live{k}}\,(1 - \live{t})^{\live{100-k}} = \live{(fact(100)/(fact(k)*fact(100-k)) * pow(t, k) * pow(1-t, 100-k)).toFixed(4)}$$
+<p class="plot-key">A faixa estreita marca o \(\theta\) do slider. A curva vale 0 em \(\theta = 0\) e em \(\theta = 1\) (com \(\theta = 0\) nunca sai cara; com \(\theta = 1\) nunca sai coroa).</p>
 <p><b>Como achar o máximo.</b> Onde a curva tem um pico liso, a derivada é zero. Derivar \(\theta^{55}(1-\theta)^{45}\) direto exige a regra do
 produto; o MIT10 mostra um atalho:</p>
 """ + quote(r"""<p>It is often easier to work with the natural log of the likelihood function. For short this is simply called the log likelihood.

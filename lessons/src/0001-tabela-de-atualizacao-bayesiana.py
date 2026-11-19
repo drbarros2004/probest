@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
-from build import build, prior_post, mc, quote, bayes_table, bayes_square  # noqa: E402
+from build import build, prior_post, mc, quote, bayes_table, bayes_square, slider  # noqa: E402
 
 MIT11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
@@ -54,14 +54,26 @@ Quem chuta 99% caiu na <b>falácia da taxa-base</b>: ignorou a raridade e confun
 <li>dentro de cada faixa, a parte <b>pintada</b> são as pessoas que testam positivo, e a altura dela é a chance de positivo naquela faixa (0.99 e 0.02);</li>
 <li>o teste deu positivo, então a pessoa está em algum lugar da área pintada. Todo o resto do quadrado foi descartado.</li>
 </ul>
+<p>Os controles começam com os números do problema. Mexa neles depois de ler o parágrafo abaixo do quadrado; o botão volta aos valores do problema.</p>
+<div class="controls">
+""" + slider("prev", "prevalência (%)", 0.1, 20, 0.1, 0.5) + slider("sens", r"\(P(+ \mid \text{doente})\) (%)", 50, 100, 1, 99) + slider("fp", r"\(P(+ \mid \text{sadio})\) (%)", 0.5, 20, 0.5, 2) + r"""
+<button type="button" class="reset">voltar ao problema</button>
+</div>
 """ + bayes_square(
     [("doente", .005, .99), ("sadio", .995, .02)],
-    "Fora de escala: com 0.5% de largura, a faixa dos doentes não apareceria. As duas áreas pintadas foram ampliadas 20 vezes, "
-    "por igual, então a proporção entre elas (e a barra da direita) é a verdadeira.",
-    display=[(.1, .99), (.9, .442)]) + r"""
+    '<span data-sq-k></span>',
+    display=[(.1, .99), (.9, .442)], live=("prev/100", "sens/100", "fp/100")) + r"""
 <p>A faixa dos doentes é estreita e quase toda pintada. A dos sadios é enorme e só tem uma parte fina pintada embaixo. Mesmo assim, a área pintada dos sadios
 é maior: 0.995 · 0.02 = 0.0199 contra 0.005 · 0.99 = 0.00495. Dos positivos, só 1 em cada 5 está doente. O 99% é a altura
 da faixa dos doentes, mas a pergunta é sobre a <em>fatia</em> da área pintada.</p>
+<p>Agora mexa na taxa-base e no teste: o quadrado e a barra se refazem com os novos números.</p>
+<p>O gráfico mostra a mesma posterior para cada prevalência de 0 a 20%. A faixa estreita marca a prevalência do slider.</p>
+<svg class="plot marker" data-xlabel="prevalência (%)" data-ylabel="P(doente | +)" data-fn="sens*x / (sens*x + fp*(100-x))" data-x="0 20" data-y="0 1" style="max-width:480px;margin:1rem auto"
+  data-shade-from="prev-0.08" data-shade-to="prev+0.08" role="img" aria-label="P(doente | +) em função da prevalência"></svg>
+$$P(\text{doente} \mid +) = \frac{\live{sens/100} \cdot \live{prev/100}}{\live{sens/100} \cdot \live{prev/100} + \live{fp/100} \cdot \live{(1 - prev/100).toFixed(3)}}
+= \live{(sens*prev / (sens*prev + fp*(100-prev))).toFixed(3)}$$
+<p>Com prevalência de 10%, o mesmo teste já acerta a maioria dos positivos. Baixar o falso-positivo ajuda mais do que subir o 99%: os sadios são tantos
+que a fatia pintada deles manda no resultado.</p>
 
 <h3 id="termos">Dando nome às partes</h3>
 <p>Você acabou de fazer uma inferência bayesiana completa sem usar o vocabulário dela. Cada número da conta tem um nome, e o resto
