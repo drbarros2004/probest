@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
-from build import build, mc, quote, pdf_plot, bayes_table  # noqa: E402
+from build import build, mc, quote, pdf_plot, bayes_table, slider  # noqa: E402
 
 MIT14 = "https://drive.google.com/file/d/1yuuRlktCwZvKz6AJkkwUYqzc73XvduaC/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
@@ -135,6 +135,26 @@ posteriores \(0.184 / 0.319 \approx 0.576\) e \(0.135 / 0.319 \approx 0.424\).</
 <p>Por que \(\lambda = 2\) perde, se a pdf dela começa mais alta (2, contra 1)? Porque ela cai mais rápido: o fator \(e^{-2x}\) encolhe
 duas vezes mais depressa que \(e^{-x}\). As lâmpadas da fábrica B quase sempre queimam cedo. Em \(x = 1\), a pdf de B já está abaixo da
 de A, e uma lâmpada que durou 1 ano é mais típica da fábrica A.</p>
+<p>E se a lâmpada tivesse durado outro tempo? Mova o \(x\): a faixa estreita marca o dado no gráfico, e as duas likelihoods são as alturas
+das curvas ali.</p>
+<div class="playground">
+<div class="controls">
+""" + slider("xl", r"\(x\) (anos)", 0.05, 3, 0.05, 1) + r"""
+</div>
+<div><div class="plot-stack">
+<svg class="plot marker" data-fn="exp(-x)" data-x="0 3" data-y="0 2" data-shade-from="xl-0.012" data-shade-to="xl+0.012" role="img" aria-label="pdf da fábrica A, exp(-x)"></svg>
+<svg class="plot second" data-fn="2*exp(-2*x)" data-x="0 3" data-y="0 2" aria-hidden="true"></svg>
+</div><p class="plot-key"><b>—</b> fábrica A, \(e^{-x}\) &nbsp; - - fábrica B, \(2e^{-2x}\)</p></div>
+</div>
+$$P(A \mid x) = \frac{0.5 \cdot \live{exp(-xl).toFixed(3)}}{0.5 \cdot \live{exp(-xl).toFixed(3)} + 0.5 \cdot \live{(2*exp(-2*xl)).toFixed(3)}}
+= \live{(1/(1 + 2*exp(-xl))).toFixed(3)}$$
+<div class="stats">
+<div class="stat"><div class="stat-label">posterior de A</div><div class="stat-value" data-expr="(1/(1 + 2*exp(-xl))).toFixed(3)"></div></div>
+<div class="stat"><div class="stat-label">posterior de B</div><div class="stat-value" data-expr="(1 - 1/(1 + 2*exp(-xl))).toFixed(3)"></div></div>
+<div class="stat"><div class="stat-label">fábrica mais provável</div><div class="stat-value" data-expr="exp(-xl) > 2*exp(-2*xl) ? 'A' : 'B'"></div></div>
+</div>
+<p>A virada acontece onde as curvas se cruzam, \(e^{-x} = 2e^{-2x}\), ou seja, \(x = \ln 2 \approx 0.69\) ano. Uma lâmpada que queima antes disso
+aponta para B; depois, para A. Com a prior 1/2 e 1/2, quem decide é só a altura das curvas.</p>
 """
 
 # ---------------------------------------------------------------- receita

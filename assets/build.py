@@ -78,7 +78,34 @@ EXTRA_CSS = """
   nav.crumbs a { color: var(--accent); }
   /* The notes toggle sits bottom-left too, so the pen button moves up above it. */
   body .ink-ui { bottom: 56px; }
+  /* Two live plots stacked: the renderer's svg.plot draws one curve, so a second svg (same axes) goes on top. */
+  .plot-stack { position: relative; }
+  .plot-stack > svg.plot + svg.plot { position: absolute; inset: 0; background: none; border-color: transparent; }
+  .plot-stack > svg.plot + svg.plot .grid, .plot-stack > svg.plot + svg.plot text { display: none; }
+  svg.plot.second .plot-line { stroke: var(--muted); stroke-dasharray: 6 5; }
+  svg.plot.second .plot-area { fill: var(--muted); }
+  /* A narrow data-shade band used as a marker for the slider's value. */
+  svg.plot.marker .plot-area { opacity: .75; }
+  .controls button.reset { font: .8rem sans-serif; margin: .4rem 0 .1rem; padding: .3rem .8rem; cursor: pointer; color: var(--muted);
+    background: none; border: 1px solid var(--border); border-radius: 6px; }
+  .controls button.reset:hover { color: var(--accent); border-color: var(--accent); }
+  .plot-key { font-family: sans-serif; font-size: .8rem; color: var(--muted); margin: .3rem 0 0; }
+  .plot-key b { color: var(--accent); }
 """
+
+# Functions the sliders' expressions can call (data-fn, data-expr, \\live). In <head>, so they
+# exist before the renderer's script draws the plots.
+LIVE_JS = """
+function fact(n) { var r = 1; for (var i = 2; i <= n; i++) r *= i; return r; }
+function beta(x, a, b) { return fact(a + b - 1) / (fact(a - 1) * fact(b - 1)) * Math.pow(x, a - 1) * Math.pow(1 - x, b - 1); }
+function normal(x, m, v) { return Math.exp(-(x - m) * (x - m) / (2 * v)) / Math.sqrt(2 * Math.PI * v); }
+"""
+
+
+def slider(var, label, lo, hi, step, value, show=None):
+    """One slider row for a .controls box: input[data-var] plus its readout (show: JS expr, default var)."""
+    return (f'<label class="control"><span>{label}</span> <input type="range" data-var="{var}" min="{lo}" max="{hi}" '
+            f'step="{step}" value="{value}"> <output data-expr="{show or var}"></output></label>')
 
 
 def quote(body, source, lang="en"):
@@ -131,14 +158,16 @@ def _g(x, d=3):
     return f"{round(x, d):g}"
 
 
-def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", total="P(D)"):
+def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", total="P(D)", live=None):
     """3Blue1Brown's Bayes square: column width = prior, shaded height = likelihood,
     shaded area = Bayes numerator, total shaded = P(D), posterior = share of the shaded area.
     cols: [(label, prior, likelihood)], drawn to scale by default.
     display: [(width, height)] to draw out of scale (e.g. a 0.5% prior). The shaded areas must keep
     the true proportions, so the posterior bar stays honest; this is asserted.
     post: draw the posterior bar (the shaded pieces laid side by side).
-    wlabel / total: names for the widths and the shaded total (e.g. a posterior predictive)."""
+    wlabel / total: names for the widths and the shaded total (e.g. a posterior predictive).
+    live: (prior0, lik0, lik1) JS expressions in the slider variables, for two columns: SQUARE_JS
+    redraws the square and the bar as the sliders move (prior1 = 1 - prior0)."""
     num = [p * lk for _, p, lk in cols]
     tot = sum(num)
     shape = display or [(p, lk) for _, p, lk in cols]
@@ -153,15 +182,15 @@ def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", tota
         top = Y0 + S - ch
         inside = h > .85 and cw > 40
         ly = top + 16 if inside else (Y0 - 6 if top - 6 < Y0 + 12 else top - 6)
-        parts.append(f'<g><title>{label}: prior {_g(p, 3)} × likelihood {_g(lk, 3)} = {_g(p*lk, 4)}</title>'
-                     f'<rect x="{x:.1f}" y="{Y0}" width="{cw:.1f}" height="{S}" fill="none" stroke="var(--border)" stroke-width="1.5"/>'
-                     f'<rect x="{x:.1f}" y="{top:.1f}" width="{cw:.1f}" height="{ch:.1f}" fill="var(--accent)" fill-opacity="{ops[i % 5]}"/>'
+        parts.append(f'<g><title class="sq-tt">{label}: prior {_g(p, 3)} × likelihood {_g(lk, 3)} = {_g(p*lk, 4)}</title>'
+                     f'<rect x="{x:.1f}" y="{Y0}" width="{cw:.1f}" height="{S}" fill="none" stroke="var(--border)" stroke-width="1.5" class="sq-o"/>'
+                     f'<rect x="{x:.1f}" y="{top:.1f}" width="{cw:.1f}" height="{ch:.1f}" fill="var(--accent)" fill-opacity="{ops[i % 5]}" class="sq-f"/>'
                      f'<text x="{x+cw/2:.1f}" y="{ly:.1f}" text-anchor="middle" font-size="13" '
-                     f'fill="var(--fg)">{_g(lk, 3)}</text>'
-                     f'<text x="{x+cw/2:.1f}" y="{Y0+S+18}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)">{label}</text>'
-                     f'<text x="{x+cw/2:.1f}" y="{Y0+S+35}" text-anchor="middle" font-size="13" fill="var(--muted)">{_g(p, 3)}</text></g>')
+                     f'fill="var(--fg)" class="sq-l">{_g(lk, 3)}</text>'
+                     f'<text x="{x+cw/2:.1f}" y="{Y0+S+18}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)" class="sq-n">{label}</text>'
+                     f'<text x="{x+cw/2:.1f}" y="{Y0+S+35}" text-anchor="middle" font-size="13" fill="var(--muted)" class="sq-p">{_g(p, 3)}</text></g>')
         x += cw
-    parts.append(f'<text x="{X0+S/2}" y="{Y0+S+60}" text-anchor="middle" font-size="14" fill="var(--fg)">'
+    parts.append(f'<text x="{X0+S/2}" y="{Y0+S+60}" text-anchor="middle" font-size="14" fill="var(--fg)" class="sq-t" data-pre="área pintada = {total} = ">'
                  f'área pintada = {total} = {_g(tot, 5)}</text>'
                  f'<text x="{X0-8}" y="{Y0+S+35}" text-anchor="end" font-size="12" fill="var(--muted)">{wlabel}</text>')
     if post:
@@ -170,14 +199,66 @@ def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", tota
         bx = BX
         for i, ((label, *_), n) in enumerate(zip(cols, num)):
             sw = BW * n / tot
-            parts.append(f'<rect x="{bx:.1f}" y="{BY}" width="{sw:.1f}" height="34" fill="var(--accent)" fill-opacity="{ops[i % 5]}" stroke="var(--surface)"/>'
-                         f'<text x="{bx+sw/2:.1f}" y="{BY+52}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)">{label}</text>'
-                         f'<text x="{bx+sw/2:.1f}" y="{BY+69}" text-anchor="middle" font-size="13" fill="var(--fg)">{_g(n/tot, 3)}</text>')
+            parts.append(f'<rect x="{bx:.1f}" y="{BY}" width="{sw:.1f}" height="34" fill="var(--accent)" fill-opacity="{ops[i % 5]}" stroke="var(--surface)" class="sq-b"/>'
+                         f'<text x="{bx+sw/2:.1f}" y="{BY+52}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)" class="sq-bn">{label}</text>'
+                         f'<text x="{bx+sw/2:.1f}" y="{BY+69}" text-anchor="middle" font-size="13" fill="var(--fg)" class="sq-bp">{_g(n/tot, 3)}</text>')
             bx += sw
         parts.append(f'<text x="{BX}" y="{BY+94}" font-size="14" fill="var(--muted)">fatia de cada um = posterior</text>')
     svg = f'<svg viewBox="0 0 {W} {H}" width="100%" role="img" style="max-width:{W}px;display:block;margin:auto;font-family:Georgia,serif">{"".join(parts)}</svg>'
     cap = f"<figcaption>{caption}</figcaption>" if caption else ""
-    return f'<figure><div class="diagram">{svg}</div>{cap}</figure>'
+    data = f' data-square="{html.escape(";".join(live))}"' if live else ""
+    return f'<figure{data}><div class="diagram">{svg}</div>{cap}</figure>'
+
+
+# Live Bayes square (bayes_square(live=...)): same layout constants as bayes_square. A prior under 10% is
+# drawn 10% wide so the column shows, and both shaded areas scale by the same k, so the bar stays true.
+SQUARE_JS = """
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('.controls button.reset');
+  if (b) b.closest('.controls').querySelectorAll('input[data-var]').forEach(function (i) {
+    i.value = i.defaultValue; i.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+});
+document.querySelectorAll('figure[data-square]').forEach(function (fig) {
+  var ex = fig.dataset.square.split(';').map(function (s) { return new Function('v', 'with (Math) { with (v) { return (' + s + '); } }'); });
+  var q = function (c) { return [].slice.call(fig.querySelectorAll('.' + c)); };
+  var g = function (x, d) { return String(+x.toFixed(d)); };
+  var S = 250, X0 = 66, Y0 = 24, BX = 356, BW = 190, BY = 120;
+  function draw() {
+    var v = {};
+    document.querySelectorAll('input[data-var]').forEach(function (i) { v[i.dataset.var] = parseFloat(i.value); });
+    var p = [ex[0](v)], l = [ex[1](v), ex[2](v)];
+    p.push(1 - p[0]);
+    var n = [p[0] * l[0], p[1] * l[1]], tot = n[0] + n[1];
+    var w = [Math.max(p[0], .1)]; w.push(1 - w[0]);
+    var k = Math.min(w[0] / n[0], w[1] / n[1]), x = X0, bx = BX;
+    [0, 1].forEach(function (i) {
+      var cw = w[i] * S, h = k * n[i] / w[i], ch = h * S, top = Y0 + S - ch;
+      var ly = h > .85 && cw > 40 ? top + 16 : (top - 6 < Y0 + 12 ? Y0 - 6 : top - 6);
+      q('sq-o')[i].setAttribute('x', x); q('sq-o')[i].setAttribute('width', cw);
+      var f = q('sq-f')[i]; f.setAttribute('x', x); f.setAttribute('width', cw); f.setAttribute('y', top); f.setAttribute('height', ch);
+      var t = q('sq-l')[i]; t.setAttribute('x', x + cw / 2); t.setAttribute('y', ly); t.textContent = g(l[i], 3);
+      q('sq-n')[i].setAttribute('x', x + cw / 2);
+      t = q('sq-p')[i]; t.setAttribute('x', x + cw / 2); t.textContent = g(p[i], 3);
+      q('sq-tt')[i].textContent = q('sq-n')[i].textContent + ': prior ' + g(p[i], 3) + ' × likelihood ' + g(l[i], 3) + ' = ' + g(n[i], 4);
+      var sw = BW * n[i] / tot;
+      f = q('sq-b')[i]; if (f) { f.setAttribute('x', bx); f.setAttribute('width', sw);
+        q('sq-bn')[i].setAttribute('x', bx + sw / 2); t = q('sq-bp')[i]; t.setAttribute('x', bx + sw / 2); t.textContent = g(n[i] / tot, 3); }
+      x += cw; bx += sw;
+    });
+    q('sq-t')[0].textContent = q('sq-t')[0].dataset.pre + g(tot, 5);
+    // The caption says whether the drawing is to scale, and by how much both shaded areas were enlarged.
+    var scaled = w[0] !== p[0], big = k > 1.05;
+    fig.querySelectorAll('[data-sq-k]').forEach(function (e) {
+      e.textContent = (scaled ? 'Fora de escala: com ' + g(100 * p[0], 1) + '% de largura, a faixa dos doentes quase não apareceria, então ela foi desenhada com 10%. ' : '')
+        + (big ? 'As duas áreas pintadas foram ampliadas ' + g(k, 1) + ' vezes, por igual, então a proporção entre elas (e a barra da direita) é a verdadeira.'
+               : 'O desenho está em escala: largura = prior, altura pintada = likelihood.');
+    });
+  }
+  document.addEventListener('input', function (e) { if (e.target.matches('input[data-var]')) draw(); });
+  draw();
+});
+"""
 
 
 def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=200, xlabel="θ", fills=(), xscale=1):
@@ -352,7 +433,8 @@ def build(spec, out):
             .replace('<a href="#quiz">Quiz</a>', '<a href="#quiz">Quiz final</a>')
             .replace('<h2 id="quiz">Quiz</h2>', '<h2 id="quiz">Quiz final</h2>')
             .replace("</style>", EXTRA_CSS + "</style>", 1)
-            .replace("</body>", f"<script>{check_js}</script>\n<script>{QUIZ_MATH_JS}</script>\n<script>{ink_js}</script>\n</body>"))
+            .replace("</head>", f"<script>{LIVE_JS}</script>\n</head>", 1)
+            .replace("</body>", f"<script>{check_js}</script>\n<script>{QUIZ_MATH_JS}</script>\n<script>{ink_js}</script>\n<script>{SQUARE_JS}</script>\n</body>"))
     if spec.get("crumbs"):
         page = page.replace("<h1>", f'<nav class="crumbs">{spec["crumbs"]}</nav>\n<h1>', 1)
     Path(out).write_text(page, encoding="utf-8")

@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "assets"))
-from build import build, mc, quote, pdf_plot  # noqa: E402
+from build import build, mc, quote, pdf_plot, slider  # noqa: E402
 
 MIT14 = "https://drive.google.com/file/d/1yuuRlktCwZvKz6AJkkwUYqzc73XvduaC/view"
 MIT15 = "https://drive.google.com/file/d/1nkNUeimH00v3suIbVcsD3XPl-17bW-TV/view"
@@ -177,7 +177,29 @@ mais que a prior e mais que os dados sozinhos.</li>
     r"""<p><b>Confira no exemplo do MIT14</b> (prior \(N(2, 1)\), \(\sigma^2 = 1\), \(x = 5\)):
 \(a\) = """ + num("1", "0.01", "3rem") + r", \(b\) = " + num("1", "0.01", "3rem") + r", \(\mu_{\text{post}}\) = " + num("3.5", "0.01", "3.5rem")
     + r", \(\sigma^2_{\text{post}}\) = " + num("0.5", "0.01", "3.5rem") + "</p>",
-    "Isso: a = b = 1, então os pesos são iguais e μpost = (2 + 5)/2 = 3.5, σ²post = 1/2. É o N(7/2, 1/2) do quadrado completado.")
+    "Isso: a = b = 1, então os pesos são iguais e μpost = (2 + 5)/2 = 3.5, σ²post = 1/2. É o N(7/2, 1/2) do quadrado completado.") + r"""
+<p>Veja o equilíbrio mudar. Os valores iniciais são os do exemplo do MIT14: prior \(N(2, 1)\), \(\sigma^2 = 1\), uma medição \(x = 5\).</p>
+<div class="playground">
+<div class="controls">
+""" + "\n".join([slider("mp", r"\(\mu_{\text{prior}}\)", 0, 10, 0.5, 2), slider("vp", r"\(\sigma^2_{\text{prior}}\)", 0.25, 4, 0.25, 1),
+                 slider("s2", r"\(\sigma^2\)", 0.5, 4, 0.25, 1), slider("n", r"\(n\)", 1, 10, 1, 1),
+                 slider("xb", r"\(\bar{x}\)", 0, 10, 0.5, 5)]) + r"""
+</div>
+<div><div class="plot-stack">
+<svg class="plot" data-fn="normal(x, (mp/vp + n*xb/s2)/(1/vp + n/s2), 1/(1/vp + n/s2))" data-x="0 10" data-y="0 2" role="img" aria-label="Posterior Normal"></svg>
+<svg class="plot second" data-fn="normal(x, mp, vp)" data-x="0 10" data-y="0 2" aria-hidden="true"></svg>
+</div><p class="plot-key"><b>—</b> posterior &nbsp; - - prior &nbsp; (eixo: \(\theta\))</p></div>
+</div>
+$$a = \frac{1}{\live{vp}} = \live{1/vp}, \qquad b = \frac{\live{n}}{\live{s2}} = \live{n/s2}$$
+$$\mu_{\text{post}} = \frac{\live{1/vp} \cdot \live{mp} + \live{n/s2} \cdot \live{xb}}{\live{1/vp + n/s2}} = \live{(mp/vp + n*xb/s2)/(1/vp + n/s2)},
+\qquad \sigma^2_{\text{post}} = \frac{1}{\live{1/vp + n/s2}} = \live{1/(1/vp + n/s2)}$$
+<div class="stats">
+<div class="stat"><div class="stat-label">peso dos dados, \(\frac{b}{a+b}\)</div><div class="stat-value" data-expr="Math.round(100*(n/s2)/(1/vp + n/s2)) + '%'"></div></div>
+<div class="stat"><div class="stat-label">\(\sigma^2_{\text{post}}\) vs. \(\sigma^2_{\text{prior}}\)</div><div class="stat-value" data-expr="(1/(1/vp + n/s2)).toFixed(3) + ' < ' + vp"></div></div>
+</div>
+<p>Aumente o \(n\) ou diminua o \(\sigma^2\): a posterior corre para \(\bar{x}\) e afina. Diminua o \(\sigma^2_{\text{prior}}\): ela fica presa
+perto de \(\mu_{\text{prior}}\). É a L03 Q4 em miniatura: lá, \(b/a = 10\,000\).</p>
+"""
 
 # ---------------------------------------------------------------- objetivo
 objetivo = quote(r"""<p>Suponha que você tenha um cabo cujo tamanho exato é θ. Você tem uma régua que possui um erro com distribuição Normal de média 0 e
