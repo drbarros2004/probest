@@ -180,7 +180,7 @@ def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", tota
     return f'<figure><div class="diagram">{svg}</div>{cap}</figure>'
 
 
-def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=200, xlabel="θ", fills=()):
+def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=200, xlabel="θ", fills=(), xscale=1):
     """Density curves on [0, 1] (prior/posterior pdfs of a parameter).
     curves: [(label, fn, color, dashed, label_x[, label_y])]; the label sits on the curve at label_x,
     or at (label_x, label_y) in data units when the curve is crowded there.
@@ -189,7 +189,8 @@ def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=
     marks: [(x, fn, text, color[, "ur"])] vertical dashed line from the axis to fn(x), labelled on top
     (e.g. where a posterior peaks); "ur" puts the label up-right of the point, clear of the lines through it.
     fills: [(fn, color, text, tx, ty[, "hatch"])] the whole area under fn, lightly filled (or hatched),
-    with text at (tx, ty) (e.g. "área 1" inside each pdf)."""
+    with text at (tx, ty) (e.g. "área 1" inside each pdf).
+    xscale: the axis shows [0, xscale] (tick labels only; fn and every x above stay in [0, 1])."""
     W, H, X0, X1, Y0, Y1 = 560, 300, 48, 530, 28, 262
     top = ymax or max(fn(i / n) for _, fn, *_ in curves for i in range(n + 1)) * 1.12
     sx = lambda x: X0 + (X1 - X0) * x  # noqa: E731
@@ -197,7 +198,7 @@ def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=
     parts = [f'<line x1="{X0}" y1="{Y1}" x2="{X1}" y2="{Y1}" stroke="var(--border)" stroke-width="1.5"/>',
              f'<line x1="{X0}" y1="{Y0-8}" x2="{X0}" y2="{Y1}" stroke="var(--border)" stroke-width="1.5"/>']
     for t in (0, 0.25, 0.5, 0.75, 1):
-        parts.append(f'<text x="{sx(t):.1f}" y="{Y1+18}" text-anchor="middle" fill="var(--muted)" font-size="13">{t:g}</text>')
+        parts.append(f'<text x="{sx(t):.1f}" y="{Y1+18}" text-anchor="middle" fill="var(--muted)" font-size="13">{t * xscale:g}</text>')
     step = 0.5 if top <= 2.6 else 1
     v = step
     for _ in range(int(top / step)):

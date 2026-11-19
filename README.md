@@ -30,6 +30,7 @@ Os artifacts levam o número da lição no título, na ordem de leitura do MIT (
 | 0002 | Probabilidade preditiva | MIT12, L03 Q1.2–1.3 | [abrir](https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z) |
 | 0003 | Prior contínua e MAP | MIT13, L03 Q2 | [abrir](https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT) |
 | 0004 | Likelihood contínua | MIT14, L03 Q3 | [abrir](https://claude.ai/artifact/ULdAerrDUzGftPBWRQvrbC) |
+| 0005 | Priors conjugadas | MIT15, MIT14 §6, L03 Q4, P2-23.2 Q4.1 | [abrir](https://claude.ai/artifact/2WoxChPHPSesBbiDpU4ZJ8) |
 
 Os artifacts são privados. O HTML de cada lição também está em [lessons/](lessons/) e abre direto no navegador.
 

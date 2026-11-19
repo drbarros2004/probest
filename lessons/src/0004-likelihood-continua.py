@@ -17,6 +17,7 @@ L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
 LESSON0 = "https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks"
 LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
 LESSON3 = "https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT"
+LESSON5 = "https://claude.ai/artifact/2WoxChPHPSesBbiDpU4ZJ8"
 
 ACC, MUT = "var(--accent)", "var(--muted)"
 
@@ -180,9 +181,9 @@ coloca 0.75 e 0.25) e a likelihood do novo dado:</p>
     f"Isso: θ = 3/4. Pela outra via (prior 1/2 e likelihood 4 · 0 e 4/3 · 4/3) dá o mesmo. Confira no <a href='{L03G}'>L03G</a>, questão 3.") + r"""
 <p>Um único atraso de 30 minutos derrubou a hipótese que tinha 75%. Com likelihood contínua isso acontece sempre que o dado cai fora do
 intervalo em que a pdf é positiva: a hipótese não fica menos provável, ela fica impossível.</p>
-<p>Com isso, as Q1, Q2 e Q3 da L03 estão feitas. Falta a Q4, em que a prior e o dado são Normais: é o §6 do MIT14 e o assunto da lição 0005,
+<p>Com isso, as Q1, Q2 e Q3 da L03 estão feitas. Falta a Q4, em que a prior e o dado são Normais: é o §6 do MIT14 e o assunto da <a href="{LESSON5}">lição 0005</a>,
 pelo MIT15.</p>
-"""
+""".replace("{LESSON5}", LESSON5)
 
 # ---------------------------------------------------------------- fontes
 fontes = rf"""
@@ -203,7 +204,8 @@ matemáticos saíram corrompidos; a prosa é literal, e as fórmulas foram reesc
 SPEC = {
     "title": "0004 · Likelihood contínua",
     "subtitle": "Lição 0004 · COE241 P2 · MIT14 · quando o dado é contínuo · meta: resolver a L03 Q3",
-    "crumbs": f'COE241 · P2 · Lição 0004 &nbsp;·&nbsp; anterior: <a href="{LESSON3}">0003, prior contínua e MAP</a>',
+    "crumbs": (f'COE241 · P2 · Lição 0004 &nbsp;·&nbsp; anterior: <a href="{LESSON3}">0003, prior contínua e MAP</a>'
+               f' &nbsp;·&nbsp; próxima: <a href="{LESSON5}">0005, priors conjugadas</a>'),
     "sections": [
         {"id": "recordacao", "heading": "Recordação: tabela de Bayes e Uniforme", "html": recordacao},
         {"id": "ideia", "heading": "Dado contínuo: a likelihood vira pdf", "html": ideia},

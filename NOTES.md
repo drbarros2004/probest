@@ -20,6 +20,7 @@
 - Exemplo novo: uma frase de ligação com o que veio antes ("Para ver isso…") e o enunciado completo. Nunca só "o exemplo da lição X" sem repetir o exemplo (2026-11-17, Exponencial da 0004).
 - Depois de uma tabela ou conta com um passo novo: mostrar como sai cada número, passo a passo (substituir o parâmetro, substituir o dado, fazer a conta) e, no fim, a intuição (2026-11-17, "não achei muito fácil" a likelihood da Exponencial).
 - Quando o enunciado mistura papéis, dizer o que é hipótese, prior e posterior. Ex.: L03 Q3, "a prior para θ é 1/4 ou 3/4 com a mesma probabilidade": 1/4 e 3/4 são as hipóteses, e a prior é 1/2. O MAP é o valor do parâmetro, e não a posterior dele.
+- Recordação cobra a habilidade, com todos os dados no enunciado, e não um resultado de outra lição de memória. Ex.: dar o numerador 1260θ⁷(1−θ)⁵ e pedir a Beta, em vez de "a posterior da Q2.2 foi Beta(?, ?)" (2026-11-17, 0005: "ela só não me obriga a ter que voltar lá?").
 - Fórmula longa em linha própria ($$…$$, aligned se forem várias), e não no meio do parágrafo, onde quebra mal.
 
 ## Trabalho
@@ -34,6 +35,7 @@
 - 0002 probabilidade preditiva: https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z
 - 0003 prior contínua e MAP: https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT
 - 0004 likelihood contínua (M14 §4, L03 Q3): https://claude.ai/artifact/ULdAerrDUzGftPBWRQvrbC
+- 0005 priors conjugadas (MIT15, MIT14 §6, L03 Q4, P2-23.2 Q4.1): https://claude.ai/artifact/2WoxChPHPSesBbiDpU4ZJ8
 - Links entre lições usam a URL do artifact (links relativos quebram no artifact).
 - O `title` de cada lição começa com o número ("0004 · ..."), para a ordem aparecer no artifact. Toda lição nova entra também na tabela do README.md.
 - Repositório: github.com/drbarros2004/probest (privado). Os HTML gerados entram no repo.
@@ -55,3 +57,6 @@
 - 0005: M15 (Beta, normalização §3.1, Beta-Binomial e Normal-Normal conjugadas) → L03 Q4 (a Q2.3 já está na 0003). Revisar a Normal da P1 antes. Abrir com recordação do quadro da Beta da 0003.
 - 0000 publicada em 2026-11-08 (diagnóstico da 6 e da 8 no topo, com tabela "travei em… → leia"). Ligada à 0001 (anterior) e à seção do MAP da 0003. LMLE e LMLEG são PDFs de imagem: baixar com download_file_content e renderizar com pymupdf. Respostas (LMLEG): 6a 62/100, 6b k/n, 7 max(yᵢ), 8 1/x̄, 9 x̄, 10 n = 7 (LMLEG usa 1/C(n,3), sem reposição). Pendente: o resultado do diagnóstico do usuário, para registrar num learning-record.
 - Lição de odds (M12, nota Odds) fica para quando chegar a L04 (PSet 7).
+- 0005 feita em 2026-11-17 (~320 linhas de fonte): recordação da Beta (0003), regra Beta(a+s, b+f), revisão da Normal (ler μ e σ² no expoente: c·e^{−(θ−m)²/k} é N(m, k/2)), MIT14 §6 ex. 3 com completar o quadrado (N(7/2, 1/2)), fórmulas a, b do MIT15 como atalho, L03 Q4. Com ela a L03 fecha. `pdf_plot` ganhou `xscale` (rótulos do eixo em [0, xscale]).
+- L03 Q4 (conferido no L03G, imagens das págs. 9–11): Q4.1 posterior N((9+10⁵)/(1+10⁴), 1/(1+10⁴)) ≈ N(9.9999, 9.999×10⁻⁵); Q4.2 n = 100 medições (n > 99.9999). P2-23.2 Q4.1: Beta(8,13).
+- O L03G é PDF de imagem: baixar com download_file_content e extrair as imagens com pymupdf (venv no scratchpad); dá para ler o gabarito direto.
