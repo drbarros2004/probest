@@ -89,6 +89,7 @@ EXTRA_CSS = """
   .controls button.reset { font: .8rem sans-serif; margin: .4rem 0 .1rem; padding: .3rem .8rem; cursor: pointer; color: var(--muted);
     background: none; border: 1px solid var(--border); border-radius: 6px; }
   .controls button.reset:hover { color: var(--accent); border-color: var(--accent); }
+  svg.plot text.axis-label { font-size: 12px; font-style: italic; fill: var(--fg); }
   .plot-key { font-family: sans-serif; font-size: .8rem; color: var(--muted); margin: .3rem 0 0; }
   .plot-key b { color: var(--accent); }
 """
@@ -208,6 +209,26 @@ def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", tota
     cap = f"<figcaption>{caption}</figcaption>" if caption else ""
     data = f' data-square="{html.escape(";".join(live))}"' if live else ""
     return f'<figure{data}><div class="diagram">{svg}</div>{cap}</figure>'
+
+
+# Axis labels for the renderer's svg.plot: data-xlabel / data-ylabel. The renderer draws in a
+# 400x240 box (plot area x 40..388, y 12..212), so the viewBox grows left and down to make room;
+# every plot of a .plot-stack gets the same viewBox, or the stacked curves would stop lining up.
+AXIS_JS = """
+document.querySelectorAll('svg.plot[data-xlabel], svg.plot[data-ylabel]').forEach(function (svg) {
+  var NS = 'http://www.w3.org/2000/svg', stack = svg.closest('.plot-stack');
+  (stack ? stack.querySelectorAll('svg.plot') : [svg]).forEach(function (s) { s.setAttribute('viewBox', '-22 0 422 258'); });
+  function label(text, x, y, rot) {
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'axis-label');
+    if (rot) t.setAttribute('transform', 'rotate(-90 ' + x + ' ' + y + ')');
+    t.textContent = text;
+    svg.appendChild(t);
+  }
+  if (svg.dataset.xlabel) label(svg.dataset.xlabel, 214, 252);
+  if (svg.dataset.ylabel) label(svg.dataset.ylabel, -10, 112, true);
+});
+"""
 
 
 # Live Bayes square (bayes_square(live=...)): same layout constants as bayes_square. A prior under 10% is
@@ -434,7 +455,7 @@ def build(spec, out):
             .replace('<h2 id="quiz">Quiz</h2>', '<h2 id="quiz">Quiz final</h2>')
             .replace("</style>", EXTRA_CSS + "</style>", 1)
             .replace("</head>", f"<script>{LIVE_JS}</script>\n</head>", 1)
-            .replace("</body>", f"<script>{check_js}</script>\n<script>{QUIZ_MATH_JS}</script>\n<script>{ink_js}</script>\n<script>{SQUARE_JS}</script>\n</body>"))
+            .replace("</body>", f"<script>{check_js}</script>\n<script>{QUIZ_MATH_JS}</script>\n<script>{ink_js}</script>\n<script>{SQUARE_JS}</script>\n<script>{AXIS_JS}</script>\n</body>"))
     if spec.get("crumbs"):
         page = page.replace("<h1>", f'<nav class="crumbs">{spec["crumbs"]}</nav>\n<h1>', 1)
     Path(out).write_text(page, encoding="utf-8")

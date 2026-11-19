@@ -68,7 +68,7 @@ Quem chuta 99% caiu na <b>falácia da taxa-base</b>: ignorou a raridade e confun
 da faixa dos doentes, mas a pergunta é sobre a <em>fatia</em> da área pintada.</p>
 <p>Agora mexa na taxa-base e no teste: o quadrado e a barra se refazem com os novos números.</p>
 <p>O gráfico mostra a mesma posterior para cada prevalência de 0 a 20%. A faixa estreita marca a prevalência do slider.</p>
-<svg class="plot marker" data-fn="sens*x / (sens*x + fp*(100-x))" data-x="0 20" data-y="0 1" style="max-width:480px;margin:1rem auto"
+<svg class="plot marker" data-xlabel="prevalência (%)" data-ylabel="P(doente | +)" data-fn="sens*x / (sens*x + fp*(100-x))" data-x="0 20" data-y="0 1" style="max-width:480px;margin:1rem auto"
   data-shade-from="prev-0.08" data-shade-to="prev+0.08" role="img" aria-label="P(doente | +) em função da prevalência"></svg>
 $$P(\text{doente} \mid +) = \frac{\live{sens/100} \cdot \live{prev/100}}{\live{sens/100} \cdot \live{prev/100} + \live{fp/100} \cdot \live{(1 - prev/100).toFixed(3)}}
 = \live{(sens*prev / (sens*prev + fp*(100-prev))).toFixed(3)}$$

@@ -111,7 +111,7 @@ alguns valores:</p>
 <div class="controls">
 """ + slider("t", r"\(\theta\)", 0.01, 0.99, 0.01, 0.5) + slider("k", r"\(k\) caras", 0, 100, 1, 55) + r"""
 </div>
-<svg class="plot marker" data-fn="fact(100)/(fact(k)*fact(100-k)) * pow(x, k) * pow(1-x, 100-k)" data-x="0 1" data-y="0 0.15"
+<svg class="plot marker" data-xlabel="θ (chance de cara)" data-ylabel="L(θ) = P(k caras | θ)" data-fn="fact(100)/(fact(k)*fact(100-k)) * pow(x, k) * pow(1-x, 100-k)" data-x="0 1" data-y="0 0.15"
   data-shade-from="t-0.004" data-shade-to="t+0.004" role="img" aria-label="Likelihood de k caras em 100 lançamentos, como função de theta"></svg>
 </div>
 $$L(\theta) = P(\live{k} \text{ caras} \mid \theta) = \binom{100}{\live{k}}\,\live{t}^{\live{k}}\,(1 - \live{t})^{\live{100-k}} = \live{(fact(100)/(fact(k)*fact(100-k)) * pow(t, k) * pow(1-t, 100-k)).toFixed(4)}$$

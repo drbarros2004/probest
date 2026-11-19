@@ -434,7 +434,7 @@ the formula for the beta distribution.</p>""", src("§3.1", "MIT15")) + r"""
 <div class="controls">
 """ + slider("a", r"\(a\)", 1, 6, 1, 2) + slider("b", r"\(b\)", 1, 6, 1, 2) + r"""
 </div>
-<svg class="plot" data-fn="beta(x, a, b)" data-x="0 1" data-y="0 6" role="img" aria-label="pdf da Beta(a, b)"></svg>
+<svg class="plot" data-xlabel="θ" data-ylabel="densidade f(θ)" data-fn="beta(x, a, b)" data-x="0 1" data-y="0 6" role="img" aria-label="pdf da Beta(a, b)"></svg>
 </div>
 $$\text{Beta}(\live{a}, \live{b}):\quad f(\theta) = \frac{\live{a+b-1}!}{\live{a-1}!\;\live{b-1}!}\,\theta^{\live{a-1}}(1-\theta)^{\live{b-1}}
 = \live{fact(a+b-1)/(fact(a-1)*fact(b-1))}\,\theta^{\live{a-1}}(1-\theta)^{\live{b-1}}$$
