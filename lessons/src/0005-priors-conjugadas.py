@@ -185,10 +185,10 @@ mais que a prior e mais que os dados sozinhos.</li>
                  slider("s2", r"\(\sigma^2\)", 0.5, 4, 0.25, 1), slider("n", r"\(n\)", 1, 10, 1, 1),
                  slider("xb", r"\(\bar{x}\)", 0, 10, 0.5, 5)]) + r"""
 </div>
-<div><div class="plot-stack">
-<svg class="plot" data-xlabel="θ" data-ylabel="densidade f(θ)" data-fn="normal(x, (mp/vp + n*xb/s2)/(1/vp + n/s2), 1/(1/vp + n/s2))" data-x="0 10" data-y="0 2" role="img" aria-label="Posterior Normal"></svg>
+<div class="plot-stack">
+<svg class="plot" data-legend="posterior|prior" data-xlabel="θ" data-ylabel="densidade f(θ)" data-fn="normal(x, (mp/vp + n*xb/s2)/(1/vp + n/s2), 1/(1/vp + n/s2))" data-x="0 10" data-y="0 2" role="img" aria-label="Posterior Normal"></svg>
 <svg class="plot second" data-fn="normal(x, mp, vp)" data-x="0 10" data-y="0 2" aria-hidden="true"></svg>
-</div><p class="plot-key"><b>—</b> posterior &nbsp; - - prior</p></div>
+</div>
 </div>
 $$a = \frac{1}{\live{vp}} = \live{1/vp}, \qquad b = \frac{\live{n}}{\live{s2}} = \live{n/s2}$$
 $$\mu_{\text{post}} = \frac{\live{1/vp} \cdot \live{mp} + \live{n/s2} \cdot \live{xb}}{\live{1/vp + n/s2}} = \live{(mp/vp + n*xb/s2)/(1/vp + n/s2)},

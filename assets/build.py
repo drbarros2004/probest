@@ -90,6 +90,9 @@ EXTRA_CSS = """
     background: none; border: 1px solid var(--border); border-radius: 6px; }
   .controls button.reset:hover { color: var(--accent); border-color: var(--accent); }
   svg.plot text.axis-label { font-size: 12px; font-style: italic; fill: var(--fg); }
+  svg.plot text.legend-text { font-size: 12px; fill: var(--fg); }
+  svg.plot .legend-line { stroke: var(--accent); stroke-width: 2.2; }
+  svg.plot .legend-line.second { stroke: var(--muted); stroke-dasharray: 6 5; }
   .plot-key { font-family: sans-serif; font-size: .8rem; color: var(--muted); margin: .3rem 0 0; }
   .plot-key b { color: var(--accent); }
 """
@@ -211,22 +214,29 @@ def bayes_square(cols, caption="", display=None, post=True, wlabel="prior", tota
     return f'<figure{data}><div class="diagram">{svg}</div>{cap}</figure>'
 
 
-# Axis labels for the renderer's svg.plot: data-xlabel / data-ylabel. The renderer draws in a
-# 400x240 box (plot area x 40..388, y 12..212), so the viewBox grows left and down to make room;
-# every plot of a .plot-stack gets the same viewBox, or the stacked curves would stop lining up.
+# Axis labels and legend for the renderer's svg.plot: data-xlabel / data-ylabel, and data-legend
+# ("posterior|prior") on the first plot of a .plot-stack, one entry per stacked plot, drawn in the
+# top-right corner with each plot's line style. The renderer draws in a 400x240 box (plot area
+# x 40..388, y 12..212), so the viewBox grows on both sides and down to make room; every plot of
+# a .plot-stack gets the same viewBox, or the stacked curves would stop lining up.
 AXIS_JS = """
-document.querySelectorAll('svg.plot[data-xlabel], svg.plot[data-ylabel]').forEach(function (svg) {
+document.querySelectorAll('svg.plot[data-xlabel], svg.plot[data-ylabel], svg.plot[data-legend]').forEach(function (svg) {
   var NS = 'http://www.w3.org/2000/svg', stack = svg.closest('.plot-stack');
-  (stack ? stack.querySelectorAll('svg.plot') : [svg]).forEach(function (s) { s.setAttribute('viewBox', '-22 0 422 258'); });
-  function label(text, x, y, rot) {
-    var t = document.createElementNS(NS, 'text');
-    t.setAttribute('x', x); t.setAttribute('y', y); t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'axis-label');
-    if (rot) t.setAttribute('transform', 'rotate(-90 ' + x + ' ' + y + ')');
-    t.textContent = text;
-    svg.appendChild(t);
+  var plots = stack ? [].slice.call(stack.querySelectorAll('svg.plot')) : [svg];
+  plots.forEach(function (s) { s.setAttribute('viewBox', '-10 0 420 256'); });
+  function el(tag, attrs, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    return svg.appendChild(e);
   }
-  if (svg.dataset.xlabel) label(svg.dataset.xlabel, 214, 252);
-  if (svg.dataset.ylabel) label(svg.dataset.ylabel, -10, 112, true);
+  if (svg.dataset.xlabel) el('text', { x: 214, y: 250, 'text-anchor': 'middle', class: 'axis-label' }, svg.dataset.xlabel);
+  if (svg.dataset.ylabel) el('text', { x: 4, y: 112, 'text-anchor': 'middle', class: 'axis-label', transform: 'rotate(-90 4 112)' }, svg.dataset.ylabel);
+  (svg.dataset.legend || '').split('|').filter(Boolean).forEach(function (name, i) {
+    var y = 26 + i * 17, second = plots[i] && plots[i].classList.contains('second');
+    el('line', { x1: 268, x2: 290, y1: y - 4, y2: y - 4, class: 'legend-line' + (second ? ' second' : '') });
+    el('text', { x: 296, y: y, class: 'legend-text' }, name);
+  });
 });
 """
 

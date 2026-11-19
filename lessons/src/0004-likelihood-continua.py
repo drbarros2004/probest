@@ -141,10 +141,10 @@ das curvas ali.</p>
 <div class="controls">
 """ + slider("xl", r"\(x\) (anos)", 0.05, 3, 0.05, 1) + r"""
 </div>
-<div><div class="plot-stack">
-<svg class="plot marker" data-xlabel="x, tempo de vida (anos)" data-ylabel="densidade φ(x | λ)" data-fn="exp(-x)" data-x="0 3" data-y="0 2" data-shade-from="xl-0.012" data-shade-to="xl+0.012" role="img" aria-label="pdf da fábrica A, exp(-x)"></svg>
+<div class="plot-stack">
+<svg class="plot marker" data-legend="fábrica A (λ = 1)|fábrica B (λ = 2)" data-xlabel="x, tempo de vida (anos)" data-ylabel="densidade φ(x | λ)" data-fn="exp(-x)" data-x="0 3" data-y="0 2" data-shade-from="xl-0.012" data-shade-to="xl+0.012" role="img" aria-label="pdf da fábrica A, exp(-x)"></svg>
 <svg class="plot second" data-fn="2*exp(-2*x)" data-x="0 3" data-y="0 2" aria-hidden="true"></svg>
-</div><p class="plot-key"><b>—</b> fábrica A, \(e^{-x}\) &nbsp; - - fábrica B, \(2e^{-2x}\)</p></div>
+</div>
 </div>
 $$P(A \mid x) = \frac{0.5 \cdot \live{exp(-xl).toFixed(3)}}{0.5 \cdot \live{exp(-xl).toFixed(3)} + 0.5 \cdot \live{(2*exp(-2*xl)).toFixed(3)}}
 = \live{(1/(1 + 2*exp(-xl))).toFixed(3)}$$
