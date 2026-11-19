@@ -215,14 +215,17 @@ que ele é inteiro.</p></details>""",
 receita = r"""
 <div class="callout"><p>Priors conjugadas: a posterior sai trocando os parâmetros da prior, sem integral.</p>
 <ol class="spaced">
-<li><b>Beta + Binomial</b> (contagem de sucessos, \(\theta \in [0, 1]\)): prior Beta(\(a, b\)), \(s\) sucessos e \(f\) fracassos →
-posterior Beta(\(a + s,\ b + f\)).</li>
+<li><b>Beta + Binomial</b> (contagem de sucessos, \(\theta \in [0, 1]\)): prior Beta(\(a, b\)), \(s\) sucessos e \(f\) fracassos.
+\[\text{posterior} = \text{Beta}(a + s,\ b + f)\]</li>
 <li><b>Normal + Normal</b> (medição com variância \(\sigma^2\) conhecida, \(\theta\) = média): leia \(\mu_{\text{prior}}\), \(\sigma^2_{\text{prior}}\),
-\(\sigma^2\), \(n\) e \(\bar{x}\). Depois \(a = 1/\sigma^2_{\text{prior}}\), \(b = n/\sigma^2\),
-\(\mu_{\text{post}} = \frac{a\mu_{\text{prior}} + b\bar{x}}{a + b}\), \(\sigma^2_{\text{post}} = \frac{1}{a + b}\).</li>
+\(\sigma^2\), \(n\) e \(\bar{x}\). Depois:
+\[a = \frac{1}{\sigma^2_{\text{prior}}}, \qquad b = \frac{n}{\sigma^2}\]
+\[\mu_{\text{post}} = \frac{a\,\mu_{\text{prior}} + b\,\bar{x}}{a + b}, \qquad \sigma^2_{\text{post}} = \frac{1}{a + b}\]</li>
 <li><b>Variância, e não desvio padrão:</b> \(N(\mu, \sigma^2)\). Se vier \(\sigma\), eleve ao quadrado antes.</li>
-<li><b>Sem a fórmula:</b> multiplique prior e likelihood, complete o quadrado no expoente e leia: \(c\,e^{-(\theta-m)^2/k}\) é \(N(m, k/2)\).</li>
-<li><b>Conferência:</b> \(\mu_{\text{post}}\) fica entre \(\mu_{\text{prior}}\) e \(\bar{x}\); \(\sigma^2_{\text{post}}\) é menor que \(\sigma^2_{\text{prior}}\) e que \(\sigma^2/n\).</li>
+<li><b>Sem a fórmula:</b> multiplique prior e likelihood, complete o quadrado no expoente e leia:
+\[c\,e^{-(\theta-m)^2/k} \ \text{ é } \ N\!\left(m, \tfrac{k}{2}\right)\]</li>
+<li><b>Conferência:</b> \(\mu_{\text{post}}\) fica entre \(\mu_{\text{prior}}\) e \(\bar{x}\).
+\(\sigma^2_{\text{post}}\) é menor que \(\sigma^2_{\text{prior}}\) e menor que \(\sigma^2/n\).</li>
 </ol></div>
 """
 
