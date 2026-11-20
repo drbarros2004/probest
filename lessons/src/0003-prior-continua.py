@@ -189,7 +189,7 @@ $$p(x) = \int_a^b p(x \mid \theta)\,f(\theta)\,d\theta$$
 analogous to the term \(p(x \mid \theta_i)\,p(\theta_i)\) […]. Continuing the analogy: the sum […] becomes the integral […]</p>
 <p>As in the discrete case, when we think of \(\theta\) as a hypothesis explaining the probability of the data we call \(p(x)\) the prior
 predictive probability for \(x\).</p>""", src("§7")) + r"""
-<p>Cada termo \(p(x \mid \theta)\,f(\theta)\,d\theta\) é uma likelihood vezes a probabilidade prior de uma tira de largura \(d\theta\), exatamente
+<p>Cada termo \(p(x \mid \theta)\,f(\theta)\,d\theta\) é likelihood × probabilidade prior de uma tira de largura \(d\theta\), exatamente
 como \(P(D \mid H)\,P(H)\) era na tabela discreta. O exemplo do MIT13:</p>
 """ + quote(r"""<p><b>Example 5.</b> […] We have a bent coin with probability \(\theta\) of heads. The value of \(\theta\) is random with prior pdf
 \(f(\theta) = 2\theta\) on \([0, 1]\). Suppose I am about to flip the coin. What is the total probability of heads, i.e what is the prior
@@ -365,7 +365,7 @@ constante muda a altura da curva, não o lugar do pico. Então não é preciso n
 <li><b>hipóteses discretas</b> (lição 0001): a hipótese com o maior numerador. Basta olhar a coluna;</li>
 <li><b>hipóteses contínuas</b>: onde a derivada do numerador zera, ou numa borda do intervalo de \(\theta\).</li>
 </ul>
-<p>Nesta lição o numerador tem sempre a forma \(\theta^m(1-\theta)^n\) (vezes uma constante, que também não muda o pico), e a derivada já
+<p>Nesta lição o numerador tem sempre a forma \(c\,\theta^m(1-\theta)^n\) (a constante \(c\) também não muda o pico), e a derivada já
 foi feita uma vez por todas. O pico dessa forma é:</p>
 $$\theta_{\text{MAP}} = \frac{m}{m+n}, \qquad m = \text{expoente de } \theta, \quad n = \text{expoente de } (1-\theta).$$
 """ + uso("esta é a fórmula 4.") + r"""
@@ -444,7 +444,7 @@ $$\text{Beta}(\live{a}, \live{b}):\quad f(\theta) = \frac{\live{a+b-1}!}{\live{a
 </div>
 <p>O \(a\) puxa a curva para a direita (para perto de \(\theta = 1\)), e o \(b\) puxa para a esquerda. Com os dois grandes, ela fica estreita: muitas
 caras e coroas já vistas, mais certeza sobre \(\theta\).</p>
-<p id="integral-beta"><b>A mesma regra, ao contrário: uma integral sem integrar.</b> Como a área de uma Beta é 1, a constante vezes a integral da forma dá 1:</p>
+<p id="integral-beta"><b>A mesma regra, ao contrário: uma integral sem integrar.</b> Como a área de uma Beta é 1, constante × integral da forma dá 1:</p>
 $$\frac{(a+b-1)!}{(a-1)!\,(b-1)!}\int_0^1 \theta^{a-1}(1-\theta)^{b-1}\,d\theta = 1$$
 <p>Passando a constante para o outro lado:</p>
 $$\int_0^1 \theta^{a-1}(1-\theta)^{b-1}\,d\theta = \frac{(a-1)!\,(b-1)!}{(a+b-1)!}$$
@@ -453,7 +453,7 @@ $$\int_0^1 \theta^{a-1}(1-\theta)^{b-1}\,d\theta = \frac{(a-1)!\,(b-1)!}{(a+b-1)
 <p>Isso serve em dois lugares:</p>
 <ul class="spaced">
 <li><b>o total da tabela de Bayes</b>, quando a questão pede \(p(x)\) explicitamente. O numerador quase sempre tem a forma constante × \(\theta^m(1-\theta)^n\);</li>
-<li><b>a previsão do próximo dado (fórmula 5).</b> A integral de likelihood × posterior vira um número vezes \(\theta^m(1-\theta)^n\), e essa integral sai daqui.
+<li><b>a previsão do próximo dado (fórmula 5).</b> A integral de likelihood × posterior vira um número × \(\theta^m(1-\theta)^n\), e essa integral sai daqui.
 A <a href="#q23">L03 Q2.3</a> é exatamente isso.</li>
 </ul>
 <p>O jeito de usar é igual ao da fórmula 3: leia os expoentes, ache \(a\) e \(b\) (expoente + 1) e calcule com os fatoriais. A diferença é que na
@@ -657,7 +657,7 @@ SPEC = {
          "ref": [("tabela", "A tabela de Bayes com uma linha")],
          "options": [
              {"text": r"De \(2\) dividido por \(p(x) = \frac{1}{10}\)", "correct": True, "feedback": r"Isso: \(p(x) = \int_0^1 2\theta^3(1-\theta)\,d\theta = \frac{1}{10}\), e dividir por ela faz a área da posterior dar \(1\)."},
-             {"text": r"De \(2\) vezes o binomial \(\binom{5}{2} = 10\)", "correct": False, "feedback": r"A conta dá \(20\), mas por acaso. Os dados são uma sequência (HHT), sem coeficiente binomial; o \(20\) vem de normalizar: \(2 \div \frac{1}{10}\)."},
+             {"text": r"De \(2 \times\) o binomial \(\binom{5}{2} = 10\)", "correct": False, "feedback": r"A conta dá \(20\), mas por acaso. Os dados são uma sequência (HHT), sem coeficiente binomial; o \(20\) vem de normalizar: \(2 \div \frac{1}{10}\)."},
              {"text": r"Da área do numerador, que vale \(20\)", "correct": False, "feedback": r"A área do numerador é \(p(x) = \frac{1}{10}\), e não \(20\). Dividir por ela é que multiplica por \(10\): \(2 \cdot 10 = 20\)."}]},
         {"question": r"Para achar o MAP de uma posterior contínua, por que não é preciso calcular a integral \(p(x)\)?",
          "ref": [("map", "MAP: o pico da posterior")],
