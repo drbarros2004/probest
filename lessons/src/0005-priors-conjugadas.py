@@ -49,7 +49,7 @@ $$\text{{Beta}}(a, b):\quad f(\theta) = \underbrace{{\frac{{(a+b-1)!}}{{(a-1)!\,
 <p>E a regra que dispensa a integral: se uma pdf em \([0, 1]\) tem a forma \(c\,\theta^{{a-1}}(1-\theta)^{{b-1}}\), ela é Beta(\(a, b\)), e o \(c\) é a
 constante acima. Basta ler os expoentes e somar 1.</p>
 """ + check(
-    r"""<p>Na L03 Q2.2, a prior era Beta(2,2) e 6 de 10 pessoas preferiram comédia. Prior vezes likelihood deu o numerador
+    r"""<p>Na L03 Q2.2, a prior era Beta(2,2) e 6 de 10 pessoas preferiram comédia. Prior × likelihood deu o numerador
 \(1260\,\theta^7(1-\theta)^5\). Que Beta é a posterior? Beta(""" + num("8", "0.01", "2.6rem")
     + ", " + num("6", "0.01", "2.6rem") + ").</p>",
     "Isso: expoente 7 = a − 1 e expoente 5 = b − 1, então Beta(8, 6). O 1260 não importa: a constante sai da fórmula da Beta.")
@@ -74,7 +74,7 @@ distribution change!</p>
 Beta(\(a + s,\ b + f\)). <b>Cada sucesso soma 1 em \(a\); cada fracasso soma 1 em \(b\).</b></p></div>
 <p>Você já tinha visto isso na tabela da lição 0003: a prior plana é Beta(1, 1), uma cara levou a Beta(2, 1), mais uma cara a Beta(3, 1),
 e uma coroa a Beta(3, 2). Era a regra, um dado de cada vez. Por isso dá no mesmo atualizar com tudo junto ou aos poucos: a ordem das somas não importa.</p>
-<p>Esse é o padrão que tem nome. Uma prior é <b>conjugada</b> de uma likelihood quando prior vezes likelihood dá uma posterior
+<p>Uma prior é <b>conjugada</b> de uma likelihood quando prior × likelihood dá uma posterior
 <b>da mesma família da prior</b>. Aí atualizar vira só trocar os parâmetros, sem integral:</p>
 <div class="flow">
 <div class="box"><small>prior</small>Beta(\(a, b\))</div><span class="arrow">×</span>
