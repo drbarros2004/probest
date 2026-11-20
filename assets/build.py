@@ -53,6 +53,10 @@ EXTRA_CSS = """
   .check-group input.revealed { border-style: dashed; color: var(--muted); }
   table.bayes-auto td.num { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
   table.bayes-auto .pd { font-weight: 700; white-space: nowrap; }
+  /* Block diagram (renderer's .flow/.box/.arrow): .box.plain is the box outside the family, small is its role. */
+  .flow .box.plain { border-color: var(--border); background: var(--surface); }
+  .flow .box small { display: block; font-family: sans-serif; font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .flow-note { text-align: center; font-size: .9em; color: var(--muted); margin-top: .2rem; }
   html { scroll-behavior: smooth; }
   h2[id], h3[id] { scroll-margin-top: 1rem; }
   /* In-page links are frequent, so they stay quiet: text color, dotted underline, accent only on hover. */

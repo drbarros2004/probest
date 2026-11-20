@@ -74,7 +74,20 @@ distribution change!</p>
 Beta(\(a + s,\ b + f\)). <b>Cada sucesso soma 1 em \(a\); cada fracasso soma 1 em \(b\).</b></p></div>
 <p>Você já tinha visto isso na tabela da lição 0003: a prior plana é Beta(1, 1), uma cara levou a Beta(2, 1), mais uma cara a Beta(3, 1),
 e uma coroa a Beta(3, 2). Era a regra, um dado de cada vez. Por isso dá no mesmo atualizar com tudo junto ou aos poucos: a ordem das somas não importa.</p>
-<p>Quando a posterior fica na mesma família da prior, a prior se chama <b>conjugada</b>:</p>
+<p>Esse é o padrão que tem nome. Uma prior é <b>conjugada</b> de uma likelihood quando prior vezes likelihood dá uma posterior
+<b>da mesma família da prior</b>. Aí atualizar vira só trocar os parâmetros, sem integral:</p>
+<div class="flow">
+<div class="box"><small>prior</small>Beta(\(a, b\))</div><span class="arrow">×</span>
+<div class="box plain"><small>likelihood</small>Binomial: \(s\) sucessos, \(f\) fracassos</div><span class="arrow">→</span>
+<div class="box"><small>posterior</small>Beta(\(a + s,\ b + f\))</div>
+</div>
+<div class="flow">
+<div class="box"><small>prior</small>Beta(2, 2)</div><span class="arrow">×</span>
+<div class="box plain"><small>likelihood</small>6 comédia, 4 ação</div><span class="arrow">→</span>
+<div class="box"><small>posterior</small>Beta(8, 6)</div>
+</div>
+<p class="flow-note">Prior e posterior (borda colorida) são da mesma família, a Beta. A família não muda; só \(a\) e \(b\) mudam.</p>
+<p>O MIT15 diz o mesmo:</p>
 """ + quote(r"""<p>The beta distribution is called a conjugate prior for the binomial distribution. This means that if the likelihood function is binomial,
 then a beta prior gives a beta posterior […]</p>
 <p>Conjugate priors are useful because they reduce Bayesian updating to modifying the parameters of the prior distribution (so-called
