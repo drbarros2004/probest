@@ -14,10 +14,10 @@ from build import build, mc, quote, pdf_plot, bayes_table, slider  # noqa: E402
 MIT14 = "https://drive.google.com/file/d/1yuuRlktCwZvKz6AJkkwUYqzc73XvduaC/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
 L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
-LESSON0 = "https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks"
-LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
-LESSON3 = "https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT"
-LESSON5 = "https://claude.ai/artifact/2WoxChPHPSesBbiDpU4ZJ8"
+LESSON0 = "0000-mle.html"
+LESSON1 = "0001-tabela-de-atualizacao-bayesiana.html"
+LESSON3 = "0003-prior-continua.html"
+LESSON5 = "0005-priors-conjugadas.html"
 
 ACC, MUT = "var(--accent)", "var(--muted)"
 
@@ -224,8 +224,6 @@ matemáticos saíram corrompidos; a prosa é literal, e as fórmulas foram reesc
 SPEC = {
     "title": "0004 · Likelihood contínua",
     "subtitle": "Lição 0004 · COE241 P2 · MIT14 · quando o dado é contínuo · meta: resolver a L03 Q3",
-    "crumbs": (f'COE241 · P2 · Lição 0004 &nbsp;·&nbsp; anterior: <a href="{LESSON3}">0003, prior contínua e MAP</a>'
-               f' &nbsp;·&nbsp; próxima: <a href="{LESSON5}">0005, priors conjugadas</a>'),
     "sections": [
         {"id": "recordacao", "heading": "Recordação: tabela de Bayes e Uniforme", "html": recordacao},
         {"id": "ideia", "heading": "Dado contínuo: a likelihood vira pdf", "html": ideia},

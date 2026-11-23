@@ -45,16 +45,12 @@
 - L03 Q1.1 (calculado): posterior = 0, 0.2435, 0.6847, 0.0609, 0.0110 (dados de 4/6/8/12/20 lados). Q1.2 P(5) = 0.1318; Q1.3 P(15) = 0.000548.
 
 ## Artifacts publicados
-- 0000 MLE (M10, LMLE 6–10): https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks
-- 0001 tabela bayesiana: https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa
-- 0002 probabilidade preditiva: https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z
-- 0003 prior contínua e MAP: https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT
-- 0004 likelihood contínua (M14 §4, L03 Q3): https://claude.ai/artifact/ULdAerrDUzGftPBWRQvrbC
-- 0005 priors conjugadas (MIT15, MIT14 §6, L03 Q4, P2-23.2 Q4.1): https://claude.ai/artifact/2WoxChPHPSesBbiDpU4ZJ8
-- Links entre lições usam a URL do artifact (links relativos quebram no artifact).
-- O `title` de cada lição começa com o número ("0004 · ..."), para a ordem aparecer no artifact. Toda lição nova entra também na tabela do README.md.
+- Site (desde 2026-11-23): https://claude.ai/artifact/3QNqa8LUGvw27jfVpR7UzT. Um artifact só: a página principal é `lessons/index.html` e cada lição é um arquivo publicado ao lado (`files`, publicado com o mesmo nome do arquivo). Para mudar uma lição: rodar o fonte dela e republicar `lessons/index.html` passando só aquele arquivo em `files` (os outros continuam lá). Lição nova: uma linha em `PARTS` (assets/build.py), `python assets/build.py` e republicar com ela em `files`.
+- Os artifacts antigos (um por lição) foram apagados em 2026-11-23, depois de copiar as notas e traços para o site.
+- Links entre lições são relativos (`0003-prior-continua.html`), e o menu do topo (site_nav em build.py) substitui os antigos "anterior/próxima".
+- O `title` de cada lição começa com o número ("0004 · ..."). Toda lição nova entra em `PARTS` (build.py) e na tabela do README.md.
 - Repositório: github.com/drbarros2004/probest (privado). Os HTML gerados entram no repo.
-- As lições levam a caneta da explain-html-ink (ink.js, coleção `ink`) e, desde 2026-11-16, as notas da explain-html (add_notes.py, coleção `notes`), as duas injetadas pelo build.py. Pedido do usuário: "todos os artifacts de probest com essa skill"; a caneta ficou para não sumir com os traços já salvos, e o botão dela fica acima (`.ink-ui` bottom 56px, hoje no próprio ink.js) para não cobrir o das notas. Ler as notas: ArtifactData list, coleção `notes`. Ao republicar uma lição com notas: listar a coleção `notes` antes e depois e conferir que o `q` de cada nota continua na página; se um trecho marcado for reescrito, manter as frases marcadas ou reapontar a nota (nunca apagar). Publicar com capabilities {"db": {}}; num republish, omitir capabilities.
+- As lições levam a caneta da explain-html-ink (ink.js, coleção `ink`) e, desde 2026-11-16, as notas da explain-html (add_notes.py, coleção `notes`), as duas injetadas pelo build.py. Pedido do usuário: "todos os artifacts de probest com essa skill"; a caneta ficou para não sumir com os traços já salvos, e o botão dela fica acima (`.ink-ui` bottom 56px, hoje no próprio ink.js) para não cobrir o das notas. Como o site é um artifact só, cada lição usa as coleções `notes-NNNN` e `ink-NNNN` (o build renomeia). Ler as notas: ArtifactData list, coleção `notes-NNNN`. Na migração (2026-11-23) os traços e notas antigos foram copiados com y + 30.65 px, a altura que a barra do menu acrescentou. Ao republicar uma lição com notas: listar a coleção `notes-NNNN` antes e depois e conferir que o `q` de cada nota continua na página; se um trecho marcado for reescrito, manter as frases marcadas ou reapontar a nota (nunca apagar). Publicar com capabilities {"db": {}}; num republish, omitir capabilities.
 
 - L03 Q2 (calculado): MAP = 7/12 ≈ 0.583 (posterior ∝ θ⁷(1−θ)⁵ = Beta(8,6), constante 10296); Q2.3 P(maioria ≥ 6 de 10) = 8203/14858 ≈ 0.552. Q3: MAP 1/4 h após 10 min; 3/4 h após 30 min.
 - Decisão (usuário): 0003 = M13 + Q2.1 + MAP da Q2.2. A Q2.3 ia para a 0005 (M15), porque a integral dependia da normalização da Beta (M15 §3.1). Revisto (2026-11-16, usuário): com o quadro da Beta e a "integral da Beta" (#integral-beta) já na 0003, a Q2.3 passou para a 0003 (#q23), com a dica de intervalos (#intervalo). A Q3 vai com o M14 (0004); a Q4 (Normal-Normal) vai com o M15 (0005).

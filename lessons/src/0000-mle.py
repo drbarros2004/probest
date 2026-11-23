@@ -15,8 +15,8 @@ from build import build, mc, quote, slider  # noqa: E402
 MIT10 = "https://drive.google.com/file/d/1KlxN6zAnv-MLnhpaTUvTBKVZ5aame8yM/view"
 LMLE = "https://drive.google.com/file/d/17yRyo--qjCsMfsi2MPj322gUagn193bd/view"
 LMLEG = "https://drive.google.com/file/d/1ZyJsivcY8yYgSM0Ull_rAWnWQEcg6D7X/view"
-LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
-LESSON3 = "https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT"
+LESSON1 = "0001-tabela-de-atualizacao-bayesiana.html"
+LESSON3 = "0003-prior-continua.html"
 
 
 
@@ -334,7 +334,6 @@ No texto extraído do PDF do MIT10, os símbolos matemáticos saíram corrompido
 SPEC = {
     "title": "0000 · Máxima verossimilhança (MLE)",
     "subtitle": "Lição 0000 · COE241 P2 · MIT10 · meta: resolver a LMLE inteira (problemas 6 a 10)",
-    "crumbs": f'COE241 · P2 · Lição 0000 &nbsp;·&nbsp; próxima: <a href="{LESSON1}">0001, tabela de atualização bayesiana</a>',
     "sections": [
         {"id": "diagnostico", "heading": "Diagnóstico: tente antes", "html": diagnostico},
         {"id": "mle", "heading": "O MLE: o parâmetro que torna os dados mais prováveis", "html": mle},

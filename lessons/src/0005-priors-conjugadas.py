@@ -17,8 +17,8 @@ MIT15 = "https://drive.google.com/file/d/1nkNUeimH00v3suIbVcsD3XPl-17bW-TV/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
 L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
 P2 = "https://drive.google.com/file/d/1UC2kRa6K_6zXryQe7irAKbvfMTQh12um/view"
-LESSON3 = "https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT"
-LESSON4 = "https://claude.ai/artifact/ULdAerrDUzGftPBWRQvrbC"
+LESSON3 = "0003-prior-continua.html"
+LESSON4 = "0004-likelihood-continua.html"
 
 ACC, MUT, FG = "var(--accent)", "var(--muted)", "var(--fg)"
 
@@ -321,7 +321,6 @@ símbolos matemáticos saíram corrompidos; a prosa é literal, e as fórmulas f
 SPEC = {
     "title": "0005 · Priors conjugadas",
     "subtitle": "Lição 0005 · COE241 P2 · MIT15 e MIT14 §6 · Beta-Binomial e Normal-Normal · meta: resolver a L03 Q4",
-    "crumbs": f'COE241 · P2 · Lição 0005 &nbsp;·&nbsp; anterior: <a href="{LESSON4}">0004, likelihood contínua</a>',
     "sections": [
         {"id": "recordacao", "heading": "Recordação: a família Beta", "html": recordacao},
         {"id": "regra", "heading": "A regra da Beta: somar caras e coroas", "html": regra},

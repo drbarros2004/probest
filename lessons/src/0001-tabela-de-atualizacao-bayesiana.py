@@ -331,7 +331,7 @@ inteira é necessária, porque \(P(D)\) soma todas as linhas. As dicas são para
      ("12 lados", "2/16", "1/144", "0.0609"), ("20 lados", "1/16", "1/400", "0.0110")],
     ok=f"A resposta da Q1.1 é P(8 lados | 5, 5) ≈ 0.685. Confira no <a href='{L03G}'>L03G</a>, página 1: a solução lá é imagem, então compare com o PDF aberto.",
     lik_header="likelihood \\(P(5, 5 \\mid H)\\)") + r"""
-<p>As Q1.2 e Q1.3 perguntam a probabilidade do <em>próximo</em> lançamento. Isso é a <b>posterior predictive</b>, assunto da <a href="https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z">lição 0002</a>
+<p>As Q1.2 e Q1.3 perguntam a probabilidade do <em>próximo</em> lançamento. Isso é a <b>posterior predictive</b>, assunto da <a href="0002-probabilidade-preditiva.html">lição 0002</a>
 pelo MIT12, e a coluna posterior que você acabou de calcular é metade da conta. Guarde a sua tabela.</p>
 """
 
@@ -356,7 +356,6 @@ Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos apar
 SPEC = {
     "title": "0001 · Tabela de atualização bayesiana",
     "subtitle": "Lição 0001 · COE241 P2 · MIT11 · prior discreta, likelihood discreta · meta: resolver a L03 Q1.1",
-    "crumbs": 'COE241 · P2 · Lição 0001 &nbsp;·&nbsp; anterior: <a href="https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks">0000, MLE</a> &nbsp;·&nbsp; próxima: <a href="https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z">0002, probabilidade preditiva</a>',
     "sections": [
         {"id": "aquecimento", "heading": "Aquecimento: o que sobrou da P1", "html": aquecimento},
         {"id": "tabela", "heading": "A tabela é a regra de Bayes, linha por linha", "html": tabela},
