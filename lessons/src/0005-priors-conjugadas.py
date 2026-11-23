@@ -59,12 +59,12 @@ regra = r"""
 <p>Para chegar à Beta(8, 6) da Q2.2 você multiplicou prior e likelihood, juntou as potências e leu os expoentes. Repare nos números:
 \(8 = 2 + 6\) e \(6 = 2 + 4\). O \(a\) da prior ganhou as 6 pessoas que preferem comédia, e o \(b\) ganhou as 4 que preferem ação.
 Isso é coincidência?</p>
-<p>Não. Faça a conta com letras: prior Beta(\(a, b\)) e \(k\) sucessos em \(n\) tentativas (Binomial). As constantes não importam, porque
+<p>Não. Faça a conta com letras: prior Beta(\(a, b\)) e \(s\) sucessos e \(f\) fracassos (Binomial). As constantes não importam, porque
 a regra da Beta acha a constante no fim:</p>
-$$\underbrace{\theta^{a-1}(1-\theta)^{b-1}}_{\text{prior, sem a constante}} \cdot \underbrace{\theta^{k}(1-\theta)^{n-k}}_{\text{likelihood, sem o }\binom{n}{k}}
-= \theta^{(a+k)-1}\,(1-\theta)^{(b+n-k)-1}$$
-<p>Os expoentes de potências de mesma base se somam. O resultado tem a forma de uma Beta(\(a + k,\ b + n - k\)). Como toda posterior
-precisa ter área 1, ela é essa Beta. O MIT15 resume assim (\(s\) sucessos e \(f\) fracassos):</p>
+$$\underbrace{\theta^{a-1}(1-\theta)^{b-1}}_{\text{prior, sem a constante}} \cdot \underbrace{\theta^{s}(1-\theta)^{f}}_{\text{likelihood, sem o }\binom{s+f}{s}}
+= \theta^{(a+s)-1}\,(1-\theta)^{(b+f)-1}$$
+<p>Os expoentes de potências de mesma base se somam. O resultado tem a forma de uma Beta(\(a + s,\ b + f\)). Como toda posterior
+precisa ter área 1, ela é essa Beta. O MIT15 resume assim:</p>
 """ + quote(r"""<p>We have seen that if the prior on \(\theta\) is a beta distribution then so is the posterior; only the parameters \(a, b\) of the beta
 distribution change!</p>
 <table><tr><th>hypothesis</th><th>data</th><th>prior</th><th>likelihood</th><th>posterior</th></tr>
@@ -86,7 +86,7 @@ e uma coroa a Beta(3, 2). Era a regra, um dado de cada vez. Por isso dá no mesm
 <div class="box plain"><small>likelihood</small>6 comédia, 4 ação</div><span class="arrow">→</span>
 <div class="box"><small>posterior</small>Beta(8, 6)</div>
 </div>
-<p class="flow-note">Prior e posterior (borda colorida) são da mesma família, a Beta. A família não muda; só \(a\) e \(b\) mudam.</p>
+<p class="flow-note">Prior e posterior (borda colorida) são da mesma família, a Beta.</p>
 <p>O MIT15 diz o mesmo:</p>
 """ + quote(r"""<p>The beta distribution is called a conjugate prior for the binomial distribution. This means that if the likelihood function is binomial,
 then a beta prior gives a beta posterior […]</p>
@@ -112,9 +112,9 @@ revisao = r"""
 <p>\(X \sim N(\mu, \sigma^2)\) tem pdf</p>
 $$f(x) = \underbrace{\frac{1}{\sigma\sqrt{2\pi}}}_{\text{constante: faz a área dar 1}}\;\underbrace{e^{-(x-\mu)^2/(2\sigma^2)}}_{\text{a forma do sino}}$$
 <ul class="spaced">
-<li><b>Média \(\mu\):</b> o centro do sino, onde fica o pico. No expoente, é o número subtraído de \(x\).</li>
-<li><b>Variância \(\sigma^2\):</b> a largura. No expoente, o denominador é \(2\sigma^2\), <b>o dobro</b> da variância.</li>
-<li><b>Notação:</b> \(N(\mu, \sigma^2)\) leva a variância, e não o desvio padrão \(\sigma\). \(N(2, 9)\) tem desvio padrão 3. Se o enunciado der
+<li>A média \(\mu\) é o centro do sino, onde fica o pico. No expoente, é o número subtraído de \(x\).</li>
+<li>A variância \(\sigma^2\) dá a largura. No expoente, o denominador é \(2\sigma^2\), <b>o dobro</b> da variância.</li>
+<li>\(N(\mu, \sigma^2)\) leva a variância, e não o desvio padrão \(\sigma\): \(N(2, 9)\) tem desvio padrão 3. Se o enunciado der
 o desvio padrão, eleve ao quadrado.</li>
 </ul>
 <p>Como na Beta, a constante não precisa ser conferida. O MIT15 diz, logo depois da regra da Beta: "A similar observation holds for normal
@@ -138,20 +138,20 @@ a normal prior gives a normal posterior.</p>""", src("§4")) + r"""
 posterior é Normal, o MIT14 faz a conta num exemplo:</p>
 """ + quote(r"""<p>Suppose we have data \(x = 5\) which was drawn from a normal distribution with unknown mean \(\theta\) and standard deviation 1.
 […] Suppose further, that our prior distribution for the unknown parameter \(\theta\) is \(\theta \sim N(2, 1)\).</p>""", src("§6, exemplo 3", "MIT14")) + r"""
-<p>A tabela é a da <a href="{LESSON4}">lição 0004</a>, com uma linha só para o \(\theta\) genérico. Prior: a pdf de \(N(2, 1)\) em \(\theta\).
-Likelihood: a pdf de \(N(\theta, 1)\) no dado \(x = 5\). O numerador é o produto:</p>
+<p>Como na tabela da <a href="{LESSON4}">lição 0004</a>, o numerador é prior × likelihood, agora escrito para um \(\theta\) qualquer. A prior
+é a pdf de \(N(2, 1)\) em \(\theta\), e a likelihood é a pdf de \(N(\theta, 1)\) no dado \(x = 5\):</p>
 $$\underbrace{\tfrac{1}{\sqrt{2\pi}}\,e^{-(\theta-2)^2/2}}_{\text{prior}} \cdot \underbrace{\tfrac{1}{\sqrt{2\pi}}\,e^{-(5-\theta)^2/2}}_{\text{likelihood}}
 = \tfrac{1}{2\pi}\,e^{-\left[(\theta-2)^2 + (5-\theta)^2\right]/2}$$
 <p>A pergunta é: <b>esse expoente tem a forma \(-(\theta - m)^2/k\)?</b> Se tiver, é Normal, e \(m\) e \(k\) dão média e variância. Para
 descobrir, <b>completa-se o quadrado</b>, em três passos:</p>
 <ol class="spaced">
-<li><b>Expandir.</b> \((\theta-2)^2 + (5-\theta)^2 = \theta^2 - 4\theta + 4 + 25 - 10\theta + \theta^2 = 2\theta^2 - 14\theta + 29\).
+<li>Expanda os quadrados: \((\theta-2)^2 + (5-\theta)^2 = \theta^2 - 4\theta + 4 + 25 - 10\theta + \theta^2 = 2\theta^2 - 14\theta + 29\).
 Dividindo por 2: \(\theta^2 - 7\theta + \tfrac{29}{2}\).</li>
-<li><b>Completar o quadrado.</b> \((\theta - m)^2 = \theta^2 - 2m\theta + m^2\). Para o termo do meio dar \(-7\theta\), \(m = 7/2\). Só que
+<li>Complete o quadrado. Como \((\theta - m)^2 = \theta^2 - 2m\theta + m^2\), para o termo do meio dar \(-7\theta\), \(m = 7/2\). Só que
 \((\theta - 7/2)^2 = \theta^2 - 7\theta + \tfrac{49}{4}\) tem \(\tfrac{49}{4}\) a mais do que \(\theta^2 - 7\theta\). Então
 $$\theta^2 - 7\theta + \tfrac{29}{2} = (\theta - \tfrac{7}{2})^2 - \tfrac{49}{4} + \tfrac{29}{2} = (\theta - \tfrac{7}{2})^2 + \tfrac{9}{4}$$</li>
-<li><b>Mandar a sobra para a constante.</b> \(e^{-[(\theta - 7/2)^2 + 9/4]} = e^{-9/4} \cdot e^{-(\theta - 7/2)^2}\). O \(e^{-9/4}\) não tem
-\(\theta\): vai para a constante, como o \(\binom{n}{k}\) na Beta. Sobra
+<li>Mande a sobra para a constante: \(e^{-[(\theta - 7/2)^2 + 9/4]} = e^{-9/4} \cdot e^{-(\theta - 7/2)^2}\). O \(e^{-9/4}\) não tem
+\(\theta\): vai para a constante, como o coeficiente binomial na Beta. Sobra
 $$\text{numerador} = c\,e^{-(\theta - 7/2)^2}$$</li>
 </ol>
 """.replace("{LESSON4}", LESSON4) + mc(
@@ -162,20 +162,20 @@ $$\text{numerador} = c\,e^{-(\theta - 7/2)^2}$$</li>
     r"""<p>We can see by the form of the posterior pdf that it is a normal distribution. Because the exponential for a normal distribution is
 \(e^{-(\theta-\mu)^2/2\sigma^2}\) we have mean \(\mu = 7/2\) and \(2\sigma^2 = 1\), so variance \(\sigma^2 = 1/2\).</p>""", src("§6, exemplo 3", "MIT14")) + pdf_plot(
     [("prior N(2, 1)", ex_prior, MUT, True, .02, .45), ("posterior N(7/2, 1/2)", ex_post, ACC, False, .5, .62)],
-    "A prior está centrada em 2; o dado saiu 5. A posterior fica no meio (3.5) e é mais estreita que a prior: depois do dado, há mais certeza sobre θ.",
+    "Prior centrada em 2 e dado x = 5: a posterior fica em 3.5 e é mais estreita que a prior, porque o dado reduziu a incerteza sobre θ.",
     ymax=.7, xscale=8, marks=[(5 / 8, lambda x: .5, "dado x = 5", FG, "ur")]) + quote(
     r"""<p>Note how the data ‘pulls’ the prior […] towards the data. […] After collecting data, we have a new opinion about the mean, and we are more
 sure of this new opinion.</p>""", src("§6", "MIT14"))
 
 # ---------------------------------------------------------------- atalho
 atalho = r"""
-<p>Completar o quadrado sempre funciona, mas é trabalhoso, e na L03 Q4 os números são \(10^{-4}\) e \(10^{5}\). Como a posterior é sempre
-Normal, o MIT15 faz a conta uma vez, com letras, e entrega as fórmulas. <b>É um atalho do mesmo cálculo, e não outro método</b>: dá o mesmo
-resultado que completar o quadrado. Para \(n\) medições \(x_1, \dots, x_n\), cada uma \(N(\theta, \sigma^2)\), com média \(\bar{x}\), e prior
+<p>Completar o quadrado sempre funciona, mas é trabalhoso. Como a posterior é sempre Normal, o MIT15 faz a conta uma vez, com letras, e
+entrega as fórmulas, que dão o mesmo resultado que completar o quadrado. Para \(n\) medições \(x_1, \dots, x_n\), cada uma \(N(\theta, \sigma^2)\), com média \(\bar{x}\), e prior
 \(N(\mu_{\text{prior}}, \sigma^2_{\text{prior}})\):</p>
 $$a = \frac{1}{\sigma^2_{\text{prior}}}, \qquad b = \frac{n}{\sigma^2}, \qquad
 \mu_{\text{post}} = \frac{a\,\mu_{\text{prior}} + b\,\bar{x}}{a + b}, \qquad \sigma^2_{\text{post}} = \frac{1}{a + b}$$
-<p class="uso" style="font-size:.85rem;color:var(--muted)">MIT15 §7.3, fórmulas (4). Com uma medição só, \(n = 1\) e \(\bar{x} = x\) (fórmulas (2) do §7).</p>
+<p class="uso" style="font-size:.85rem;color:var(--muted)">MIT15 §7.3, fórmulas (4). Com uma medição só, \(n = 1\) e \(\bar{x} = x\) (fórmulas (2) do §7).
+Os nomes \(a\) e \(b\) são do MIT15 e não têm relação com os parâmetros da Beta.</p>
 <p>Como ler:</p>
 <ul class="spaced">
 <li>\(a\) e \(b\) são <b>pesos</b>: o inverso de uma variância mede a certeza. Prior estreita → \(a\) grande. Medições precisas ou muitas → \(b\) grande.</li>
@@ -211,7 +211,7 @@ $$\mu_{\text{post}} = \frac{\live{1/vp} \cdot \live{mp} + \live{n/s2} \cdot \liv
 <div class="stat"><div class="stat-label">\(\sigma^2_{\text{post}}\) vs. \(\sigma^2_{\text{prior}}\)</div><div class="stat-value" data-expr="(1/(1/vp + n/s2)).toFixed(3) + ' < ' + vp"></div></div>
 </div>
 <p>Aumente o \(n\) ou diminua o \(\sigma^2\): a posterior corre para \(\bar{x}\) e afina. Diminua o \(\sigma^2_{\text{prior}}\): ela fica presa
-perto de \(\mu_{\text{prior}}\). É a L03 Q4 em miniatura: lá, \(b/a = 10\,000\).</p>
+perto de \(\mu_{\text{prior}}\).</p>
 """
 
 # ---------------------------------------------------------------- objetivo
@@ -221,9 +221,10 @@ variância 10<sup>−4</sup>. Usando esta régua, você mede seu cabo, e a medi�
 x = 10, qual é a posterior de θ?</li>
 <li>Com a mesma prior do item anterior, calcule o número total de medições necessárias de modo que a variância da posterior de θ seja menor que
 10<sup>−6</sup>.</li></ol>""", f'<a href="{L03}">L03</a>, questão 4', lang="pt-BR") + r"""
-<p><b>Quem é quem.</b> A hipótese é o comprimento \(\theta\). A medição é \(x = \theta + \text{erro}\), com erro \(N(0, 10^{-4})\), então
+<p>A hipótese é o comprimento \(\theta\). A medição é \(x = \theta + \text{erro}\), com erro \(N(0, 10^{-4})\), então
 \(x \sim N(\theta, 10^{-4})\): é a likelihood, com variância conhecida \(\sigma^2 = 10^{-4}\). A prior é \(N(9, 1)\). É o caso Normal-Normal.</p>
-<p><b>Q4.1.</b> Uma medição, \(x = 10\). Pode digitar frações (por exemplo, 1/3).</p>
+<h3>Q4.1: uma medição</h3>
+<p>A medição é \(x = 10\). Pode digitar frações (por exemplo, 1/3).</p>
 """ + check(
     r"""<p>\(a = 1/\sigma^2_{\text{prior}}\) = """ + num("1", "0.001", "4rem") + r""" &nbsp; \(b = 1/\sigma^2\) = """ + num("10000", "0.5", "5rem") + r"""</p>
 <p>\(\mu_{\text{post}}\) = """ + num("100009/10001", "0.00005", "7rem") + r""" &nbsp; \(\sigma^2_{\text{post}}\) = """ + num("1/10001", "0.000000001", "7rem") + "</p>",
@@ -231,10 +232,10 @@ x = 10, qual é a posterior de θ?</li>
     f"Confira no <a href='{L03G}'>L03G</a>, questão 4 (a solução é imagem; compare com o PDF aberto).") + r"""
 <p>A resposta escrita:</p>
 $$\theta \mid x = 10 \;\sim\; N\!\left(\frac{9 + 10^5}{1 + 10^4},\ \frac{1}{1 + 10^4}\right) \approx N(9.9999,\ 0.9999 \times 10^{-4})$$
-<p><b>Por que quase 10?</b> A régua pesa \(b/a = 10\,000\) vezes mais que a prior: ela erra uns \(\sigma = 0.01\), enquanto a prior só dizia
-"9, mais ou menos 1". A média ponderada fica colada na medição, e a variância fica um pouco abaixo da da régua (\(10^{-4}\)), porque a prior
-ainda ajuda um tiquinho.</p>
-<p><b>Q4.2.</b> Com \(n\) medições, só o \(b\) muda: \(b = n/\sigma^2 = n \cdot 10^4\). A variância da posterior é</p>
+<p>A média fica quase em 10 porque a régua pesa \(b/a = 10\,000\) vezes mais que a prior: ela erra uns \(\sigma = 0.01\), enquanto a prior
+só dizia "9, mais ou menos 1". A variância fica um pouco abaixo da da régua (\(10^{-4}\)), porque o peso da prior também entra em \(a + b\).</p>
+<h3>Q4.2: quantas medições</h3>
+<p>Com \(n\) medições, só o \(b\) muda: \(b = n/\sigma^2 = n \cdot 10^4\). A variância da posterior é</p>
 $$\sigma^2_{\text{post}} = \frac{1}{1 + n \cdot 10^4}$$
 <p>Ela não depende dos valores medidos, só de quantos são. Por isso dá para responder antes de medir.</p>
 """ + check(
@@ -269,15 +270,15 @@ fontes = rf"""
 <p>Esta lição usou do <a href="{MIT15}">MIT15</a> a regra da Beta-Binomial (§3.2), a definição de prior conjugada (§4) e as fórmulas Normal-Normal (§7);
 do <a href="{MIT14}">MIT14</a>, o exemplo 3 do §6 (completar o quadrado). O que ficou de fora:</p>
 <table>
-<tr><th>trecho</th><th>por que ficou de fora</th><th>faz falta na P2?</th></tr>
-<tr><td>MIT15 §3 e §3.1: a pdf da Beta e a constante</td><td>já estão na lição 0003 (só recordados aqui)</td><td>sim, na lição 0003</td></tr>
-<tr><td>MIT15 §5.2: Beta com likelihood Bernoulli</td><td>é a Binomial com \(n = 1\): um sucesso soma 1 em \(a\), um fracasso soma 1 em \(b\)</td><td>coberto pela regra</td></tr>
-<tr><td>MIT15 §5.3 e exemplo 3: likelihood Geométrica (Mario e Luigi)</td><td>nenhuma lista usa; a ideia é que likelihoods proporcionais dão a mesma posterior</td><td>não</td></tr>
-<tr><td>MIT15 §6: tabela com hipótese e dado contínuos</td><td>é a tabela da lição 0004 com o total virando integral; a conjugação dispensa a integral</td><td>não</td></tr>
-<tr><td>MIT15 §7: a prova das fórmulas Normal-Normal</td><td>o MIT deixa para o problem set; é o mesmo completar o quadrado, com letras</td><td>não</td></tr>
-<tr><td>MIT15 §7.3, exemplo 7: atualizar uma medição de cada vez</td><td>dá o mesmo que usar \(n\) e \(\bar{{x}}\) de uma vez (fórmulas (4))</td><td>não</td></tr>
-<tr><td>MIT15, problemas de aula 1(c, d): previsão com prior Beta</td><td>é a fórmula 5 e a integral da Beta da lição 0003 (L03 Q2.3)</td><td>sim, na lição 0003</td></tr>
-<tr><td>MIT14 §6, exemplo 4: o mesmo exemplo com \(x\) genérico</td><td>repete o exemplo 3 com letras</td><td>não</td></tr>
+<tr><th>trecho</th><th>faz falta na P2?</th><th>por que ficou de fora</th></tr>
+<tr><td>MIT15 §3 e §3.1: a pdf da Beta e a constante</td><td>sim, na lição 0003</td><td>já estão na lição 0003 (só recordados aqui)</td></tr>
+<tr><td>MIT15 §5.2: Beta com likelihood Bernoulli</td><td>coberto pela regra</td><td>é a Binomial com \(n = 1\): um sucesso soma 1 em \(a\), um fracasso soma 1 em \(b\)</td></tr>
+<tr><td>MIT15 §5.3 e exemplo 3: likelihood Geométrica (Mario e Luigi)</td><td>não</td><td>nenhuma lista usa; a ideia é que likelihoods proporcionais dão a mesma posterior</td></tr>
+<tr><td>MIT15 §6: tabela com hipótese e dado contínuos</td><td>não</td><td>é a tabela da lição 0004 com o total virando integral; a conjugação dispensa a integral</td></tr>
+<tr><td>MIT15 §7: a prova das fórmulas Normal-Normal</td><td>não</td><td>o MIT deixa para o problem set; é o mesmo completar o quadrado, com letras</td></tr>
+<tr><td>MIT15 §7.3, exemplo 7: atualizar uma medição de cada vez</td><td>não</td><td>dá o mesmo que usar \(n\) e \(\bar{{x}}\) de uma vez (fórmulas (4))</td></tr>
+<tr><td>MIT15, problemas de aula 1(c, d): previsão com prior Beta</td><td>sim, na lição 0003</td><td>é a fórmula 5 e a integral da Beta da lição 0003 (L03 Q2.3)</td></tr>
+<tr><td>MIT14 §6, exemplo 4: o mesmo exemplo com \(x\) genérico</td><td>não</td><td>repete o exemplo 3 com letras</td></tr>
 </table>
 <div class="callout">Se ficou alguma dúvida, pergunte ao seu professor, que é o agente nesta conversa. Vale um passo da conta, um termo ou "por que isso funciona?".</div>
 <p style="font-size:.8rem;color:var(--muted)">As citações em inglês são de J. Orloff e J. Bloom, <i>18.05 Introduction to Probability and Statistics</i>,
