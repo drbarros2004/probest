@@ -234,8 +234,27 @@ variância 10<sup>−4</sup>. Usando esta régua, você mede seu cabo, e a medi�
 x = 10, qual é a posterior de θ?</li>
 <li>Com a mesma prior do item anterior, calcule o número total de medições necessárias de modo que a variância da posterior de θ seja menor que
 10<sup>−6</sup>.</li></ol>""", f'<a href="{L03}">L03</a>, questão 4', lang="pt-BR") + r"""
-<p>A hipótese é o comprimento \(\theta\). A medição é \(x = \theta + \text{erro}\), com erro \(N(0, 10^{-4})\), então
-\(x \sim N(\theta, 10^{-4})\): é a likelihood, com variância conhecida \(\sigma^2 = 10^{-4}\). A prior é \(N(9, 1)\). É o caso Normal-Normal.</p>
+<p>O enunciado mistura três coisas: o comprimento verdadeiro do cabo, o que você acha dele antes de medir e o que a régua mostra.
+Separando cada papel:</p>
+<ul class="spaced">
+<li><b>Hipótese:</b> o comprimento verdadeiro \(\theta\). É o que não se sabe.</li>
+<li><b>Prior:</b> o que você acha de \(\theta\) antes de medir, \(N(9, 1)\): "uns 9, errando uns 1 para mais ou para menos".</li>
+<li><b>Likelihood:</b> o que a régua mostra quando o comprimento é \(\theta\). A régua soma um erro ao comprimento verdadeiro:
+$$x = \theta + \text{erro}, \qquad \text{erro} \sim N(0, 10^{-4})$$
+Somar um número fixo a uma Normal só desloca a média; a variância não muda. Então, para cada \(\theta\):
+$$x \sim N(\theta, 10^{-4})$$
+A régua acerta na média e erra uns \(\sigma = \sqrt{10^{-4}} = 0.01\). Essa variância \(\sigma^2 = 10^{-4}\) é conhecida: vem do enunciado, e não dos dados.</li>
+<li><b>Dado:</b> a medição que saiu, \(x = 10\).</li>
+</ul>
+<p>Prior Normal e likelihood Normal com variância conhecida: é o caso Normal-Normal. Nas fórmulas do atalho, os valores entram assim:</p>
+<table>
+<tr><th>na fórmula</th><th>no enunciado</th><th>valor</th></tr>
+<tr><td>\(\mu_{\text{prior}}\)</td><td>média da prior</td><td>\(9\)</td></tr>
+<tr><td>\(\sigma^2_{\text{prior}}\)</td><td>variância da prior</td><td>\(1\)</td></tr>
+<tr><td>\(\sigma^2\)</td><td>variância do erro da régua</td><td>\(10^{-4}\)</td></tr>
+<tr><td>\(n\)</td><td>número de medições</td><td>\(1\)</td></tr>
+<tr><td>\(\bar{x}\)</td><td>média das medições</td><td>\(10\)</td></tr>
+</table>
 <h3>Q4.1: uma medição</h3>
 <p>A medição é \(x = 10\). Pode digitar frações (por exemplo, 1/3).</p>
 """ + check(
