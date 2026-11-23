@@ -145,13 +145,23 @@ $$\underbrace{\tfrac{1}{\sqrt{2\pi}}\,e^{-(\theta-2)^2/2}}_{\text{prior}} \cdot 
 <p>A pergunta é: <b>esse expoente tem a forma \(-(\theta - m)^2/k\)?</b> Se tiver, é Normal, e \(m\) e \(k\) dão média e variância. Para
 descobrir, <b>completa-se o quadrado</b>, em três passos:</p>
 <ol class="spaced">
-<li>Expanda os quadrados: \((\theta-2)^2 + (5-\theta)^2 = \theta^2 - 4\theta + 4 + 25 - 10\theta + \theta^2 = 2\theta^2 - 14\theta + 29\).
-Dividindo por 2: \(\theta^2 - 7\theta + \tfrac{29}{2}\).</li>
-<li>Complete o quadrado. Como \((\theta - m)^2 = \theta^2 - 2m\theta + m^2\), para o termo do meio dar \(-7\theta\), \(m = 7/2\). Só que
-\((\theta - 7/2)^2 = \theta^2 - 7\theta + \tfrac{49}{4}\) tem \(\tfrac{49}{4}\) a mais do que \(\theta^2 - 7\theta\). Então
-$$\theta^2 - 7\theta + \tfrac{29}{2} = (\theta - \tfrac{7}{2})^2 - \tfrac{49}{4} + \tfrac{29}{2} = (\theta - \tfrac{7}{2})^2 + \tfrac{9}{4}$$</li>
-<li>Mande a sobra para a constante: \(e^{-[(\theta - 7/2)^2 + 9/4]} = e^{-9/4} \cdot e^{-(\theta - 7/2)^2}\). O \(e^{-9/4}\) não tem
-\(\theta\): vai para a constante, como o coeficiente binomial na Beta. Sobra
+<li>Expanda os quadrados:
+$$\begin{aligned}
+(\theta-2)^2 + (5-\theta)^2 &= \theta^2 - 4\theta + 4 + 25 - 10\theta + \theta^2 \\
+&= 2\theta^2 - 14\theta + 29
+\end{aligned}$$
+Dividindo por 2:
+$$\theta^2 - 7\theta + \tfrac{29}{2}$$</li>
+<li>Complete o quadrado. Para o termo do meio dar \(-7\theta\), \(m = 7/2\):
+$$(\theta - m)^2 = \theta^2 - 2m\theta + m^2 \quad\Rightarrow\quad (\theta - \tfrac{7}{2})^2 = \theta^2 - 7\theta + \tfrac{49}{4}$$
+Esse quadrado tem \(\tfrac{49}{4}\) a mais do que \(\theta^2 - 7\theta\). Descontando a diferença:
+$$\begin{aligned}
+\theta^2 - 7\theta + \tfrac{29}{2} &= (\theta - \tfrac{7}{2})^2 - \tfrac{49}{4} + \tfrac{29}{2} \\
+&= (\theta - \tfrac{7}{2})^2 + \tfrac{9}{4}
+\end{aligned}$$</li>
+<li>Mande a sobra para a constante:
+$$e^{-[(\theta - 7/2)^2 + 9/4]} = e^{-9/4} \cdot e^{-(\theta - 7/2)^2}$$
+O \(e^{-9/4}\) não tem \(\theta\): vai para a constante, como o coeficiente binomial na Beta. Sobra
 $$\text{numerador} = c\,e^{-(\theta - 7/2)^2}$$</li>
 </ol>
 """.replace("{LESSON4}", LESSON4) + mc(
