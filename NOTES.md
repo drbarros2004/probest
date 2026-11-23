@@ -28,6 +28,16 @@
 - Fórmula longa em linha própria ($$…$$, aligned se forem várias), e não no meio do parágrafo, onde quebra mal.
 - Produto entre conceitos com o símbolo: "prior × likelihood", e não "prior vezes likelihood". Sem frase de efeito de abertura ("Esse é o padrão que tem nome."): a definição vai direto (2026-11-20, 0005, "muita frase de IA").
 
+- Texto das lições segue a skill house-style (~/.claude/skills/house-style). As regras dela que mais pesam aqui (2026-11-23; valem para lições novas e trechos reescritos, sem revisar o que já existe):
+  1. A mesma coisa tem o mesmo nome em toda a lição, e coisas diferentes nunca dividem um rótulo. Ex.: os pesos do atalho Normal-Normal viraram w_prior e w_data porque o a e b do MIT15 se confundiam com os da Beta.
+  2. Sem rótulo-fragmento fechado com ponto antes da explicação ("**Q4.1.** Uma medição", "**Expandir.** …"): escreva a frase ("Expanda os quadrados:") ou faça um título de verdade (`<h3>`).
+  3. Sem lista em que todo item tem rótulo em negrito e dois-pontos ("**Média μ:** …"). Ficha de consulta (o quadro "Como resolver") pode rotular, quando o rótulo nomeia o caso ("Beta + Binomial").
+  4. Negrito só no termo onde ele é definido ("uma prior é **conjugada** de…"), e não em frases inteiras.
+  5. Tom: sem travessão como conector, sem "não X, mas Y", sem frase de fechamento que repete o parágrafo, sem preâmbulo ("Vamos ver…"). Exceção de material de estudo: a pergunta que o aluno faria, seguida da resposta com o raciocínio ("Isso é coincidência? Não. Faça a conta com letras…").
+  6. Toda variável de uma fórmula é explicada numa frase (complementa a regra da fórmula em linha própria).
+  7. Em tabela, as colunas que o leitor procura primeiro vêm antes da explicação ("trecho | faz falta na P2? | por que ficou de fora").
+  8. Legenda de gráfico diz o que o desenho mostra e não aponta para outro lugar ("…é mais estreita que a prior, porque o dado reduziu a incerteza sobre θ").
+
 ## Trabalho
 - Revisão antes do PR: comparar a lição com o Mxx dela **e** com os exercícios relacionados (listas, provas, MEX2): citações literais, as ideias principais que os exercícios exigem, a cobertura do que eles cobram e o quadro "o que ficou de fora". Pedido do usuário (2026-11-17).
 - Antes de publicar: testar todos os exercícios no navegador (preview "licoes" do .claude/launch.json) e conferir os gráficos: nenhum rótulo encostando em linha, áreas sobrepostas legíveis.
