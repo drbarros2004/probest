@@ -154,7 +154,9 @@ Dividindo por 2:
 $$\theta^2 - 7\theta + \tfrac{29}{2}$$</li>
 <li>Complete o quadrado. Para o termo do meio dar \(-7\theta\), \(m = 7/2\):
 $$(\theta - m)^2 = \theta^2 - 2m\theta + m^2 \quad\Rightarrow\quad (\theta - \tfrac{7}{2})^2 = \theta^2 - 7\theta + \tfrac{49}{4}$$
-Esse quadrado tem \(\tfrac{49}{4}\) a mais do que \(\theta^2 - 7\theta\). Descontando a diferença:
+Passando o \(\tfrac{49}{4}\) para o outro lado:
+$$\theta^2 - 7\theta = (\theta - \tfrac{7}{2})^2 - \tfrac{49}{4}$$
+Somando \(\tfrac{29}{2}\) dos dois lados:
 $$\begin{aligned}
 \theta^2 - 7\theta + \tfrac{29}{2} &= (\theta - \tfrac{7}{2})^2 - \tfrac{49}{4} + \tfrac{29}{2} \\
 &= (\theta - \tfrac{7}{2})^2 + \tfrac{9}{4}
