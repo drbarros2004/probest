@@ -142,7 +142,7 @@ posterior é Normal, o MIT14 faz a conta num exemplo:</p>
 é a pdf de \(N(2, 1)\) em \(\theta\), e a likelihood é a pdf de \(N(\theta, 1)\) no dado \(x = 5\):</p>
 $$\underbrace{\tfrac{1}{\sqrt{2\pi}}\,e^{-(\theta-2)^2/2}}_{\text{prior}} \cdot \underbrace{\tfrac{1}{\sqrt{2\pi}}\,e^{-(5-\theta)^2/2}}_{\text{likelihood}}
 = \tfrac{1}{2\pi}\,e^{-\left[(\theta-2)^2 + (5-\theta)^2\right]/2}$$
-<p>A pergunta é: <b>esse expoente tem a forma \(-(\theta - m)^2/k\)?</b> Se tiver, é Normal, e \(m\) e \(k\) dão média e variância. Para
+<p>A pergunta é: <b>esse expoente tem a forma \(-(\theta - m)^2/k\)?</b> Se tiver, é Normal: \(m\) é a média e \(k = 2\sigma^2\), então a variância é \(k/2\). Para
 descobrir, <b>completa-se o quadrado</b>, em três passos:</p>
 <ol class="spaced">
 <li>Expanda os quadrados:
@@ -150,8 +150,8 @@ $$\begin{aligned}
 (\theta-2)^2 + (5-\theta)^2 &= \theta^2 - 4\theta + 4 + 25 - 10\theta + \theta^2 \\
 &= 2\theta^2 - 14\theta + 29
 \end{aligned}$$
-Dividindo por 2:
-$$\theta^2 - 7\theta + \tfrac{29}{2}$$</li>
+No expoente, essa soma está dividida por 2:
+$$\tfrac{1}{2}\left(2\theta^2 - 14\theta + 29\right) = \theta^2 - 7\theta + \tfrac{29}{2}$$</li>
 <li>Complete o quadrado. Para o termo do meio dar \(-7\theta\), \(m = 7/2\):
 $$(\theta - m)^2 = \theta^2 - 2m\theta + m^2 \quad\Rightarrow\quad (\theta - \tfrac{7}{2})^2 = \theta^2 - 7\theta + \tfrac{49}{4}$$
 Passando o \(\tfrac{49}{4}\) para o outro lado:
@@ -164,13 +164,14 @@ $$\begin{aligned}
 <li>Mande a sobra para a constante:
 $$e^{-[(\theta - 7/2)^2 + 9/4]} = e^{-9/4} \cdot e^{-(\theta - 7/2)^2}$$
 O \(e^{-9/4}\) não tem \(\theta\): vai para a constante, como o coeficiente binomial na Beta. Sobra
-$$\text{numerador} = c\,e^{-(\theta - 7/2)^2}$$</li>
+$$\text{numerador} = c\,e^{-(\theta - 7/2)^2} = c\,e^{-(\theta - 7/2)^2/1}$$
+Os 4 de \(\tfrac{49}{4}\) e \(\tfrac{9}{4}\) não são denominador do expoente: o \(\tfrac{9}{4}\) foi para a constante.</li>
 </ol>
 """.replace("{LESSON4}", LESSON4) + mc(
     r"A posterior é \(c\,e^{-(\theta-7/2)^2}\). Qual é a variância dela?",
     [(r"\(1/2\), porque \(2\sigma^2 = 1\)", True, r"Isso: o denominador do expoente é \(1 = 2\sigma^2\), então \(\sigma^2 = 1/2\). A posterior é \(N(7/2, 1/2)\)."),
      (r"\(1\), porque \(\sigma^2 = 1\)", False, r"O denominador do expoente é \(2\sigma^2\), e não \(\sigma^2\). Com \(2\sigma^2 = 1\), \(\sigma^2 = 1/2\)."),
-     (r"\(2\), porque \(\sigma^2 = 2 \cdot 1\)", False, r"Seria multiplicar quando é para dividir: o denominador \(1\) vale \(2\sigma^2\), então \(\sigma^2 = 1/2\).")]) + quote(
+     (r"\(2\), porque \(\sigma^2 = 2 \cdot 1\)", False, r"Aqui o \(2\) multiplicou o denominador, mas o denominador já é \(2\sigma^2\): \(2\sigma^2 = 1\), então \(\sigma^2 = 1/2\).")]) + quote(
     r"""<p>We can see by the form of the posterior pdf that it is a normal distribution. Because the exponential for a normal distribution is
 \(e^{-(\theta-\mu)^2/2\sigma^2}\) we have mean \(\mu = 7/2\) and \(2\sigma^2 = 1\), so variance \(\sigma^2 = 1/2\).</p>""", src("§6, exemplo 3", "MIT14")) + pdf_plot(
     [("prior N(2, 1)", ex_prior, MUT, True, .02, .45), ("posterior N(7/2, 1/2)", ex_post, ACC, False, .5, .62)],
