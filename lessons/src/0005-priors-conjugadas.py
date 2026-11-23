@@ -161,14 +161,13 @@ $$\begin{aligned}
 \theta^2 - 7\theta + \tfrac{29}{2} &= (\theta - \tfrac{7}{2})^2 - \tfrac{49}{4} + \tfrac{29}{2} \\
 &= (\theta - \tfrac{7}{2})^2 + \tfrac{9}{4}
 \end{aligned}$$</li>
-<li>Mande a sobra para a constante:
-$$e^{-[(\theta - 7/2)^2 + 9/4]} = e^{-9/4} \cdot e^{-(\theta - 7/2)^2}$$
+<li>Mande a sobra para a constante. Para o expoente ficar legível, \(e^{u}\) aparece como \(\exp(u)\):
+$$\exp\!\left[-\left(\theta - \tfrac{7}{2}\right)^2 - \tfrac{9}{4}\right] = e^{-9/4} \cdot \exp\!\left[-\left(\theta - \tfrac{7}{2}\right)^2\right]$$
 O \(e^{-9/4}\) não tem \(\theta\): vai para a constante, como o coeficiente binomial na Beta. Sobra
-$$\text{numerador} = c\,e^{-(\theta - 7/2)^2} = c\,e^{-(\theta - 7/2)^2/1}$$
-Os 4 de \(\tfrac{49}{4}\) e \(\tfrac{9}{4}\) não são denominador do expoente: o \(\tfrac{9}{4}\) foi para a constante.</li>
+$$\text{numerador} = c\,\exp\!\left[-\left(\theta - \tfrac{7}{2}\right)^2\right]$$</li>
 </ol>
 """.replace("{LESSON4}", LESSON4) + mc(
-    r"A posterior é \(c\,e^{-(\theta-7/2)^2}\). Qual é a variância dela?",
+    r"A posterior é \(c\,\exp\!\left[-\left(\theta - \tfrac{7}{2}\right)^2\right]\). Qual é a variância dela?",
     [(r"\(1/2\), porque \(2\sigma^2 = 1\)", True, r"Isso: o denominador do expoente é \(1 = 2\sigma^2\), então \(\sigma^2 = 1/2\). A posterior é \(N(7/2, 1/2)\)."),
      (r"\(1\), porque \(\sigma^2 = 1\)", False, r"O denominador do expoente é \(2\sigma^2\), e não \(\sigma^2\). Com \(2\sigma^2 = 1\), \(\sigma^2 = 1/2\)."),
      (r"\(2\), porque \(\sigma^2 = 2 \cdot 1\)", False, r"Aqui o \(2\) multiplicou o denominador, mas o denominador já é \(2\sigma^2\): \(2\sigma^2 = 1\), então \(\sigma^2 = 1/2\).")]) + quote(
