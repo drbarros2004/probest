@@ -258,9 +258,9 @@ A régua acerta na média e erra uns \(\sigma = \sqrt{10^{-4}} = 0.01\). Essa va
 <h3>Q4.1: uma medição</h3>
 <p>A medição é \(x = 10\). Pode digitar frações (por exemplo, 1/3).</p>
 """ + check(
-    r"""<p>\(w_{\text{prior}} = 1/\sigma^2_{\text{prior}}\) = """ + num("1", "0.001", "4rem") + r""" &nbsp; \(w_{\text{data}} = 1/\sigma^2\) = """ + num("10000", "0.5", "5rem") + r"""</p>
+    r"""<p>\(w_{\text{prior}} = 1/\sigma^2_{\text{prior}}\) = """ + num("1", "0.001", "4rem") + r""" &nbsp; \(w_{\text{data}} = n/\sigma^2\) = """ + num("10000", "0.5", "5rem") + r"""</p>
 <p>\(\mu_{\text{post}}\) = """ + num("100009/10001", "0.00005", "7rem") + r""" &nbsp; \(\sigma^2_{\text{post}}\) = """ + num("1/10001", "0.000000001", "7rem") + "</p>",
-    f"Isso: w_data = 1/10⁻⁴ = 10⁴. μpost = (1·9 + 10⁴·10)/(1 + 10⁴) = 100009/10001 ≈ 9.9999; σ²post = 1/10001 ≈ 9.999 × 10⁻⁵. "
+    f"Isso: w_data = n/σ² = 1/10⁻⁴ = 10⁴. μpost = (1·9 + 10⁴·10)/(1 + 10⁴) = 100009/10001 ≈ 9.9999; σ²post = 1/10001 ≈ 9.999 × 10⁻⁵. "
     f"Confira no <a href='{L03G}'>L03G</a>, questão 4 (a solução é imagem; compare com o PDF aberto).") + r"""
 <p>A resposta escrita:</p>
 $$\theta \mid x = 10 \;\sim\; N\!\left(\frac{9 + 10^5}{1 + 10^4},\ \frac{1}{1 + 10^4}\right) \approx N(9.9999,\ 0.9999 \times 10^{-4})$$
