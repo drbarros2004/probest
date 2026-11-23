@@ -1,10 +1,10 @@
-"""Build lessons and reference sheets with the explain-diff-html renderer.
+"""Build lessons and reference sheets with the explain-html renderer.
 
 The look (CSS, light/dark theme, KaTeX, quiz) comes from
-~/.claude/skills/explain-diff-html/render.py. This wrapper only adds what the
+~/.claude/skills/explain-html/render.py. This wrapper only adds what the
 renderer lacks: numeric answer inputs (assets/check.js), Portuguese UI strings, the
-pen layer from ~/.claude/skills/explain-diff-html-ink/ink.js and the post-it notes layer
-(~/.claude/skills/explain-diff-html-notes/add_notes.py).
+pen layer from ~/.claude/skills/explain-html-ink/ink.js and the post-it notes layer
+(~/.claude/skills/explain-html/add_notes.py).
 
 Usage from a lesson source:  from build import build, prior_post, mc, quote
 """
@@ -18,11 +18,11 @@ from pathlib import Path
 
 ASSETS = Path(__file__).resolve().parent
 SKILLS = Path.home() / ".claude" / "skills"
-RENDER = SKILLS / "explain-diff-html" / "render.py"
-# Pen layer from explain-diff-html-ink: strokes saved in the artifact db (collection "ink").
-INK_JS = SKILLS / "explain-diff-html-ink" / "ink.js"
-# Post-it notes layer from explain-diff-html-notes: notes saved in the artifact db (collection "notes").
-ADD_NOTES = SKILLS / "explain-diff-html-notes" / "add_notes.py"
+RENDER = SKILLS / "explain-html" / "render.py"
+# Pen layer from explain-html-ink: strokes saved in the artifact db (collection "ink").
+INK_JS = SKILLS / "explain-html-ink" / "ink.js"
+# Post-it notes layer from explain-html: notes saved in the artifact db (collection "notes").
+ADD_NOTES = SKILLS / "explain-html" / "add_notes.py"
 
 _spec = importlib.util.spec_from_file_location("render", RENDER)
 render = importlib.util.module_from_spec(_spec)
@@ -80,8 +80,6 @@ EXTRA_CSS = """
   details { margin: .5rem 0; } summary { cursor: pointer; color: var(--accent); }
   nav.crumbs { font-size: .85rem; color: var(--muted); }
   nav.crumbs a { color: var(--accent); }
-  /* The notes toggle sits bottom-left too, so the pen button moves up above it. */
-  body .ink-ui { bottom: 56px; }
   /* Two live plots stacked: the renderer's svg.plot draws one curve, so a second svg (same axes) goes on top. */
   .plot-stack { position: relative; }
   .plot-stack > svg.plot + svg.plot { position: absolute; inset: 0; background: none; border-color: transparent; }
