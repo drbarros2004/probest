@@ -351,7 +351,7 @@ SPEC = {
              {"text": r"\(3\)", "correct": True, "feedback": r"Isso: \(w_{\text{prior}} = 1\), \(w_{\text{data}} = 3\), \(\mu_{\text{post}} = (0 + 3 \cdot 4)/4 = 3\)."},
              {"text": r"\(2\)", "correct": False, "feedback": r"Essa é a média simples de 0 e 4. Os pesos são \(w_{\text{prior}} = 1\) e \(w_{\text{data}} = 3\): \((0 + 12)/4 = 3\)."},
              {"text": r"\(4\)", "correct": False, "feedback": r"Esse é o dado sozinho. A prior também pesa: \((1 \cdot 0 + 3 \cdot 4)/(1 + 3) = 3\)."}]},
-        {"question": r"Na L03 Q4.2, por que dá para calcular o número de medições antes de medir?",
+        {"question": r"A L03 Q4.2 pede quantas medições fazer para \(\sigma^2_{\text{post}} < 10^{-6}\), sem dar nenhum valor medido. Por que dá para responder?",
          "ref": [("objetivo", "O objetivo: L03 Q4")],
          "options": [
              {"text": r"\(\sigma^2_{\text{post}}\) não usa os valores medidos", "correct": True, "feedback": r"Isso: \(\sigma^2_{\text{post}} = 1/(w_{\text{prior}} + w_{\text{data}})\), e \(w_{\text{data}} = n/\sigma^2\) só depende de quantas medições."},
