@@ -185,13 +185,13 @@ atalho = r"""
 <p>Completar o quadrado sempre funciona, mas é trabalhoso. Como a posterior é sempre Normal, o MIT15 faz a conta uma vez, com letras, e
 entrega as fórmulas, que dão o mesmo resultado que completar o quadrado. Para \(n\) medições \(x_1, \dots, x_n\), cada uma \(N(\theta, \sigma^2)\), com média \(\bar{x}\), e prior
 \(N(\mu_{\text{prior}}, \sigma^2_{\text{prior}})\):</p>
-$$a = \frac{1}{\sigma^2_{\text{prior}}}, \qquad b = \frac{n}{\sigma^2}, \qquad
-\mu_{\text{post}} = \frac{a\,\mu_{\text{prior}} + b\,\bar{x}}{a + b}, \qquad \sigma^2_{\text{post}} = \frac{1}{a + b}$$
+$$w_{\text{prior}} = \frac{1}{\sigma^2_{\text{prior}}}, \qquad w_{\text{data}} = \frac{n}{\sigma^2}$$
+$$\mu_{\text{post}} = \frac{w_{\text{prior}}\,\mu_{\text{prior}} + w_{\text{data}}\,\bar{x}}{w_{\text{prior}} + w_{\text{data}}}, \qquad \sigma^2_{\text{post}} = \frac{1}{w_{\text{prior}} + w_{\text{data}}}$$
 <p class="uso" style="font-size:.85rem;color:var(--muted)">MIT15 §7.3, fórmulas (4). Com uma medição só, \(n = 1\) e \(\bar{x} = x\) (fórmulas (2) do §7).
-Os nomes \(a\) e \(b\) são do MIT15 e não têm relação com os parâmetros da Beta.</p>
+O MIT15 chama \(w_{\text{prior}}\) de \(a\) e \(w_{\text{data}}\) de \(b\). Em outros livros, esses pesos se chamam precisão (1/variância).</p>
 <p>Como ler:</p>
 <ul class="spaced">
-<li>\(a\) e \(b\) são <b>pesos</b>: o inverso de uma variância mede a certeza. Prior estreita → \(a\) grande. Medições precisas ou muitas → \(b\) grande.</li>
+<li>\(w_{\text{prior}}\) e \(w_{\text{data}}\) são <b>pesos</b>: o inverso de uma variância mede a certeza. Prior estreita → \(w_{\text{prior}}\) grande. Medições precisas ou muitas → \(w_{\text{data}}\) grande.</li>
 <li>\(\mu_{\text{post}}\) é a <b>média ponderada</b> da média da prior e da média dos dados, com esses pesos. Fica sempre entre as duas,
 mais perto de quem pesa mais.</li>
 <li>\(\sigma^2_{\text{post}}\) é o inverso da soma das certezas. Ela é menor que \(\sigma^2_{\text{prior}}\) e que \(\sigma^2/n\): a posterior sabe
@@ -201,9 +201,9 @@ mais que a prior e mais que os dados sozinhos.</li>
 <li>High certainty (low variance) in the prior has a big influence on the posterior.</li></ol>
 <p>The actual posterior is a balance of these two influences.</p>""", src("§7.3")) + check(
     r"""<p><b>Confira no exemplo do MIT14</b> (prior \(N(2, 1)\), \(\sigma^2 = 1\), \(x = 5\)):
-\(a\) = """ + num("1", "0.01", "3rem") + r", \(b\) = " + num("1", "0.01", "3rem") + r", \(\mu_{\text{post}}\) = " + num("3.5", "0.01", "3.5rem")
+\(w_{\text{prior}}\) = """ + num("1", "0.01", "3rem") + r", \(w_{\text{data}}\) = " + num("1", "0.01", "3rem") + r", \(\mu_{\text{post}}\) = " + num("3.5", "0.01", "3.5rem")
     + r", \(\sigma^2_{\text{post}}\) = " + num("0.5", "0.01", "3.5rem") + "</p>",
-    "Isso: a = b = 1, então os pesos são iguais e μpost = (2 + 5)/2 = 3.5, σ²post = 1/2. É o N(7/2, 1/2) do quadrado completado.") + r"""
+    "Isso: w_prior = w_data = 1, então os pesos são iguais e μpost = (2 + 5)/2 = 3.5, σ²post = 1/2. É o N(7/2, 1/2) do quadrado completado.") + r"""
 <p>Veja o equilíbrio mudar. Os valores iniciais são os do exemplo do MIT14: prior \(N(2, 1)\), \(\sigma^2 = 1\), uma medição \(x = 5\).</p>
 <div class="playground">
 <div class="controls">
@@ -216,11 +216,11 @@ mais que a prior e mais que os dados sozinhos.</li>
 <svg class="plot second" data-fn="normal(x, mp, vp)" data-x="0 10" data-y="0 2" aria-hidden="true"></svg>
 </div>
 </div>
-$$a = \frac{1}{\live{vp}} = \live{1/vp}, \qquad b = \frac{\live{n}}{\live{s2}} = \live{n/s2}$$
+$$w_{\text{prior}} = \frac{1}{\live{vp}} = \live{1/vp}, \qquad w_{\text{data}} = \frac{\live{n}}{\live{s2}} = \live{n/s2}$$
 $$\mu_{\text{post}} = \frac{\live{1/vp} \cdot \live{mp} + \live{n/s2} \cdot \live{xb}}{\live{1/vp + n/s2}} = \live{(mp/vp + n*xb/s2)/(1/vp + n/s2)},
 \qquad \sigma^2_{\text{post}} = \frac{1}{\live{1/vp + n/s2}} = \live{1/(1/vp + n/s2)}$$
 <div class="stats">
-<div class="stat"><div class="stat-label">peso dos dados, \(\frac{b}{a+b}\)</div><div class="stat-value" data-expr="Math.round(100*(n/s2)/(1/vp + n/s2)) + '%'"></div></div>
+<div class="stat"><div class="stat-label">peso dos dados, \(\frac{w_{\text{data}}}{w_{\text{prior}} + w_{\text{data}}}\)</div><div class="stat-value" data-expr="Math.round(100*(n/s2)/(1/vp + n/s2)) + '%'"></div></div>
 <div class="stat"><div class="stat-label">\(\sigma^2_{\text{post}}\) vs. \(\sigma^2_{\text{prior}}\)</div><div class="stat-value" data-expr="(1/(1/vp + n/s2)).toFixed(3) + ' < ' + vp"></div></div>
 </div>
 <p>Aumente o \(n\) ou diminua o \(\sigma^2\): a posterior corre para \(\bar{x}\) e afina. Diminua o \(\sigma^2_{\text{prior}}\): ela fica presa
@@ -239,16 +239,16 @@ x = 10, qual é a posterior de θ?</li>
 <h3>Q4.1: uma medição</h3>
 <p>A medição é \(x = 10\). Pode digitar frações (por exemplo, 1/3).</p>
 """ + check(
-    r"""<p>\(a = 1/\sigma^2_{\text{prior}}\) = """ + num("1", "0.001", "4rem") + r""" &nbsp; \(b = 1/\sigma^2\) = """ + num("10000", "0.5", "5rem") + r"""</p>
+    r"""<p>\(w_{\text{prior}} = 1/\sigma^2_{\text{prior}}\) = """ + num("1", "0.001", "4rem") + r""" &nbsp; \(w_{\text{data}} = 1/\sigma^2\) = """ + num("10000", "0.5", "5rem") + r"""</p>
 <p>\(\mu_{\text{post}}\) = """ + num("100009/10001", "0.00005", "7rem") + r""" &nbsp; \(\sigma^2_{\text{post}}\) = """ + num("1/10001", "0.000000001", "7rem") + "</p>",
-    f"Isso: b = 1/10⁻⁴ = 10⁴. μpost = (1·9 + 10⁴·10)/(1 + 10⁴) = 100009/10001 ≈ 9.9999; σ²post = 1/10001 ≈ 9.999 × 10⁻⁵. "
+    f"Isso: w_data = 1/10⁻⁴ = 10⁴. μpost = (1·9 + 10⁴·10)/(1 + 10⁴) = 100009/10001 ≈ 9.9999; σ²post = 1/10001 ≈ 9.999 × 10⁻⁵. "
     f"Confira no <a href='{L03G}'>L03G</a>, questão 4 (a solução é imagem; compare com o PDF aberto).") + r"""
 <p>A resposta escrita:</p>
 $$\theta \mid x = 10 \;\sim\; N\!\left(\frac{9 + 10^5}{1 + 10^4},\ \frac{1}{1 + 10^4}\right) \approx N(9.9999,\ 0.9999 \times 10^{-4})$$
-<p>A média fica quase em 10 porque a régua pesa \(b/a = 10\,000\) vezes mais que a prior: ela erra uns \(\sigma = 0.01\), enquanto a prior
-só dizia "9, mais ou menos 1". A variância fica um pouco abaixo da da régua (\(10^{-4}\)), porque o peso da prior também entra em \(a + b\).</p>
+<p>A média fica quase em 10 porque a régua pesa \(w_{\text{data}}/w_{\text{prior}} = 10\,000\) vezes mais que a prior: ela erra uns \(\sigma = 0.01\), enquanto a prior
+só dizia "9, mais ou menos 1". A variância fica um pouco abaixo da da régua (\(10^{-4}\)), porque o peso da prior também entra em \(w_{\text{prior}} + w_{\text{data}}\).</p>
 <h3>Q4.2: quantas medições</h3>
-<p>Com \(n\) medições, só o \(b\) muda: \(b = n/\sigma^2 = n \cdot 10^4\). A variância da posterior é</p>
+<p>Com \(n\) medições, só o \(w_{\text{data}}\) muda: \(w_{\text{data}} = n/\sigma^2 = n \cdot 10^4\). A variância da posterior é</p>
 $$\sigma^2_{\text{post}} = \frac{1}{1 + n \cdot 10^4}$$
 <p>Ela não depende dos valores medidos, só de quantos são. Por isso dá para responder antes de medir.</p>
 """ + check(
@@ -268,8 +268,8 @@ receita = r"""
 \[\text{posterior} = \text{Beta}(a + s,\ b + f)\]</li>
 <li><b>Normal + Normal</b> (medição com variância \(\sigma^2\) conhecida, \(\theta\) = média): leia \(\mu_{\text{prior}}\), \(\sigma^2_{\text{prior}}\),
 \(\sigma^2\), \(n\) e \(\bar{x}\). Depois:
-\[a = \frac{1}{\sigma^2_{\text{prior}}}, \qquad b = \frac{n}{\sigma^2}\]
-\[\mu_{\text{post}} = \frac{a\,\mu_{\text{prior}} + b\,\bar{x}}{a + b}, \qquad \sigma^2_{\text{post}} = \frac{1}{a + b}\]</li>
+\[w_{\text{prior}} = \frac{1}{\sigma^2_{\text{prior}}}, \qquad w_{\text{data}} = \frac{n}{\sigma^2}\]
+\[\mu_{\text{post}} = \frac{w_{\text{prior}}\,\mu_{\text{prior}} + w_{\text{data}}\,\bar{x}}{w_{\text{prior}} + w_{\text{data}}}, \qquad \sigma^2_{\text{post}} = \frac{1}{w_{\text{prior}} + w_{\text{data}}}\]</li>
 <li><b>Variância, e não desvio padrão:</b> \(N(\mu, \sigma^2)\). Se vier \(\sigma\), eleve ao quadrado antes.</li>
 <li><b>Sem a fórmula:</b> multiplique prior e likelihood, complete o quadrado no expoente e leia:
 \[c\,e^{-(\theta-m)^2/k} \ \text{ é } \ N\!\left(m, \tfrac{k}{2}\right)\]</li>
@@ -329,14 +329,14 @@ SPEC = {
         {"question": r"Prior \(N(0, 1)\) e uma medição \(x = 4\) com variância \(\sigma^2 = 1/3\). Qual é a média da posterior?",
          "ref": [("atalho", "O atalho: média ponderada")],
          "options": [
-             {"text": r"\(3\)", "correct": True, "feedback": r"Isso: \(a = 1\), \(b = 3\), \(\mu_{\text{post}} = (0 + 3 \cdot 4)/4 = 3\)."},
-             {"text": r"\(2\)", "correct": False, "feedback": r"Essa é a média simples de 0 e 4. Os pesos são \(a = 1\) e \(b = 3\): \((0 + 12)/4 = 3\)."},
+             {"text": r"\(3\)", "correct": True, "feedback": r"Isso: \(w_{\text{prior}} = 1\), \(w_{\text{data}} = 3\), \(\mu_{\text{post}} = (0 + 3 \cdot 4)/4 = 3\)."},
+             {"text": r"\(2\)", "correct": False, "feedback": r"Essa é a média simples de 0 e 4. Os pesos são \(w_{\text{prior}} = 1\) e \(w_{\text{data}} = 3\): \((0 + 12)/4 = 3\)."},
              {"text": r"\(4\)", "correct": False, "feedback": r"Esse é o dado sozinho. A prior também pesa: \((1 \cdot 0 + 3 \cdot 4)/(1 + 3) = 3\)."}]},
         {"question": r"Na L03 Q4.2, por que dá para calcular o número de medições antes de medir?",
          "ref": [("objetivo", "O objetivo: L03 Q4")],
          "options": [
-             {"text": r"\(\sigma^2_{\text{post}}\) não usa os valores medidos", "correct": True, "feedback": r"Isso: \(\sigma^2_{\text{post}} = 1/(a + b)\), e \(b = n/\sigma^2\) só depende de quantas medições."},
-             {"text": r"\(\mu_{\text{post}}\) não usa os valores medidos", "correct": False, "feedback": r"A média usa: \(\bar{x}\) está na fórmula. Quem não usa é \(\sigma^2_{\text{post}} = 1/(a + b)\)."},
+             {"text": r"\(\sigma^2_{\text{post}}\) não usa os valores medidos", "correct": True, "feedback": r"Isso: \(\sigma^2_{\text{post}} = 1/(w_{\text{prior}} + w_{\text{data}})\), e \(w_{\text{data}} = n/\sigma^2\) só depende de quantas medições."},
+             {"text": r"\(\mu_{\text{post}}\) não usa os valores medidos", "correct": False, "feedback": r"A média usa: \(\bar{x}\) está na fórmula. Quem não usa é \(\sigma^2_{\text{post}} = 1/(w_{\text{prior}} + w_{\text{data}})\)."},
              {"text": r"\(\sigma^2_{\text{post}}\) é igual a \(\sigma^2\) da régua", "correct": False, "feedback": r"\(\sigma^2_{\text{post}} = 1/(1 + n \cdot 10^4)\), menor que \(10^{-4}\). Ela só não depende dos valores medidos."}]},
     ],
 }
