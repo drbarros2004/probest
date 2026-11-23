@@ -1,0 +1,457 @@
+
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>probest</title>
+<style>:root {
+    --bg: #fafaf8; --fg: #1a1a1a; --accent: #b5541f; --muted: #6b6b6b; --border: #e0ddd6;
+    --surface: #fff; --hover: #f5f2ec; --th-bg: #f0ede6; --callout-bg: #fff4e8; --box-bg: #fdf6ee;
+    --inline-code-bg: #eee; --fail-border: #b91c1c; --fail-bg: #fef2f2;
+    --ok-bg: #ecfdf3; --ok-fg: #166534; --ok-border: #16a34a;
+    --bad-bg: #fef2f2; --bad-fg: #991b1b; --bad-border: #dc2626;
+    --info-bg: #eef4fd; --info-border: #2563eb; --warn-bg: #fdf8e6; --warn-border: #ca8a04;
+    --code-bg: #f3f1ec; --code-fg: #383a42;
+    --syn-keyword: #a626a4; --syn-function: #4078f2; --syn-type: #b07a00; --syn-number: #986801;
+    --syn-string: #50a14f; --syn-interp: #e45649; --syn-comment: #8a8b91; --syn-macro: #0184bc;
+    --diff-add-bg: rgba(80, 161, 79, .14); --diff-del-bg: rgba(228, 86, 73, .13);
+}
+@media screen and (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #16181d; --fg: #e4e4e7; --accent: #e0864f; --muted: #9a9aa3; --border: #33363e;
+    --surface: #1f2229; --hover: #2a2d34; --th-bg: #262a31; --callout-bg: #2a2119; --box-bg: #2a2119;
+    --inline-code-bg: #2a2d34; --fail-border: #f87171; --fail-bg: #3a1515;
+    --ok-bg: #12301f; --ok-fg: #86efac; --ok-border: #22c55e;
+    --bad-bg: #3a1515; --bad-fg: #fca5a5; --bad-border: #ef4444;
+    --info-bg: #172238; --info-border: #60a5fa; --warn-bg: #2d2611; --warn-border: #facc15;
+    --code-bg: #0f1115; --code-fg: #e6e6e6;
+    --syn-keyword: #c678dd; --syn-function: #61afef; --syn-type: #e5c07b; --syn-number: #d19a66;
+    --syn-string: #98c379; --syn-interp: #e06c75; --syn-comment: #7f848e; --syn-macro: #56b6c2;
+    --diff-add-bg: rgba(152, 195, 121, .13); --diff-del-bg: rgba(224, 108, 117, .15);
+    color-scheme: dark;
+} }
+@media screen { :root[data-theme="dark"] {
+    --bg: #16181d; --fg: #e4e4e7; --accent: #e0864f; --muted: #9a9aa3; --border: #33363e;
+    --surface: #1f2229; --hover: #2a2d34; --th-bg: #262a31; --callout-bg: #2a2119; --box-bg: #2a2119;
+    --inline-code-bg: #2a2d34; --fail-border: #f87171; --fail-bg: #3a1515;
+    --ok-bg: #12301f; --ok-fg: #86efac; --ok-border: #22c55e;
+    --bad-bg: #3a1515; --bad-fg: #fca5a5; --bad-border: #ef4444;
+    --info-bg: #172238; --info-border: #60a5fa; --warn-bg: #2d2611; --warn-border: #facc15;
+    --code-bg: #0f1115; --code-fg: #e6e6e6;
+    --syn-keyword: #c678dd; --syn-function: #61afef; --syn-type: #e5c07b; --syn-number: #d19a66;
+    --syn-string: #98c379; --syn-interp: #e06c75; --syn-comment: #7f848e; --syn-macro: #56b6c2;
+    --diff-add-bg: rgba(152, 195, 121, .13); --diff-del-bg: rgba(224, 108, 117, .15);
+    color-scheme: dark;
+} }
+
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--fg);
+    max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 6rem; line-height: 1.65; }
+  h1 { font-size: 1.9rem; border-bottom: 3px solid var(--accent); padding-bottom: .5rem; }
+  h2 { font-size: 1.4rem; margin-top: 3rem; color: var(--accent); }
+  h3 { font-size: 1.1rem; margin-top: 1.8rem; }
+  code { font-family: 'SF Mono', Consolas, monospace; background: var(--inline-code-bg); padding: .1rem .3rem; border-radius: 3px; font-size: .92em; }
+  /* Long lines scroll sideways instead of wrapping, so code keeps its shape. */
+  pre { background: var(--code-bg); color: var(--code-fg); border: 1px solid var(--border); padding: 1rem 1.2rem; border-radius: 8px;
+    overflow-x: auto; white-space: pre; font-family: 'SF Mono', Consolas, monospace; font-size: .88rem; line-height: 1.5; }
+  pre code { background: none; padding: 0; color: inherit; }
+  /* Syntax colors for the highlight.js classes (highlight_render.js); .fn and .ty are its calls and types. */
+  pre .hljs-keyword, pre .hljs-selector-tag { color: var(--syn-keyword); }
+  pre .hljs-title, pre .hljs-section, pre .fn { color: var(--syn-function); }
+  pre .hljs-built_in, pre .hljs-type, pre .ty { color: var(--syn-type); }
+  pre .hljs-number, pre .hljs-literal { color: var(--syn-number); }
+  pre .hljs-string, pre .hljs-regexp { color: var(--syn-string); }
+  pre .hljs-subst, pre .hljs-variable, pre .hljs-template-variable { color: var(--syn-interp); }
+  pre .hljs-comment, pre .hljs-quote { color: var(--syn-comment); font-style: italic; }
+  pre .hljs-meta, pre .hljs-symbol, pre .hljs-attr, pre .hljs-attribute { color: var(--syn-macro); }
+  /* Diff blocks: the code grows to its longest line so the line backgrounds follow a horizontal scroll. */
+  pre.diff code { display: block; width: max-content; min-width: 100%; }
+  pre.diff .ln { display: block; margin: 0 -1.2rem; padding: 0 1.2rem 0 .4rem; }
+  pre.diff .ln::before { content: " "; display: inline-block; width: .8rem; color: var(--syn-comment); }
+  pre.diff .ln.add { background: var(--diff-add-bg); }
+  pre.diff .ln.add::before { content: "+"; color: var(--syn-string); }
+  pre.diff .ln.del { background: var(--diff-del-bg); }
+  pre.diff .ln.del::before { content: "-"; color: var(--syn-interp); }
+  /* The switch sits at the top-right corner of the text column and scrolls away with the title. */
+  body { position: relative; }
+  h1 { padding-right: 2.6rem; }
+  .theme-toggle { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 1rem); right: 1rem; width: 32px; height: 32px;
+    padding: 0; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 50%;
+    background: var(--surface); color: var(--muted); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    transition: color .15s, background .15s; }
+  .theme-toggle svg { width: 16px; height: 16px; }
+  .theme-toggle:hover { color: var(--fg); background: var(--hover); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .callout { background: var(--callout-bg); border-left: 4px solid var(--accent); padding: .9rem 1.2rem;
+    border-radius: 0 6px 6px 0; margin: 1.2rem 0; }
+  /* Callout kinds: .callout.info / .warn / .danger / .success. */
+  .callout.info { background: var(--info-bg); border-left-color: var(--info-border); }
+  .callout.warn { background: var(--warn-bg); border-left-color: var(--warn-border); }
+  .callout.danger { background: var(--bad-bg); border-left-color: var(--bad-border); }
+  .callout.success { background: var(--ok-bg); border-left-color: var(--ok-border); }
+  .callout > .callout-title { display: block; font-family: sans-serif; font-size: .78rem; font-weight: 700;
+    letter-spacing: .05em; text-transform: uppercase; margin-bottom: .3rem; color: var(--muted); }
+  /* Stat cards: .stats > .stat > .stat-label, .stat-value, .stat-delta(.good|.bad). */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; margin: 1.2rem 0; }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: .8rem 1rem; }
+  .stat-label { font-family: sans-serif; font-size: .78rem; color: var(--muted); }
+  .stat-value { font-size: 1.7rem; font-weight: 600; line-height: 1.25; font-variant-numeric: tabular-nums; }
+  .stat-delta { font-family: sans-serif; font-size: .8rem; color: var(--muted); }
+  .stat-delta.good { color: var(--ok-fg); }
+  .stat-delta.bad { color: var(--bad-fg); }
+  /* Folds: <details class="fold"><summary>..</summary>..</details>. */
+  details.fold { border: 1px solid var(--border); border-radius: 8px; background: var(--surface); margin: 1.2rem 0; }
+  details.fold > summary { cursor: pointer; padding: .7rem 1rem; font-weight: 600; list-style: none; }
+  details.fold > summary::-webkit-details-marker { display: none; }
+  details.fold > summary::before { content: "\25B8"; display: inline-block; width: 1.1rem; color: var(--accent); transition: transform .15s; }
+  details.fold[open] > summary::before { transform: rotate(90deg); }
+  details.fold > summary:hover { background: var(--hover); border-radius: 8px; }
+  details.fold > :not(summary) { margin-left: 1rem; margin-right: 1rem; }
+  /* Tabs: .tabs > .tab[data-label]; INTERACTIVE_JS builds the buttons. Without JS they stack. */
+  .tabs { margin: 1.2rem 0; }
+  .tab-bar { display: flex; gap: .2rem; border-bottom: 1px solid var(--border); }
+  .tab-btn { font-family: sans-serif; font-size: .85rem; padding: .45rem .9rem; border: 1px solid transparent; border-bottom: none;
+    border-radius: 6px 6px 0 0; background: none; color: var(--muted); cursor: pointer; margin-bottom: -1px; }
+  .tab-btn:hover { color: var(--fg); }
+  .tab-btn[aria-selected="true"] { color: var(--accent); background: var(--surface); border-color: var(--border); border-bottom: 1px solid var(--surface); font-weight: 600; }
+  .tabs.ready > .tab:not(.active) { display: none; }
+  .tabs .tab > :first-child { margin-top: .8rem; }
+  /* Sliders: .controls > label.control > <span>label</span> <input type="range" data-var="x"> <output data-expr="x">. */
+  .controls { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: .6rem 1rem; margin: 1.2rem 0; }
+  label.control { display: grid; grid-template-columns: minmax(3rem, max-content) 1fr 3.5rem; align-items: center; gap: .8rem; padding: .3rem 0; }
+  label.control input[type=range] { width: 100%; accent-color: var(--accent); }
+  label.control output, [data-expr], [data-live] { font-variant-numeric: tabular-nums; }
+  label.control output { text-align: right; font-family: 'SF Mono', Consolas, monospace; font-size: .88rem; color: var(--accent); }
+  .katex [data-live] { color: var(--accent); }
+  /* Live plots: <svg class="plot" data-fn=".." data-x="lo hi" data-y="lo hi">; .playground puts
+     controls and plot side by side (stacked on narrow screens). */
+  .playground { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 1rem; align-items: center; margin: 1.2rem 0; }
+  .playground > * { margin: 0; }
+  @media (max-width: 700px) { .playground { grid-template-columns: 1fr; } }
+  svg.plot { display: block; width: 100%; height: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+  svg.plot .grid { stroke: var(--border); stroke-width: .6; }
+  svg.plot .axis { stroke: var(--muted); stroke-width: 1; }
+  svg.plot text { fill: var(--muted); font: 11px sans-serif; }
+  svg.plot .plot-line { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linejoin: round; }
+  svg.plot .plot-area { fill: var(--accent); opacity: .2; }
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.5rem; margin: 1.5rem 0; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc ul { margin: .3rem 0; }
+  .diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem;
+    margin: 1.2rem 0; font-family: 'SF Mono', Consolas, monospace; font-size: .85rem; }
+  .flow { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; justify-content: center; padding: .5rem 0; }
+  .box { border: 2px solid var(--accent); border-radius: 8px; padding: .6rem 1rem; background: var(--box-bg); text-align: center; min-width: 120px; }
+  .box.fail { border-color: var(--fail-border); background: var(--fail-bg); }
+  .arrow { font-size: 1.4rem; color: var(--muted); }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92rem; }
+  th, td { border: 1px solid var(--border); padding: .5rem .7rem; text-align: left; }
+  th { background: var(--th-bg); }
+  .quiz-q { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.5rem; margin: 1.2rem 0; }
+  .quiz-opt { display: block; width: 100%; text-align: left; padding: .6rem 1rem; margin: .4rem 0; color: var(--fg);
+    border: 1px solid var(--border); border-radius: 6px; background: var(--surface); cursor: pointer; font-family: inherit; font-size: .95rem; }
+  .quiz-opt:hover { background: var(--hover); }
+  .feedback { display: none; margin-top: .6rem; padding: .6rem 1rem; border-radius: 6px; font-size: .9rem; }
+  .feedback.correct { background: var(--ok-bg); color: var(--ok-fg); border-left: 3px solid var(--ok-border); }
+  .feedback.incorrect { background: var(--bad-bg); color: var(--bad-fg); border-left: 3px solid var(--bad-border); }
+  .badge { display: inline-block; font-size: .75rem; padding: .15rem .5rem; border-radius: 10px; font-family: sans-serif; }
+  .badge.new { background: var(--ok-bg); color: var(--ok-fg); }
+  img { max-width: 100%; display: block; margin: 1.2rem auto; border: 1px solid var(--border);
+    border-radius: 8px; background: var(--surface); padding: .4rem; }
+  figure { margin: 1.4rem 0; }
+  figcaption { text-align: center; font-size: .85rem; color: var(--muted); font-style: italic; margin-top: .4rem; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; padding: .4rem 0; margin: 1.1rem 0; }
+  .katex { font-size: 1.05em; }
+  @media (max-width: 600px) { body { padding: 1rem; } .flow { flex-direction: column; } }
+
+  @page { margin: 16mm 13mm; }
+  @media print {
+    /* Without this the callouts, diagrams and code blocks print as bare white boxes. */
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { max-width: none; padding: 0; font-size: 10.5pt; line-height: 1.5; }
+    h1 { font-size: 18pt; }
+    h2 { font-size: 14pt; margin-top: 1.6rem; break-after: avoid; }
+    h3 { break-after: avoid; }
+    p, li { orphans: 3; widows: 3; }
+    .callout, .diagram, figure, .stat, .controls, .playground, .quiz-q, .quiz-opt, .katex-display, pre { break-inside: avoid; }
+    /* Paper cannot scroll sideways, so long code lines wrap there, and the switch has nothing to do. */
+    pre { white-space: pre-wrap; }
+    .theme-toggle { display: none; }
+    /* Paper shows every tab, each under its label. */
+    .tab-bar { display: none; }
+    .tabs.ready > .tab:not(.active) { display: block; }
+    .tab[data-label]::before { content: attr(data-label); display: block; font-family: sans-serif; font-size: .8rem; font-weight: 700; color: var(--muted); margin-top: .8rem; }
+    /* Long tables may split across pages, but never mid-row, and headers repeat. */
+    thead { display: table-header-group; }
+    tr, th, td { break-inside: avoid; }
+    a { color: inherit; text-decoration: none; }
+    /* The quiz cannot be clicked on paper, so it becomes an answer key instead. */
+    .quiz-opt[data-correct="true"] { border-color: #16a34a; background: #f2fdf5; font-weight: 600; }
+    .quiz-opt[data-correct="true"]::after { content: " \2713"; color: #16a34a; font-weight: 700; }
+  }
+
+  .check-group { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.5rem; margin: 1.2rem 0; }
+  .check-group input { font: inherit; font-size: .92rem; width: 6rem; padding: .25rem .4rem; text-align: right;
+    color: var(--fg); background: var(--bg); border: 1px solid var(--border); border-radius: 5px; }
+  .check-group input.right { background: var(--ok-bg); border-color: var(--ok-border); }
+  .check-group input.wrong { background: var(--bad-bg); border-color: var(--bad-border); }
+  .check-group button.check { font-family: inherit; font-size: .95rem; padding: .45rem 1.1rem; margin-top: .6rem; cursor: pointer;
+    color: var(--fg); background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; }
+  .check-group button.check:hover { background: var(--hover); }
+  .check-group td, .check-group th { text-align: right; }
+  .check-group td:first-child, .check-group th:first-child { text-align: left; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.hl { color: var(--accent); font-weight: 700; }
+  body { font-size: 18px; }
+  blockquote.src { margin: 1.2rem 0; padding: .8rem 1.2rem; background: var(--surface); border: 1px solid var(--border);
+    border-left: 4px solid var(--muted); border-radius: 0 6px 6px 0; font-size: .95em; }
+  blockquote.src > :first-child { margin-top: 0; }
+  blockquote.src footer { margin-top: .6rem; font-size: .8rem; color: var(--muted); font-family: sans-serif; }
+  blockquote.src footer::before { content: "\2014  "; }
+  blockquote.src table { font-size: .85rem; }
+  .check-group button.reveal { border-color: var(--border); color: var(--muted); margin-left: .5rem; }
+  .check-group input.revealed { border-style: dashed; color: var(--muted); }
+  table.bayes-auto td.num { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.bayes-auto .pd { font-weight: 700; white-space: nowrap; }
+  /* Block diagram (renderer's .flow/.box/.arrow): .box.plain is the box outside the family, small is its role. */
+  .flow .box.plain { border-color: var(--border); background: var(--surface); }
+  .flow .box small { display: block; font-family: sans-serif; font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .flow-note { text-align: center; font-size: .9em; color: var(--muted); margin-top: .2rem; }
+  html { scroll-behavior: smooth; }
+  h2[id], h3[id] { scroll-margin-top: 1rem; }
+  /* In-page links are frequent, so they stay quiet: text color, dotted underline, accent only on hover. */
+  a[href^="#"]:not(.toc a) { color: inherit; text-decoration: underline dotted var(--muted); text-underline-offset: 3px; }
+  a[href^="#"]:not(.toc a):hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .quiz-ref { font-size: .8rem; color: var(--muted); margin: -.4rem 0 .6rem; }
+  .quiz-ref a[href^="#"] { color: var(--muted); }
+  /* Formulas never break inside a table cell; a table too wide for the screen scrolls in its own box (.tw, added in build()). */
+  td .katex, th .katex { white-space: nowrap; }
+  .tw { overflow-x: auto; margin: 1rem 0; } .tw > table { margin: 0; }
+  blockquote.src td, blockquote.src th { white-space: nowrap; padding: .4rem .55rem; }
+  /* Exercise tables: cells never wrap on their own (an input must not drop below its symbol); line breaks are written as <br>. */
+  .check-group td, .check-group th { white-space: nowrap; padding: .4rem .55rem; }
+  /* A letter that check.js replaces by the value from an earlier item once that item is right. */
+  [data-show] { font-family: KaTeX_Math, serif; font-style: italic; }
+  [data-show].shown { font-family: inherit; font-style: normal; color: var(--accent); font-weight: 700; }
+  /* "Na prova:" pointer from an explanation to the formula to use. */
+  /* Lists whose items are long explanations get room between items. */
+  ul.spaced > li, ol.spaced > li { margin-bottom: .7rem; }
+  p.uso { font-size: .9rem; color: var(--muted); border-left: 3px solid var(--accent); padding-left: .7rem; }
+  details { margin: .5rem 0; } summary { cursor: pointer; color: var(--accent); }
+  nav.crumbs { font-size: .85rem; color: var(--muted); }
+  /* Site menu (site_nav): home link, lesson picker, prev/next. */
+  nav.site { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1.1rem; font-size: .95rem;
+    padding-bottom: .7rem; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); position: relative; z-index: 5; }
+  /* The saved pen strokes were shifted for a 105.45px h1 offset: keep the menu that tall (measured, body 868px). */
+  nav.site { padding-bottom: calc(.7rem - 5.99px); }
+  nav.site a { color: var(--accent); text-decoration: none; }
+  nav.site a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  nav.site .home { font-weight: 700; font-variant: small-caps; letter-spacing: .06em; font-size: 1.05rem; }
+  nav.site details { position: relative; }
+  nav.site summary { list-style: none; cursor: pointer; color: var(--fg); padding: .15rem .3rem .15rem .1rem;
+    border-bottom: 1px dotted var(--muted); }
+  nav.site summary::-webkit-details-marker { display: none; }
+  nav.site summary::after { content: ""; display: inline-block; width: .38em; height: .38em; margin: 0 0 .2em .55em;
+    border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg); transition: transform .15s; }
+  nav.site details[open] summary::after { transform: translateY(.22em) rotate(-135deg); }
+  nav.site summary:hover, nav.site details[open] summary { border-bottom-color: var(--accent); }
+  nav.site .menu { position: absolute; left: 0; top: calc(100% + .4rem); min-width: min(25rem, 86vw); padding: .4rem 0 .6rem;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 20px rgb(0 0 0 / .15); }
+  nav.site .menu .part { margin: .6rem 1rem .25rem; font: 700 .7rem sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  nav.site .menu a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .3rem 1rem; color: var(--fg); }
+  nav.site .menu a small { font-size: .82em; font-style: italic; color: var(--muted); white-space: nowrap; }
+  nav.site .menu a:hover, nav.site .menu a[aria-current] { background: var(--surface); text-decoration: none; }
+  nav.site .menu a[aria-current] { color: var(--accent); }
+  nav.site .pn { margin-left: auto; margin-right: 2.6rem; display: flex; gap: 1.1rem; }  /* clear of the theme toggle */
+  nav.crumbs a { color: var(--accent); }
+  /* Two live plots stacked: the renderer's svg.plot draws one curve, so a second svg (same axes) goes on top. */
+  .plot-stack { position: relative; }
+  .plot-stack > svg.plot + svg.plot { position: absolute; inset: 0; background: none; border-color: transparent; }
+  .plot-stack > svg.plot + svg.plot .grid, .plot-stack > svg.plot + svg.plot text { display: none; }
+  svg.plot.second .plot-line { stroke: var(--muted); stroke-dasharray: 6 5; }
+  svg.plot.second .plot-area { fill: var(--muted); }
+  /* A narrow data-shade band used as a marker for the slider's value. */
+  svg.plot.marker .plot-area { opacity: .75; }
+  .controls button.reset { font: .8rem sans-serif; margin: .4rem 0 .1rem; padding: .3rem .8rem; cursor: pointer; color: var(--muted);
+    background: none; border: 1px solid var(--border); border-radius: 6px; }
+  .controls button.reset:hover { color: var(--accent); border-color: var(--accent); }
+  svg.plot text.axis-label { font-size: 12px; font-style: italic; fill: var(--fg); }
+  svg.plot text.legend-text { font-size: 12px; fill: var(--fg); }
+  svg.plot .legend-line { stroke: var(--accent); stroke-width: 2.2; }
+  svg.plot .legend-line.second { stroke: var(--muted); stroke-dasharray: 6 5; }
+  .plot-key { font-family: sans-serif; font-size: .8rem; color: var(--muted); margin: .3rem 0 0; }
+  .plot-key b { color: var(--accent); }
+</style>
+
+<script>
+try { var t = localStorage.getItem('explain-html-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+
+
+<button class="theme-toggle" type="button"></button>
+
+<nav class="site" aria-label="Lições"><a class="home" href="./">probest</a><details><summary>Lições</summary><div class="menu"><p class="part">MLE</p><a href="0000-mle.html"><span>0000 · Máxima verossimilhança (MLE)</span><small>MIT10</small></a><p class="part">Inferência bayesiana</p><a href="0001-tabela-de-atualizacao-bayesiana.html"><span>0001 · Tabela de atualização bayesiana</span><small>MIT11</small></a><a href="0002-probabilidade-preditiva.html"><span>0002 · Probabilidade preditiva</span><small>MIT12</small></a><a href="0003-prior-continua.html"><span>0003 · Prior contínua e MAP</span><small>MIT13</small></a><a href="0004-likelihood-continua.html"><span>0004 · Likelihood contínua</span><small>MIT14</small></a><a href="0005-priors-conjugadas.html"><span>0005 · Priors conjugadas</span><small>MIT15</small></a></div></details><span class="pn"></span></nav>
+<h1>probest</h1>
+<p style="color:var(--muted); margin-top:-.5rem;">COE241 · Estatística e Modelos Probabilísticos · P2</p>
+
+<div class="toc">
+<strong>Sumário</strong>
+<ul>
+  <li><a href="#licoes">Lições</a></li>
+</ul>
+</div>
+
+<h2 id="licoes">Lições</h2>
+<p>Lições para a P2 de COE241, na ordem de leitura do MIT 18.05. Os módulos aparecem como MIT10, MIT11, …; as listas como L03, LMLE; as provas antigas como P2-23.2.</p><table><tr><th>#</th><th>Lição</th><th>Parte</th><th>Fonte principal</th></tr><tr><td class="num">0000</td><td><a href="0000-mle.html">Máxima verossimilhança (MLE)</a></td><td>MLE</td><td>MIT10</td></tr><tr><td class="num">0001</td><td><a href="0001-tabela-de-atualizacao-bayesiana.html">Tabela de atualização bayesiana</a></td><td>Inferência bayesiana</td><td>MIT11</td></tr><tr><td class="num">0002</td><td><a href="0002-probabilidade-preditiva.html">Probabilidade preditiva</a></td><td>Inferência bayesiana</td><td>MIT12</td></tr><tr><td class="num">0003</td><td><a href="0003-prior-continua.html">Prior contínua e MAP</a></td><td>Inferência bayesiana</td><td>MIT13</td></tr><tr><td class="num">0004</td><td><a href="0004-likelihood-continua.html">Likelihood contínua</a></td><td>Inferência bayesiana</td><td>MIT14</td></tr><tr><td class="num">0005</td><td><a href="0005-priors-conjugadas.html">Priors conjugadas</a></td><td>Inferência bayesiana</td><td>MIT15</td></tr></table>
+
+
+
+<script>
+document.querySelectorAll('.quiz-q').forEach(q => {
+  q.querySelectorAll('.quiz-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const correct = opt.dataset.correct === 'true';
+      let fb = opt.nextElementSibling;
+      if (!fb || !fb.classList.contains('feedback')) {
+        fb = document.createElement('div');
+        fb.className = 'feedback';
+        opt.insertAdjacentElement('afterend', fb);
+      }
+      fb.textContent = (correct ? '\u2705 ' : '\u274c ') +
+        (opt.dataset.feedback || (correct ? 'Correct.' : 'Not quite \u2014 reread the section above.'));
+      fb.className = 'feedback ' + (correct ? 'correct' : 'incorrect');
+      fb.style.display = 'block';
+    });
+  });
+});
+</script>
+<script>
+(function () {
+  var inputs = [].slice.call(document.querySelectorAll('input[data-var]'));
+  var outs = [].slice.call(document.querySelectorAll('[data-expr], [data-live]')).map(function (el) {
+    var src = el.dataset.expr || decodeURIComponent(el.dataset.live.replace(/../g, '%$&'));
+    return { el: el, fn: compile(src), ids: names(src) };
+  });
+  // The identifiers an expression mentions: a slider only recomputes what names its variable.
+  // A stray match (a word inside a string) only costs an extra recompute, never a stale value.
+  function names(src) { return src.match(/[A-Za-z_$][A-Za-z0-9_$]*/g) || []; }
+  function compile(src) {
+    try { return new Function('v', 'x', 'with (Math) { with (v) { return (' + src + '); } }'); }
+    catch (e) { console.warn('bad expression', src, e); return null; }
+  }
+
+  // svg.plot: a curve y = data-fn(x) over data-x="lo hi" / data-y="lo hi", redrawn as sliders
+  // move; data-shade-from / data-shade-to (expressions) fill the area under it between them.
+  var NS = 'http://www.w3.org/2000/svg', W = 400, H = 240, L = 40, R = 12, T = 12, B = 28;
+  function ticks(lo, hi) {
+    var s = Math.pow(10, Math.floor(Math.log10((hi - lo) / 5))), out = [];
+    [1, 2, 5, 10].some(function (m) { if ((hi - lo) / (s * m) <= 6) { s *= m; return true; } });
+    for (var t = Math.ceil(lo / s) * s; t <= hi + s / 1e6; t += s) out.push(+t.toFixed(10));
+    return out;
+  }
+  var plots = [].slice.call(document.querySelectorAll('svg.plot[data-fn]')).map(function (svg) {
+    var X = svg.dataset.x.trim().split(/\s+/).map(Number), Y = svg.dataset.y.trim().split(/\s+/).map(Number);
+    var sx = function (x) { return L + (x - X[0]) / (X[1] - X[0]) * (W - L - R); };
+    var sy = function (y) { return H - B - (y - Y[0]) / (Y[1] - Y[0]) * (H - T - B); };
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    function el(tag, attrs, text) {
+      var e = document.createElementNS(NS, tag);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      if (text != null) e.textContent = text;
+      return svg.appendChild(e);
+    }
+    ticks(X[0], X[1]).forEach(function (t) {
+      el('line', { class: 'grid', x1: sx(t), x2: sx(t), y1: T, y2: H - B });
+      el('text', { x: sx(t), y: H - B + 16, 'text-anchor': 'middle' }, fmt(t));
+    });
+    ticks(Y[0], Y[1]).forEach(function (t) {
+      el('line', { class: 'grid', x1: L, x2: W - R, y1: sy(t), y2: sy(t) });
+      el('text', { x: L - 6, y: sy(t) + 4, 'text-anchor': 'end' }, fmt(t));
+    });
+    el('line', { class: 'axis', x1: L, x2: W - R, y1: H - B, y2: H - B });
+    var area = el('path', { class: 'plot-area' }), line = el('path', { class: 'plot-line' });
+    var f = compile(svg.dataset.fn), from = svg.dataset.shadeFrom && compile(svg.dataset.shadeFrom),
+        to = svg.dataset.shadeTo && compile(svg.dataset.shadeTo);
+    function path(v, a, b) {
+      var d = '', n = 200;
+      for (var i = 0; i <= n; i++) {
+        var x = a + (b - a) * i / n, y = f(v, x);
+        if (!isFinite(y)) continue;
+        d += (d ? 'L' : 'M') + sx(x).toFixed(1) + ',' + Math.max(T - 4, Math.min(H - B, sy(y))).toFixed(1);
+      }
+      return d;
+    }
+    var ids = names([svg.dataset.fn, svg.dataset.shadeFrom, svg.dataset.shadeTo].join(' '));
+    return { ids: ids, draw: function (v) {
+      if (!f) return;
+      try {
+        line.setAttribute('d', path(v, X[0], X[1]));
+        var a = from ? Math.max(X[0], from(v)) : NaN, b = to ? Math.min(X[1], to(v)) : NaN;
+        area.setAttribute('d', a < b ? path(v, a, b) + 'L' + sx(b).toFixed(1) + ',' + (H - B) + 'L' + sx(a).toFixed(1) + ',' + (H - B) + 'Z' : '');
+      } catch (e) { console.warn('plot failed', e); }
+    } };
+  });
+  function fmt(x) {
+    return String(typeof x === 'number' ? +x.toFixed(3) : x).replace(/(^|\s)-(?=\d)/g, '$1−');
+  }
+  // update(name) recomputes what mentions that variable; update() recomputes everything.
+  function update(name) {
+    var v = {}, hit = function (o) { return !name || o.ids.indexOf(name) >= 0; };
+    inputs.forEach(function (i) { v[i.dataset.var] = parseFloat(i.value); });
+    outs.forEach(function (o) {
+      if (!o.fn || !hit(o)) return;
+      try { o.el.textContent = fmt(o.fn(v)); } catch (e) { o.el.textContent = '?'; }
+    });
+    plots.forEach(function (p) { if (hit(p)) p.draw(v); });
+  }
+  inputs.forEach(function (i) { i.addEventListener('input', function () { update(i.dataset.var); }); });
+  update();
+
+  document.querySelectorAll('.tabs').forEach(function (box, n) {
+    var tabs = [].slice.call(box.children).filter(function (c) { return c.classList.contains('tab'); });
+    var bar = document.createElement('div');
+    bar.className = 'tab-bar'; bar.setAttribute('role', 'tablist');
+    var btns = tabs.map(function (t, k) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'tab-btn'; b.setAttribute('role', 'tab');
+      b.textContent = t.dataset.label || ('Tab ' + (k + 1));
+      t.setAttribute('role', 'tabpanel');
+      b.addEventListener('click', function () { show(k); });
+      bar.appendChild(b);
+      return b;
+    });
+    function show(k) {
+      tabs.forEach(function (t, j) { t.classList.toggle('active', j === k); btns[j].setAttribute('aria-selected', j === k); });
+    }
+    box.insertBefore(bar, box.firstChild);
+    box.classList.add('ready');
+    show(0);
+  });
+
+  // Closed folds would print as just their title.
+  window.addEventListener('beforeprint', function () {
+    document.querySelectorAll('details.fold').forEach(function (d) { d.open = true; });
+  });
+})();
+</script>
+<script>
+(function () {
+  var root = document.documentElement, btn = document.querySelector('.theme-toggle');
+  var osDark = window.matchMedia('(prefers-color-scheme: dark)');
+  var SVG = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+  var SUN = SVG + '<circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg>';
+  var MOON = SVG + '<path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg>';
+  function isDark() { return root.dataset.theme ? root.dataset.theme === 'dark' : osDark.matches; }
+  function label() {
+    btn.innerHTML = isDark() ? SUN : MOON;
+    btn.setAttribute('aria-label', isDark() ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+  btn.addEventListener('click', function () {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    try { localStorage.setItem('explain-html-theme', root.dataset.theme); } catch (e) {}
+    label();
+  });
+  osDark.addEventListener('change', label);
+  label();
+})();
+</script>
+
+
+

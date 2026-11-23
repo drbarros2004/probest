@@ -14,8 +14,8 @@ MIT11 = "https://drive.google.com/file/d/1-IfPV-srvMrLhYy4SMKkywMwIcA2ibZs/view"
 MIT12 = "https://drive.google.com/file/d/1Kpa0gQzUJ63kKbU5iG_hxIhTMJn6rWCV/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
 L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
-LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
-LESSON3 = "https://claude.ai/artifact/Mg37Am6eQ3TsQEvzxY98BT"
+LESSON1 = "0001-tabela-de-atualizacao-bayesiana.html"
+LESSON3 = "0003-prior-continua.html"
 
 
 def src(where, doc="MIT12"):
@@ -90,7 +90,7 @@ A conta é a mesma; muda o papel do número:</p>
 <li><b>dados:</b> \(P(D) = 0.085\) era a chance de tirar 5 antes de saber qual dado foi escolhido;</li>
 <li><b>doença:</b> \(P(+) = 0.02485\) era a chance de uma pessoa qualquer testar positivo.</li>
 </ul>
-<p>No <a href="https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa">quadrado da lição 0001</a> isso fica visível: a prior predictive é a <b>área pintada total</b>.
+<p>No <a href="0001-tabela-de-atualizacao-bayesiana.html">quadrado da lição 0001</a> isso fica visível: a prior predictive é a <b>área pintada total</b>.
 Antes, ela era o denominador. Agora ela é a resposta.</p>
 """ + bayes_square(
     [("A", .5, .5), ("B", .25, .6), ("C", .25, .9)],
@@ -250,8 +250,6 @@ Spring 2022, MIT OpenCourseWare, licença CC BY-NC-SA 4.0. Trechos omitidos apar
 SPEC = {
     "title": "0002 · Probabilidade preditiva",
     "subtitle": "Lição 0002 · COE241 P2 · MIT12 · prever o próximo resultado · meta: resolver a L03 Q1.2 e Q1.3",
-    "crumbs": f'COE241 · P2 · Lição 0002 &nbsp;·&nbsp; anterior: <a href="{LESSON1}">0001, tabela de atualização bayesiana</a>'
-              f' &nbsp;·&nbsp; próxima: <a href="{LESSON3}">0003, prior contínua e MAP</a>',
     "sections": [
         {"id": "recordacao", "heading": "Recordação da lição 0001", "html": recordacao},
         {"id": "ideia", "heading": "De hipóteses para resultados", "html": ideia},

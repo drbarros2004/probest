@@ -17,9 +17,9 @@ MIT13 = "https://drive.google.com/file/d/1JZzKI6Iad26Wgm2oNSGRJQ4Eex-6gPiP/view"
 MIT15 = "https://drive.google.com/file/d/1nkNUeimH00v3suIbVcsD3XPl-17bW-TV/view"
 L03 = "https://drive.google.com/file/d/1Nb8V3KKsByciabbw_dcDfaQ2bYXCVeQm/view"
 L03G = "https://drive.google.com/file/d/1w1zevZpR8_RlVbkCjUJtHLfsXRE9wRxI/view"
-LESSON1 = "https://claude.ai/artifact/XWsvKr4dXaFPnc1BAz6Wxa"
-LESSON2 = "https://claude.ai/artifact/PDFMi8VTuLgeRxHe39qE3Z"
-LESSON4 = "https://claude.ai/artifact/ULdAerrDUzGftPBWRQvrbC"
+LESSON1 = "0001-tabela-de-atualizacao-bayesiana.html"
+LESSON2 = "0002-probabilidade-preditiva.html"
+LESSON4 = "0004-likelihood-continua.html"
 
 ACC, MUT, FG = "var(--accent)", "var(--muted)", "var(--fg)"
 
@@ -385,7 +385,7 @@ com prior plana, tem MAP em \(\theta = 1\).</p>
     "Isso. 12θ²(1−θ): m = 2, n = 1, pico em 2/3. 3θ² só cresce em [0, 1], então o pico fica na borda, θ = 1.") + r"""
 <p>Compare com o <b>MLE</b> (estimativa de máxima verossimilhança): o valor de \(\theta\) que maximiza só a likelihood \(p(x \mid \theta)\),
 sem a prior. Para HHT, a likelihood \(\theta^2(1-\theta)\) tem pico em \(2/3\), a fração de caras; o MAP 0.75 ficou acima porque a prior
-\(2\theta\) favorece valores altos. O MLE tem lição própria: a <a href="https://claude.ai/artifact/MRMXzP4WVzLVFtDM72Fzks">lição 0000</a>.</p>
+\(2\theta\) favorece valores altos. O MLE tem lição própria: a <a href="0000-mle.html">lição 0000</a>.</p>
 """ + mc(
     "Com prior plana f(θ) = 1, o numerador é a própria likelihood. O que isso diz sobre o MAP?",
     [("Coincide com o MLE, o pico da likelihood", True, "Isso: posterior ∝ likelihood × 1. Uma prior não plana desloca o MAP para onde ela põe mais peso."),
@@ -625,8 +625,6 @@ matemáticos saíram corrompidos; a prosa é literal, e as fórmulas foram reesc
 SPEC = {
     "title": "0003 · Prior contínua e MAP",
     "subtitle": "Lição 0003 · COE241 P2 · MIT13 · hipóteses num contínuo · meta: resolver a L03 Q2 (pmf, posterior, MAP e previsão)",
-    "crumbs": f'COE241 · P2 · Lição 0003 &nbsp;·&nbsp; anterior: <a href="{LESSON2}">0002, probabilidade preditiva</a>'
-              f' &nbsp;·&nbsp; próxima: <a href="{LESSON4}">0004, likelihood contínua</a>',
     "sections": [
         {"id": "recordacao", "heading": "Recordação da lição 0002", "html": recordacao},
         {"id": "revisao", "heading": "Revisão da P1: Binomial e pdf", "html": revisao},

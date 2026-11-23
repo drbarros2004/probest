@@ -24,6 +24,23 @@ INK_JS = SKILLS / "explain-html-ink" / "ink.js"
 # Post-it notes layer from explain-html: notes saved in the artifact db (collection "notes").
 ADD_NOTES = SKILLS / "explain-html" / "add_notes.py"
 
+# The site: every lesson, in MIT reading order, grouped by part. The top menu, the prev/next links and
+# the home page (index.html) all come from this list, so a new lesson only needs a line here.
+# (number, file stem, title, sources)
+PARTS = [
+    ("MLE", [
+        ("0000", "0000-mle", "Máxima verossimilhança (MLE)", "MIT10, LMLE 6–10"),
+    ]),
+    ("Inferência bayesiana", [
+        ("0001", "0001-tabela-de-atualizacao-bayesiana", "Tabela de atualização bayesiana", "MIT11, L03 Q1.1"),
+        ("0002", "0002-probabilidade-preditiva", "Probabilidade preditiva", "MIT12, L03 Q1.2–1.3"),
+        ("0003", "0003-prior-continua", "Prior contínua e MAP", "MIT13, L03 Q2"),
+        ("0004", "0004-likelihood-continua", "Likelihood contínua", "MIT14, L03 Q3"),
+        ("0005", "0005-priors-conjugadas", "Priors conjugadas", "MIT15, MIT14 §6, L03 Q4, P2-23.2 Q4.1"),
+    ]),
+]
+LESSONS = [les for _, group in PARTS for les in group]
+
 _spec = importlib.util.spec_from_file_location("render", RENDER)
 render = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(render)
@@ -79,6 +96,30 @@ EXTRA_CSS = """
   p.uso { font-size: .9rem; color: var(--muted); border-left: 3px solid var(--accent); padding-left: .7rem; }
   details { margin: .5rem 0; } summary { cursor: pointer; color: var(--accent); }
   nav.crumbs { font-size: .85rem; color: var(--muted); }
+  /* Site menu (site_nav): home link, lesson picker, prev/next. */
+  nav.site { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1.1rem; font-size: .95rem;
+    padding-bottom: .7rem; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); position: relative; z-index: 5; }
+  /* The saved pen strokes were shifted for a 105.45px h1 offset: keep the menu that tall (measured, body 868px). */
+  nav.site { padding-bottom: calc(.7rem - 5.99px); }
+  nav.site a { color: var(--accent); text-decoration: none; }
+  nav.site a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  nav.site .home { font-weight: 700; font-variant: small-caps; letter-spacing: .06em; font-size: 1.05rem; }
+  nav.site details { position: relative; }
+  nav.site summary { list-style: none; cursor: pointer; color: var(--fg); padding: .15rem .3rem .15rem .1rem;
+    border-bottom: 1px dotted var(--muted); }
+  nav.site summary::-webkit-details-marker { display: none; }
+  nav.site summary::after { content: ""; display: inline-block; width: .38em; height: .38em; margin: 0 0 .2em .55em;
+    border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg); transition: transform .15s; }
+  nav.site details[open] summary::after { transform: translateY(.22em) rotate(-135deg); }
+  nav.site summary:hover, nav.site details[open] summary { border-bottom-color: var(--accent); }
+  nav.site .menu { position: absolute; left: 0; top: calc(100% + .4rem); min-width: min(25rem, 86vw); padding: .4rem 0 .6rem;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 20px rgb(0 0 0 / .15); }
+  nav.site .menu .part { margin: .6rem 1rem .25rem; font: 700 .7rem sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  nav.site .menu a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .3rem 1rem; color: var(--fg); }
+  nav.site .menu a small { font-size: .82em; font-style: italic; color: var(--muted); white-space: nowrap; }
+  nav.site .menu a:hover, nav.site .menu a[aria-current] { background: var(--surface); text-decoration: none; }
+  nav.site .menu a[aria-current] { color: var(--accent); }
+  nav.site .pn { margin-left: auto; margin-right: 2.6rem; display: flex; gap: 1.1rem; }  /* clear of the theme toggle */
   nav.crumbs a { color: var(--accent); }
   /* Two live plots stacked: the renderer's svg.plot draws one curve, so a second svg (same axes) goes on top. */
   .plot-stack { position: relative; }
@@ -435,6 +476,45 @@ def mc(question, options):
     return f'<div class="quiz-q"><p><strong>{question}</strong></p>{btns}</div>'
 
 
+def site_nav(current=None):
+    """Top menu: home, a dropdown of every lesson grouped by part, and prev/next around current (a number)."""
+    nums = [n for n, *_ in LESSONS]
+    items = ""
+    for part, group in PARTS:
+        items += f'<p class="part">{part}</p>'
+        for n, stem, title, srcs in group:
+            cur = ' aria-current="page"' if n == current else ""
+            items += f'<a href="{stem}.html"{cur}><span>{n} · {title}</span><small>{srcs.split(",")[0]}</small></a>'
+    label = next((f"{n} · {t}" for n, _, t, _ in LESSONS if n == current), "Lições")
+    pn = ""
+    if current in nums:
+        i = nums.index(current)
+        if i > 0:
+            pn += f'<a href="{LESSONS[i-1][1]}.html" rel="prev">← {LESSONS[i-1][0]}</a>'
+        if i + 1 < len(LESSONS):
+            pn += f'<a href="{LESSONS[i+1][1]}.html" rel="next">{LESSONS[i+1][0]} →</a>'
+    return (f'<nav class="site" aria-label="Lições"><a class="home" href="./">probest</a>'
+            f'<details><summary>{label}</summary><div class="menu">{items}</div></details>'
+            f'<span class="pn">{pn}</span></nav>')
+
+
+def build_index(out):
+    """Home page of the site artifact: the lessons table. Written without <html>/<head>/<body>,
+    since the artifact wraps its main page in its own skeleton."""
+    rows = "".join(
+        f'<tr><td class="num">{n}</td><td><a href="{stem}.html">{title}</a></td><td>{part}</td><td>{srcs.split(",")[0]}</td></tr>'
+        for part, group in PARTS for n, stem, title, srcs in group)
+    body = ('<p>Lições para a P2 de COE241, na ordem de leitura do MIT 18.05. Os módulos aparecem como MIT10, MIT11, …; '
+            'as listas como L03, LMLE; as provas antigas como P2-23.2.</p>'
+            f'<table><tr><th>#</th><th>Lição</th><th>Parte</th><th>Fonte principal</th></tr>{rows}</table>')
+    page = render.render({"title": "probest", "subtitle": "COE241 · Estatística e Modelos Probabilísticos · P2",
+                          "sections": [{"id": "licoes", "heading": "Lições", "html": body}]})
+    page = (page.replace('<html lang="en">', '<html lang="pt-BR">').replace("<strong>Contents</strong>", "<strong>Sumário</strong>")
+            .replace("</style>", EXTRA_CSS + "</style>", 1).replace("<h1>", site_nav() + "\n<h1>", 1))
+    page = re.sub(r"<!DOCTYPE[^>]*>|</?html[^>]*>|</?head>|</?body[^>]*>", "", page, flags=re.I)
+    Path(out).write_text(page, encoding="utf-8")
+
+
 def build(spec, out):
     """Render spec (render.py format) to the path out, with the extras injected."""
     spec.setdefault("math", True)
@@ -468,11 +548,26 @@ def build(spec, out):
             .replace("</style>", EXTRA_CSS + "</style>", 1)
             .replace("</head>", f"<script>{LIVE_JS}</script>\n</head>", 1)
             .replace("</body>", f"<script>{check_js}</script>\n<script>{QUIZ_MATH_JS}</script>\n<script>{ink_js}</script>\n<script>{SQUARE_JS}</script>\n<script>{AXIS_JS}</script>\n</body>"))
-    if spec.get("crumbs"):
+    num = Path(out).name[:4]
+    lesson = any(n == num for n, *_ in LESSONS)
+    if lesson:
+        page = page.replace("<h1>", site_nav(num) + "\n<h1>", 1)
+    elif spec.get("crumbs"):
         page = page.replace("<h1>", f'<nav class="crumbs">{spec["crumbs"]}</nav>\n<h1>', 1)
     Path(out).write_text(page, encoding="utf-8")
     subprocess.run([sys.executable, str(ADD_NOTES), str(out)], check=True)
+    if lesson:
+        # All lessons share one artifact db, so each lesson keeps its notes and strokes in its own collections.
+        page = Path(out).read_text(encoding="utf-8")
+        for col in ("notes", "ink"):
+            assert page.count(f"db.collection('{col}')") == 1, f"{col} collection not found once in {out}"
+            page = page.replace(f"db.collection('{col}')", f"db.collection('{col}-{num}')")
+        Path(out).write_text(page, encoding="utf-8")
 
 
 if __name__ == "__main__":
-    sys.exit("Import this module from a lesson source; see lessons/src/.")
+    # python assets/build.py: rebuild every lesson and the site's home page (lessons/index.html).
+    root = ASSETS.parent
+    for _, stem, *_ in LESSONS:
+        subprocess.run([sys.executable, str(root / "lessons" / "src" / f"{stem}.py")], check=True)
+    build_index(root / "lessons" / "index.html")
