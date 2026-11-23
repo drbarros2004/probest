@@ -200,7 +200,7 @@ mais que a prior e mais que os dados sozinhos.</li>
 """ + quote(r"""<ol><li>Lots of data has a big influence on the posterior.</li>
 <li>High certainty (low variance) in the prior has a big influence on the posterior.</li></ol>
 <p>The actual posterior is a balance of these two influences.</p>""", src("§7.3")) + check(
-    r"""<p><b>Confira no exemplo do MIT14</b> (prior \(N(2, 1)\), \(\sigma^2 = 1\), \(x = 5\)):
+    r"""<p><b>Refaça com as fórmulas a conta do completar o quadrado:</b> prior \(N(2, 1)\), \(\sigma^2 = 1\), uma medição \(x = 5\).
 \(w_{\text{prior}}\) = """ + num("1", "0.01", "3rem") + r", \(w_{\text{data}}\) = " + num("1", "0.01", "3rem") + r", \(\mu_{\text{post}}\) = " + num("3.5", "0.01", "3.5rem")
     + r", \(\sigma^2_{\text{post}}\) = " + num("0.5", "0.01", "3.5rem") + "</p>",
     "Isso: w_prior = w_data = 1, então os pesos são iguais e μpost = (2 + 5)/2 = 3.5, σ²post = 1/2. É o N(7/2, 1/2) do quadrado completado.") + r"""
