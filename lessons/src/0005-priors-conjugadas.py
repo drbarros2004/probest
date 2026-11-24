@@ -239,13 +239,32 @@ Separando cada papel:</p>
 <ul class="spaced">
 <li><b>Hipótese:</b> o comprimento verdadeiro \(\theta\). É o que não se sabe.</li>
 <li><b>Prior:</b> o que você acha de \(\theta\) antes de medir, \(N(9, 1)\): "uns 9, errando uns 1 para mais ou para menos".</li>
-<li><b>Likelihood:</b> o que a régua mostra quando o comprimento é \(\theta\). A régua soma um erro ao comprimento verdadeiro:
-$$x = \theta + \text{erro}, \qquad \text{erro} \sim N(0, 10^{-4})$$
-Somar um número fixo a uma Normal só desloca a média; a variância não muda. Então, para cada \(\theta\):
+<li><b>Likelihood:</b> o que a régua mostra quando o comprimento é \(\theta\). O enunciado já dá isso pronto, na frase "a medição
+resultante x tem distribuição Normal com média θ e variância 10<sup>−4</sup>":
 $$x \sim N(\theta, 10^{-4})$$
-A régua acerta na média e erra uns \(\sigma = \sqrt{10^{-4}} = 0.01\). Essa variância \(\sigma^2 = 10^{-4}\) é conhecida: vem do enunciado, e não dos dados.</li>
+A variância \(\sigma^2 = 10^{-4}\) é conhecida porque vem do enunciado, e não dos dados.</li>
 <li><b>Dado:</b> a medição que saiu, \(x = 10\).</li>
 </ul>
+<p>Por que a frase do enunciado está certa? A régua mostra o comprimento verdadeiro mais um erro aleatório:
+\(x = \theta + \text{erro}\), com erro \(N(0, 10^{-4})\). Se o cabo medisse \(\theta = 9.5\), cada medição sairia 9.5 mais um erro diferente:</p>
+<table>
+<tr><th>erro sorteado</th><th>medição \(x = 9.5 + \text{erro}\)</th></tr>
+<tr><td>\(+0.004\)</td><td>\(9.504\)</td></tr>
+<tr><td>\(-0.011\)</td><td>\(9.489\)</td></tr>
+<tr><td>\(+0.001\)</td><td>\(9.501\)</td></tr>
+</table>
+<p>Os erros ficam em volta de 0, espalhados uns \(\sigma = \sqrt{10^{-4}} = 0.01\). As medições ficam em volta de 9.5, com o mesmo
+espalhamento: somar 9.5 empurra todos os valores para o lado sem esticar a nuvem. São as propriedades da P1, com \(\theta\) fixo:</p>
+$$E[\theta + \text{erro}] = \theta + E[\text{erro}] = \theta, \qquad \text{Var}(\theta + \text{erro}) = \text{Var}(\text{erro}) = 10^{-4}$$
+<p>Uma Normal deslocada continua Normal, então \(x \sim N(\theta, 10^{-4})\).</p>
+<p>A likelihood é escrita para cada \(\theta\) porque o comprimento é desconhecido. Para cada candidato, ela diz quão plausível
+seria ver a medição que saiu, \(x = 10\):</p>
+<table>
+<tr><th>\(\theta\) candidato</th><th>distância até \(x = 10\)</th><th>\(x = 10\) é</th></tr>
+<tr><td>\(10\)</td><td>\(0\)</td><td>o centro: muito plausível</td></tr>
+<tr><td>\(9.99\)</td><td>\(0.01\), um desvio padrão</td><td>plausível</td></tr>
+<tr><td>\(9\)</td><td>\(1\), cem desvios padrão</td><td>praticamente impossível</td></tr>
+</table>
 <p>Prior Normal e likelihood Normal com variância conhecida: é o caso Normal-Normal. Nas fórmulas do atalho, os valores entram assim:</p>
 <table>
 <tr><th>na fórmula</th><th>no enunciado</th><th>valor</th></tr>
