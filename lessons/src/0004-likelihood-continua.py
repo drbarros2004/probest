@@ -66,6 +66,14 @@ pdf \(\phi(x \mid \theta)\) instead of a pmf \(p(x \mid \theta)\). The general s
 <p>Ali as hipóteses também são contínuas, mas a troca não depende disso. Com hipóteses discretas, como na Q3, a tabela é a da
 lição 0001, com uma coluna diferente: a <b>likelihood passa a ser o valor da pdf do dado</b>, \(\phi(x \mid \theta)\), lido no ponto
 observado. (A letra \(\phi\) é um f grego; o MIT14 a usa para a pdf do dado e deixa o \(f\) para a pdf de \(\theta\).)</p>
+<p>A letra diz se a coluna é probabilidade ou densidade: \(p\) é probabilidade (pmf), e \(f\) ou \(\phi\) é densidade (pdf). Nesta lição
+\(\theta\) é discreto, então prior e posterior continuam probabilidades; só a likelihood vira densidade, porque o dado é contínuo.</p>
+<table>
+<tr><th>coluna</th><th>\(\theta\) discreto (esta lição)</th><th>\(\theta\) contínuo (lição 0003)</th></tr>
+<tr><td>prior</td><td>\(p(\theta)\)</td><td>\(f(\theta)\,d\theta\)</td></tr>
+<tr><td>likelihood, dado contínuo</td><td>\(\phi(x \mid \theta)\)</td><td>\(\phi(x \mid \theta)\)</td></tr>
+<tr><td>posterior</td><td>\(p(\theta \mid x)\)</td><td>\(f(\theta \mid x)\,d\theta\)</td></tr>
+</table>
 <p>Por que isso é legítimo, se a pdf não é probabilidade? O MIT14 explica o que o valor da pdf representa:</p>
 """ + quote(r"""<ul><li>Likelihood \(\phi(x \mid \theta)\,dx\). This is the (calculated) probability that the data is in a small interval of size \(dx\)
 around \(x\), ASSUMING the hypothesis \(\theta\).</li></ul>
@@ -82,7 +90,7 @@ prováveis (prior 1/2 para cada). Saiu \(x = 0.4\). A likelihood de cada hipóte
                ymax=2.5, marks=[(.4, unif(.5), "2", ACC, "ur"), (.4, unif(1), "1", MUT, "ur")], xlabel="x", n=1000,
                fills=[(unif(.5), ACC, "área 1", .25, 1.5), (unif(1), MUT, "área 1", .75, .5, "hatch")]) + r"""
 <table>
-<tr><th>hipótese</th><th class="num">prior</th><th class="num">likelihood \(\phi(0.4 \mid \theta)\)</th><th class="num">numerador</th><th class="num">posterior</th></tr>
+<tr><th>hipótese</th><th class="num">prior \(p(\theta)\)</th><th class="num">likelihood \(\phi(0.4 \mid \theta)\)</th><th class="num">numerador</th><th class="num">posterior \(p(\theta \mid 0.4)\)</th></tr>
 <tr><td>\(\theta = 1/2\)</td><td class="num">1/2</td><td class="num">2</td><td class="num">1</td><td class="num">2/3</td></tr>
 <tr><td>\(\theta = 1\)</td><td class="num">1/2</td><td class="num">1</td><td class="num">1/2</td><td class="num">1/3</td></tr>
 <tr><th>total</th><th class="num">1</th><th></th><th class="num">3/2</th><th class="num">1</th></tr>
@@ -106,7 +114,8 @@ pratica = r"""
 """ + bayes_table(
     [(r"\(\theta = 5\)", "0.25", "0", "0"), (r"\(\theta = 10\)", "0.5", "1/10", "0.8"), (r"\(\theta = 20\)", "0.25", "1/20", "0.2")],
     ok="Isso: θ = 5 sai (um atraso de 7 é impossível), e entre 10 e 20 o mais estreito leva 0.8.",
-    lik_header=r"likelihood \(\phi(7 \mid \theta)\)", total=r"\(\phi(7)\)") + r"""
+    weight_header=r"prior \(p(\theta)\)", lik_header=r"likelihood \(\phi(7 \mid \theta)\)", total=r"\(\phi(7)\)",
+    post_header=r"posterior \(p(\theta \mid 7)\)") + r"""
 <p>O \(\phi(7) = 0.0625\) não é a chance de o ônibus atrasar exatamente 7 minutos (essa é 0). É a densidade do atraso em 7, antes de saber
 \(\theta\), e só serve para normalizar.</p>
 <p id="exponencial"><b>A regra não é "\(1/\theta\)".</b> A regra é "altura da pdf do dado"; \(1/\theta\) é só a altura da Uniforme. Com outra
@@ -121,7 +130,8 @@ ou seja, \(\lambda e^{-\lambda \cdot 1}\):</p>
 """.replace("{LESSON0}", LESSON0) + bayes_table(
     [(r"\(\lambda = 1\)", "0.5", "0.3679", "0.5761"), (r"\(\lambda = 2\)", "0.5", "0.2707", "0.4239")],
     ok="Isso: 1·e⁻¹ ≈ 0.368 e 2·e⁻² ≈ 0.271. A fábrica A (vida média de 1 ano) explica melhor uma lâmpada que durou 1 ano: posterior ≈ 0.576.",
-    lik_header=r"likelihood \(\lambda e^{-\lambda \cdot 1}\)", total=r"\(\phi(1)\)") + r"""
+    weight_header=r"prior \(p(\lambda)\)", lik_header=r"likelihood \(\lambda e^{-\lambda \cdot 1}\)", total=r"\(\phi(1)\)",
+    post_header=r"posterior \(p(\lambda \mid 1)\)") + r"""
 <p id="calc-lik"><b>Como sai cada likelihood.</b> A likelihood de uma hipótese é a pdf do dado no valor observado, fingindo que a
 hipótese é verdadeira. Para cada linha da tabela, são dois passos:</p>
 <ol class="spaced">
@@ -183,7 +193,8 @@ para valor de θ é 1/4 ou 3/4 com a mesma probabilidade.</p>
 """ + bayes_table(
     [(r"\(\theta = 1/4\)", "0.5", "4", "0.75"), (r"\(\theta = 3/4\)", "0.5", "4/3", "0.25")],
     ok="Isso: posteriores 3/4 e 1/4, então o MAP é θ = 1/4 h (15 min). As duas cobrem 10 min, e a mais estreita vence.",
-    lik_header=r"likelihood \(\phi(1/6 \mid \theta)\)", total=r"\(\phi(1/6)\)") + r"""
+    weight_header=r"prior \(p(\theta)\)", lik_header=r"likelihood \(\phi(1/6 \mid \theta)\)", total=r"\(\phi(1/6)\)",
+    post_header=r"posterior \(p(\theta \mid 1/6)\)") + r"""
 <p><b>MAP com hipóteses discretas.</b> Na <a href="{LESSON3}">lição 0003</a>, \(\theta\) era contínuo, a posterior era uma curva, e o MAP
 era o \(\theta\) do pico, achado pela derivada. Aqui há só duas hipóteses, e a posterior é um número para cada uma. O MAP é a hipótese de
 maior posterior (ou de maior numerador, que dá no mesmo). A resposta é o valor de \(\theta\), e não a posterior dele.</p>
@@ -195,7 +206,8 @@ coloca 0.75 e 0.25) e a likelihood do novo dado:</p>
 """ + bayes_table(
     [(r"\(\theta = 1/4\)", "0.75", "0", "0"), (r"\(\theta = 3/4\)", "0.25", "4/3", "1")],
     ok="Isso: 30 min = 1/2 h passa de 1/4 h, então θ = 1/4 fica com likelihood 0 e posterior 0. Toda a crença vai para θ = 3/4.",
-    weight_header="prior (= posterior do 1º item)", lik_header=r"likelihood \(\phi(1/2 \mid \theta)\)", total=r"\(\phi(1/2 \mid 1/6)\)",
+    weight_header=r"prior \(p(\theta \mid 1/6)\) (posterior do 1º item)", lik_header=r"likelihood \(\phi(1/2 \mid \theta)\)", total=r"\(\phi(1/2 \mid 1/6)\)",
+    post_header=r"posterior \(p(\theta \mid 1/6, 1/2)\)",
     carry_weight=True) + check(
     r"<p>Novo MAP de \(\theta\), em horas: " + num("0.75", "0.001") + "</p>",
     f"Isso: θ = 3/4. Pela outra via (prior 1/2 e likelihood 4 · 0 e 4/3 · 4/3) dá o mesmo. Confira no <a href='{L03G}'>L03G</a>, questão 3.") + r"""
