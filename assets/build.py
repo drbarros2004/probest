@@ -39,6 +39,9 @@ PARTS = [
         ("0005", "0005-priors-conjugadas", "Priors conjugadas", "MIT15, MIT14 §6, L03 Q4, P2-23.2 Q4.1"),
         ("0006", "0006-intervalos-de-probabilidade", "Intervalos de probabilidade", "MIT16, MEX2 13(c–d), P2-23.2 Q4.6"),
     ]),
+    ("Testes de hipóteses", [
+        ("0007", "0007-testes-de-hipoteses", "Testes de hipóteses (NHST)", "MIT17, L04 (MPS08 3), P2-23.2 Q4.4–4.5"),
+    ]),
 ]
 LESSONS = [les for _, group in PARTS for les in group]
 
@@ -336,7 +339,7 @@ document.querySelectorAll('figure[data-square]').forEach(function (fig) {
 """
 
 
-def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=200, xlabel="θ", fills=(), xscale=1):
+def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=200, xlabel="θ", fills=(), xscale=1, xlo=0):
     """Density curves on [0, 1] (prior/posterior pdfs of a parameter).
     curves: [(label, fn, color, dashed, label_x[, label_y])]; the label sits on the curve at label_x,
     or at (label_x, label_y) in data units when the curve is crowded there.
@@ -346,7 +349,7 @@ def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=
     (e.g. where a posterior peaks); "ur" puts the label up-right of the point, clear of the lines through it.
     fills: [(fn, color, text, tx, ty[, "hatch"])] the whole area under fn, lightly filled (or hatched),
     with text at (tx, ty) (e.g. "área 1" inside each pdf).
-    xscale: the axis shows [0, xscale] (tick labels only; fn and every x above stay in [0, 1])."""
+    xscale, xlo: the axis shows [xlo, xlo + xscale] (tick labels only; fn and every x above stay in [0, 1])."""
     W, H, X0, X1, Y0, Y1 = 560, 300, 48, 530, 28, 262
     top = ymax or max(fn(i / n) for _, fn, *_ in curves for i in range(n + 1)) * 1.12
     sx = lambda x: X0 + (X1 - X0) * x  # noqa: E731
@@ -354,7 +357,7 @@ def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=
     parts = [f'<line x1="{X0}" y1="{Y1}" x2="{X1}" y2="{Y1}" stroke="var(--border)" stroke-width="1.5"/>',
              f'<line x1="{X0}" y1="{Y0-8}" x2="{X0}" y2="{Y1}" stroke="var(--border)" stroke-width="1.5"/>']
     for t in (0, 0.25, 0.5, 0.75, 1):
-        parts.append(f'<text x="{sx(t):.1f}" y="{Y1+18}" text-anchor="middle" fill="var(--muted)" font-size="13">{t * xscale:g}</text>')
+        parts.append(f'<text x="{sx(t):.1f}" y="{Y1+18}" text-anchor="middle" fill="var(--muted)" font-size="13">{xlo + t * xscale:g}</text>')
     step = 0.5 if top <= 2.6 else 1
     v = step
     for _ in range(int(top / step)):
