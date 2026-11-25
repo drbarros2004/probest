@@ -31,6 +31,7 @@ Todas as lições ficam num site só (um artifact privado), com um menu no topo 
 | 0003 | Prior contínua e MAP | MIT13, L03 Q2 |
 | 0004 | Likelihood contínua | MIT14, L03 Q3 |
 | 0005 | Priors conjugadas | MIT15, MIT14 §6, L03 Q4, P2-23.2 Q4.1 |
+| 0006 | Intervalos de probabilidade | MIT16, MEX2 13(c–d), P2-23.2 Q4.6 |
 
 A lista das lições, com parte e fontes, fica em `PARTS` no [assets/build.py](assets/build.py): o menu e a página inicial do site saem dela. O HTML de cada lição também está em [lessons/](lessons/) e abre direto no navegador.
 

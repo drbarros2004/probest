@@ -37,6 +37,7 @@ PARTS = [
         ("0003", "0003-prior-continua", "Prior contínua e MAP", "MIT13, L03 Q2"),
         ("0004", "0004-likelihood-continua", "Likelihood contínua", "MIT14, L03 Q3"),
         ("0005", "0005-priors-conjugadas", "Priors conjugadas", "MIT15, MIT14 §6, L03 Q4, P2-23.2 Q4.1"),
+        ("0006", "0006-intervalos-de-probabilidade", "Intervalos de probabilidade", "MIT16, MEX2 13(c–d), P2-23.2 Q4.6"),
     ]),
 ]
 LESSONS = [les for _, group in PARTS for les in group]
