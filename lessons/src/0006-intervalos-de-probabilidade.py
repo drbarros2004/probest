@@ -219,6 +219,8 @@ mapmle = r"""
 <p>Até aqui a prior foi dada. O MIT16 começa pela pergunta seguinte: e quando não há informação para escolher a prior?</p>
 """ + quote(r"""<p>Suppose we have no idea what the distribution of dice in the drawer might be. In this case it’s reasonable to use a flat prior.</p>""",
             src("<i>Choosing priors</i>, §3.1")) + r"""
+<p>Uma prior <b>plana</b> dá o mesmo valor a todas as hipóteses. "Plana" e "uniforme" são dois nomes para a mesma prior (o MIT16 diz
+<i>flat</i> ou <i>uniform</i>; a P2 diz Uniforme). Com \(\theta\) em \([0, 1]\), ela é \(f(\theta) = 1\).</p>
 <p>O exemplo: uma gaveta com dados de 4, 6, 8, 12 e 20 lados, em proporção desconhecida. Tira-se um dado ao acaso, e o primeiro lançamento
 dá 4. Com a prior plana, cada hipótese tem prior 1/5, e a tabela de Bayes fica assim:</p>
 <table>
@@ -254,12 +256,12 @@ então puxa o pico de 0.6 para perto de 0.5. Com uma prior que não é constante
     r"""<p>Os estimadores maximum a posteriori (MAP) e maximum likelihood (ML) de um parâmetro θ são iguais se a prior de θ segue uma distribuição
 Uniforme.</p>""", f'<a href="{P2}">P2-23.2</a>, questão 4.6', lang="pt-BR") + mc(
     "Verdadeira ou falsa? Qual é a justificativa?",
-    [("Verdadeira: com prior constante, a posterior é proporcional à likelihood", True,
-      "Isso. O gabarito é Verdadeira. Prior uniforme é constante, então a posterior é a likelihood vezes uma constante, e as duas têm o mesmo pico."),
+    [("Verdadeira: com prior uniforme, a posterior é proporcional à likelihood", True,
+      "Isso. O gabarito é Verdadeira. A prior uniforme dá o mesmo número a todo θ, então a posterior é a likelihood vezes esse número, e as duas têm o mesmo pico."),
      ("Falsa: a likelihood não depende da prior, então os dois não se relacionam", False,
-      "A likelihood não depende da prior, mas a posterior depende das duas. Com prior constante, a posterior é proporcional à likelihood."),
+      "A likelihood não depende da prior, mas a posterior depende das duas. Com prior uniforme, a posterior é proporcional à likelihood."),
      ("Falsa: o MAP usa a posterior e o MLE usa a likelihood, que são diferentes", False,
-      "São funções diferentes, mas com prior constante uma é a outra vezes uma constante, e multiplicar por constante não move o pico.")]) + r"""
+      "São funções diferentes, mas com prior uniforme uma é a outra vezes um número fixo, e multiplicar por um número fixo não move o pico.")]) + r"""
 <p>Um cuidado que o MIT16 mostra com as priors rígidas: "No matter what the data, a hypothesis with prior probability 0 will have posterior
 probability 0." Se a prior for Uniforme num trecho que não contém o MLE (por exemplo, Uniforme em \([0, 0.5]\) com MLE 0.6), a posterior é zero
 no MLE, e o MAP fica na borda, em 0.5. A afirmação da prova vale para a Uniforme em todo o intervalo possível de \(\theta\), como \([0, 1]\).</p>
