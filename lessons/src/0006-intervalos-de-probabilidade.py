@@ -197,8 +197,10 @@ que sobra a mesma probabilidade nas duas pontas. Os quantis abaixo foram calcula
     "Posterior Beta(8, 6). A área pintada, de 0.483 a 0.663, é o intervalo de 50%; fora dele fica 0.25 de cada lado.",
     ymax=3.6, shade=(Q[0.25], Q[0.75], b86, "50%")) + rf"""
 <h3>(d) O caso do Jerry</h3>
-<p>Jerry conclui que a maioria prefere Bayes porque o MAP, 7/12, passa de 0.5. Pergunte à posterior quanta área ela tem abaixo de 0.5.
-O software dá \(P(\theta \le 0.5) = {CDF_HALF:.3f}\).</p>
+<p>O MAP é o pico da posterior, \(7/12 \approx 0.58\). Como ele fica acima de 0.5, Jerry concluiu que a maioria prefere Bayes. Mas o pico é
+um ponto só, e não diz quanta probabilidade a posterior dá ao contrário, "a maioria é frequentista", ou seja, \(\theta \le 0.5\).</p>
+<p>Essa probabilidade sai como na <a href="#regiao">seção da afirmação</a>: é a área sob a posterior à esquerda de 0.5,
+\(P(\theta \le 0.5)\). Na Beta(8, 6) essa integral não sai à mão, e o software dá \(P(\theta \le 0.5) = {CDF_HALF:.3f}\).</p>
 """ + pdf_plot(
     [("Beta(8, 6)", b86, ACC, False, .8)],
     "A área pintada, à esquerda de 0.5, é P(θ ≤ 0.5) ≈ 0.29. O pico fica à direita de 0.5, mas quase um terço da probabilidade fica à esquerda.",
