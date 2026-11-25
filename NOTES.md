@@ -28,6 +28,8 @@
 - Fórmula longa em linha própria ($$…$$, aligned se forem várias), e não no meio do parágrafo, onde quebra mal.
 - Produto entre conceitos com o símbolo: "prior × likelihood", e não "prior vezes likelihood". Sem frase de efeito de abertura ("Esse é o padrão que tem nome."): a definição vai direto (2026-11-20, 0005, "muita frase de IA").
 
+- Tabela de Bayes de exercício leva a notação em cada coluna, para não confundir p e f (pedido do usuário, 2026-11-24, nota FIX na 0004): \(p\)/\(P\) é probabilidade (pmf), \(f\)/\(\phi\) é densidade (pdf). θ discreto: prior \(p(\theta)\), posterior \(p(\theta \mid x)\). θ contínuo: \(f(\theta)\,d\theta\) e \(f(\theta \mid x)\,d\theta\). Dado contínuo: \(\phi(x \mid \theta)\). `bayes_table` recebe `weight_header`, `lik_header` e `post_header`.
+
 - Texto das lições segue a skill house-style (~/.claude/skills/house-style). As regras dela que mais pesam aqui (2026-11-23; valem para lições novas e trechos reescritos, sem revisar o que já existe):
   1. A mesma coisa tem o mesmo nome em toda a lição, e coisas diferentes nunca dividem um rótulo. Ex.: os pesos do atalho Normal-Normal viraram w_prior e w_data porque o a e b do MIT15 se confundiam com os da Beta.
   2. Sem rótulo-fragmento fechado com ponto antes da explicação ("**Q4.1.** Uma medição", "**Expandir.** …"): escreva a frase ("Expanda os quadrados:") ou faça um título de verdade (`<h3>`).

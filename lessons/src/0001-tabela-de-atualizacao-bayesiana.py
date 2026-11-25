@@ -250,7 +250,7 @@ saem da tabela. Na solução do MIT11 (\(\mathcal{H}_n\) é "o dado tem \(n\) la
 <p>Agora só o dado de 4 lados sai, e sobram quatro hipóteses disputando. Preencha a tabela. Aceita fração (<code>1/30</code>) ou decimal (<code>0.392</code>).</p>
 <div class="check-group" data-ok="O dado de 4 lados sai da disputa e o de 6 lidera: quanto menos faces, mais provável fica cada face.">
 <table>
-<tr><th>dado</th><th>prior</th><th>likelihood</th><th>numerador</th><th>posterior</th></tr>
+<tr><th>dado</th><th>prior \(P(H)\)</th><th>likelihood \(P(5 \mid H)\)</th><th>numerador</th><th>posterior \(P(H \mid 5)\)</th></tr>
 """ + "".join(row(h, "1/5", [(lk, .0005), (nu, .0005), (po, .003)]) for h, lk, nu, po in [
     ("4 lados", "0", "0", "0"), ("6 lados", "1/6", "1/30", "0.3922"), ("8 lados", "1/8", "1/40", "0.2941"),
     ("12 lados", "1/12", "1/60", "0.1961"), ("20 lados", "1/20", "1/100", "0.1176")]) + r"""
@@ -330,7 +330,8 @@ inteira é necessária, porque \(P(D)\) soma todas as linhas. As dicas são para
     [("4 lados", "1/16", "0", "0"), ("6 lados", "2/16", "1/36", "0.2435"), ("8 lados", "10/16", "1/64", "0.6847"),
      ("12 lados", "2/16", "1/144", "0.0609"), ("20 lados", "1/16", "1/400", "0.0110")],
     ok=f"A resposta da Q1.1 é P(8 lados | 5, 5) ≈ 0.685. Confira no <a href='{L03G}'>L03G</a>, página 1: a solução lá é imagem, então compare com o PDF aberto.",
-    lik_header="likelihood \\(P(5, 5 \\mid H)\\)") + r"""
+    weight_header="prior \\(P(H)\\)", lik_header="likelihood \\(P(5, 5 \\mid H)\\)",
+    post_header="posterior \\(P(H \\mid 5, 5)\\)") + r"""
 <p>As Q1.2 e Q1.3 perguntam a probabilidade do <em>próximo</em> lançamento. Isso é a <b>posterior predictive</b>, assunto da <a href="0002-probabilidade-preditiva.html">lição 0002</a>
 pelo MIT12, e a coluna posterior que você acabou de calcular é metade da conta. Guarde a sua tabela.</p>
 """

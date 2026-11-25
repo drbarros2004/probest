@@ -398,7 +398,8 @@ def pdf_plot(curves, caption="", ymax=None, shade=None, strip=None, marks=(), n=
 
 
 def bayes_table(rows, ok="", lik_header="likelihood", weight_header="prior",
-                prod_header="numerador (automático)", total="\\(P(D)\\)", carry_weight=False):
+                prod_header="numerador (automático)", total="\\(P(D)\\)", carry_weight=False,
+                post_header="posterior"):
     """Fill-in table where each row multiplies two typed columns; check.js computes the
     product column and its sum live.
     Bayes update: weight = prior, product = numerator, sum = P(D), plus a typed posterior column.
@@ -415,7 +416,7 @@ def bayes_table(rows, ok="", lik_header="likelihood", weight_header="prior",
         f'<td class="num"></td>'
         + (f'<td><input data-answer="{q}" data-tol="0.003"></td>' if has_post else "") + "</tr>"
         for label, p, lk, q in rows)
-    post_th = "<th>posterior</th>" if has_post else ""
+    post_th = f"<th>{post_header}</th>" if has_post else ""
     post_tot = "<th>1</th>" if has_post else ""
     return (f'<div class="check-group" data-ok="{html.escape(ok)}"><table class="bayes-auto">'
             f'<tr><th>hipótese</th><th>{weight_header}</th><th>{lik_header}</th><th>{prod_header}</th>{post_th}</tr>'
