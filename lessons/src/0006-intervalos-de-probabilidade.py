@@ -43,6 +43,25 @@ def beta_pdf(a, b):
 b86, b75 = beta_pdf(8, 6), beta_pdf(7, 5)
 tri = lambda x: 2 * x  # noqa: E731
 
+
+def malaria_table():
+    """MIT16 §4.1: flat prior on the 6×6 grid, likelihood θS²(1−θS)¹³ θN¹⁴(1−θN); cells with θN > θS shaded."""
+    v = [0, .2, .4, .6, .8, 1]
+    lik = {(s, n): s**2 * (1 - s)**13 * n**14 * (1 - n) for s in v for n in v}
+    tot = sum(lik.values())
+    post = {k: x / tot for k, x in lik.items()}
+    assert abs(sum(x for (s, n), x in post.items() if n > s) - 0.99995) < 1e-5  # MIT16 value
+    shade = ' style="background:var(--callout-bg);font-weight:600"'
+    head = "".join(f'<th class="num">{s:g}</th>' for s in v)
+    rows = []
+    for n in reversed(v):
+        cells = "".join(f'<td class="num"{shade if n > s else ""}>{"0" if post[(s, n)] < 5e-6 else format(post[(s, n)], ".5f")}</td>'
+                        for s in v)
+        rows.append(f'<tr><th class="num">{n:g}</th>{cells}</tr>')
+    return (r'<table style="table-layout:fixed"><tr><th>\(\theta_N\) \ \(\theta_S\)</th>' + head + "</tr>" + "".join(rows) + "</table>"
+            r'<p style="font-size:.85rem;color:var(--muted)">Posterior de cada par \((\theta_S, \theta_N)\), com 5 casas, como no MIT16 (0 = menos de 0.000005). '
+            r'Casas pintadas: \(\theta_N > \theta_S\), o gene protege. Os valores são os da tabela do MIT16, §4.1.</p>')
+
 # Beta(8,6) quantiles (scipy; MEX2G gives the same with qbeta)
 Q = {0.05: 0.35480, 0.25: 0.48330, 0.5: 0.57492, 0.75: 0.66319, 0.95: 0.77604}
 CDF_HALF = 0.29053
@@ -119,15 +138,23 @@ posterior nessa região.</p>
 <p>O MIT16 faz essa conta com um experimento real. Quinze portadores do gene da anemia falciforme e quinze não portadores receberam o
 parasita da malária: 2 portadores e 14 não portadores ficaram doentes. Há dois parâmetros, \(\theta_S\), a probabilidade de um portador
 ficar doente, e \(\theta_N\), a de um não portador. O gene protege se \(\theta_N > \theta_S\). Cada hipótese é um par \((\theta_S, \theta_N)\)
-com os dois valores em \(\{0, 0.2, 0.4, 0.6, 0.8, 1\}\), o que dá 36 pares, todos com a mesma prior. Depois da tabela de Bayes, a probabilidade
-de "o gene protege" é a soma da posterior dos pares com \(\theta_N > \theta_S\):</p>
+com os dois valores em \(\{0, 0.2, 0.4, 0.6, 0.8, 1\}\), o que dá 36 pares, todos com prior \(1/36\).</p>
+<p>A likelihood de um par é a chance de ver exatamente esses doentes e sãos (a menos de uma constante, que some ao normalizar):</p>
+$$P(\text{dados} \mid \theta_S, \theta_N) \propto \underbrace{\theta_S^{2}(1-\theta_S)^{13}}_{\text{portadores: 2 doentes, 13 sãos}}\;
+\underbrace{\theta_N^{14}(1-\theta_N)^{1}}_{\text{não portadores: 14 doentes, 1 são}}$$
+<p>Como a prior é a mesma em todos os pares, a posterior é essa likelihood dividida pela soma dela nos 36 pares. Na tabela, cada linha é um
+valor de \(\theta_N\), cada coluna um valor de \(\theta_S\), e as casas pintadas são as do gene protegendo:</p>
+""" + malaria_table() + r"""
+<p>A probabilidade de "o gene protege" é a soma das casas pintadas: \(P(\theta_N > \theta_S \mid \text{dados}) \approx 0.99995\). Quase toda
+a posterior está em \(\theta_S = 0.2\) com \(\theta_N = 0.8\) ou 0.6, bem acima da diagonal. Depois dos dados, é praticamente certo que o gene
+protege. O MIT16 descreve a conta assim:</p>
 """ + quote(r"""<p>To decide whether \(S\) confers protection against malaria, we compute the posterior probabilities of ‘some protection’ and of ‘strong
-protection’. These are computed by summing the corresponding squares in the posterior table.</p>
-<p>Some protection: \(P(\theta_N > \theta_S)\) = sum of orange and darker blue = 0.99995</p>""", src("<i>Choosing priors</i>, §4.1")) + r"""
-<p>Na tabela do MIT16, as casas laranja e azul-escuras são os pares com \(\theta_N > \theta_S\). A soma dá 0.99995: depois dos dados,
-é praticamente certo que o gene protege.</p>
-<p>Na moeda, com posterior \(2\theta\), a afirmação "\(\theta < 0.5\)" tem probabilidade igual à área à esquerda de 0.5:
-\(P(\theta \le 0.5) = 0.5^2 = 0.25\).</p>
+protection’. These are computed by summing the corresponding squares in the posterior table.</p>""", src("<i>Choosing priors</i>, §4.1")) + r"""
+<p>Com uma pdf é a mesma ideia, trocando a soma pela área. Na moeda, a posterior é \(2\theta\), e a afirmação "\(\theta \le 0.5\)" vale
+para todo \(\theta\) entre 0 e 0.5. A probabilidade dela é a área sob \(2\theta\) nesse trecho:</p>
+$$P(\theta \le 0.5) = \int_0^{0.5} 2\theta\,d\theta = \Big[\theta^2\Big]_0^{0.5} = 0.5^2 - 0^2 = 0.25$$
+<p>É a fórmula \(P(\theta \le q) = q^2\) da seção anterior, com \(q = 0.5\). Dá para conferir sem integral: sob a reta \(2\theta\), o trecho
+de 0 a 0.5 é um triângulo de base 0.5 e altura \(2 \cdot 0.5 = 1\), com área \(\tfrac{0.5 \cdot 1}{2} = 0.25\).</p>
 """ + check(
     r"""<p>Na posterior \(2\theta\): \(P(\theta > 0.5)\) = """ + num("0.75", "0.002", "4rem") + "</p>",
     "Isso: 1 − P(θ ≤ 0.5) = 1 − 0.25 = 0.75.")
