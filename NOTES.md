@@ -26,6 +26,7 @@
 - Quando o enunciado mistura papéis, dizer o que é hipótese, prior e posterior. Ex.: L03 Q3, "a prior para θ é 1/4 ou 3/4 com a mesma probabilidade": 1/4 e 3/4 são as hipóteses, e a prior é 1/2. O MAP é o valor do parâmetro, e não a posterior dele.
 - Recordação cobra a habilidade, com todos os dados no enunciado, e não um resultado de outra lição de memória. Ex.: dar o numerador 1260θ⁷(1−θ)⁵ e pedir a Beta, em vez de "a posterior da Q2.2 foi Beta(?, ?)" (2026-11-17, 0005: "ela só não me obriga a ter que voltar lá?").
 - A lição substitui o MIT, e não é lida junto com ele: nunca citar uma tabela, figura ou cor do MIT sem mostrá-la na lição (refazer a tabela no fonte, como a da malária na 0006). Exemplo de outra lição também se apresenta inteiro, com a conta, antes de ser usado (2026-11-25, 0006).
+- A seção "O objetivo" é uma versão apoiada do exercício: todo item tem a pergunta e a caixa de resposta com gabarito, mesmo quando repete uma conta já feita na lição (2026-11-25, 0006 MEX2 13(b)).
 - Fórmula longa em linha própria ($$…$$, aligned se forem várias), e não no meio do parágrafo, onde quebra mal.
 - Produto entre conceitos com o símbolo: "prior × likelihood", e não "prior vezes likelihood". Sem frase de efeito de abertura ("Esse é o padrão que tem nome."): a definição vai direto (2026-11-20, 0005, "muita frase de IA").
 

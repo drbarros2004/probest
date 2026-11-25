@@ -169,8 +169,14 @@ the same.</p>
 <p>(d) The maximum a posteriori (MAP) estimate of \(\theta\) (the peak of the posterior) is given by \(\hat\theta = 7/12\), leading Jerry to concede
 that a majority of students are Bayesians. In light of your answer to part (c) does Jerry have a strong case?</p>""",
                  f'<a href="{MEX2}">MEX2</a>, problema 13') + r"""
-<p>O item (b) é o 1 da recordação: Beta(2, 2) com 6 sim e 4 não dá Beta(8, 6). É a mesma conta da L03 Q2 (lição 0003), com outra história.
-O MIT16 usa essa mesma Beta(8, 6) para mostrar por que um intervalo comunica melhor que o nome da distribuição:</p>
+<h3>(b) A posterior</h3>
+<p>Dos 10 alunos, \(x_1 = 6\) preferem Bayes e 4 preferem a estatística frequentista. A prior é Beta(2, 2).</p>
+""" + check(
+    r"""<p>Posterior de \(\theta\): Beta(""" + num("8", "0.01", "2.6rem") + ", " + num("6", "0.01", "2.6rem") + r""")</p>
+<details><summary>Dica</summary><p>Regra da Beta (lição 0005): prior Beta(\(a, b\)) com \(s\) sucessos e \(f\) fracassos dá Beta(\(a + s,\ b + f\)).
+Aqui o sucesso é preferir Bayes.</p></details>""",
+    f"Isso: 2 + 6 = 8 e 2 + 4 = 6, então Beta(8, 6). Confira no <a href='{MEX2G}'>MEX2G</a>, problema 13(b).") + r"""
+<p>O MIT16 usa essa mesma Beta(8, 6) para mostrar por que um intervalo comunica melhor que o nome da distribuição:</p>
 """ + quote(r"""<p>Even with a beta distribution, it’s easier to interpret “I think \(\theta\) is between 0.45 and 0.65 with 50% probability” than “I think
 \(\theta\) follows a beta(8,6) distribution”.</p>""", src("<i>Probability intervals</i>, §3.1")) + rf"""
 <h3>(c) Os intervalos</h3>
