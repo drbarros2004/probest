@@ -173,7 +173,7 @@ mapmle = r"""
 <p>O exemplo: uma gaveta com dados de 4, 6, 8, 12 e 20 lados, em proporção desconhecida. Tira-se um dado ao acaso, e o primeiro lançamento
 dá 4. Com a prior plana, cada hipótese tem prior 1/5, e a tabela de Bayes fica assim (posterior com 3 casas, como no MIT16):</p>
 <table>
-<tr><th>hipótese</th><th class="num">prior</th><th class="num">likelihood</th><th class="num">posterior</th></tr>
+<tr><th>hipótese</th><th class="num">prior \(P(H)\)</th><th class="num">likelihood \(P(4 \mid H)\)</th><th class="num">posterior \(P(H \mid 4)\)</th></tr>
 <tr><td>4 lados</td><td class="num">1/5</td><td class="num">1/4</td><td class="num">0.370</td></tr>
 <tr><td>6 lados</td><td class="num">1/5</td><td class="num">1/6</td><td class="num">0.247</td></tr>
 <tr><td>8 lados</td><td class="num">1/5</td><td class="num">1/8</td><td class="num">0.185</td></tr>
