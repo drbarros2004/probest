@@ -102,7 +102,11 @@ informação sobre \(\theta\), a prior é plana: \(f(\theta) = 1\) em \([0, 1]\)
 $$f(\theta \mid \text{cara}) = 2\theta, \qquad 0 \le \theta \le 1$$
 <p>É a mesma conta do exemplo da <a href="0003-prior-continua.html#flat">prior plana na lição 0003</a>. A posterior cresce com \(\theta\): uma moeda que dá
 mais cara explica melhor a cara observada. A probabilidade à esquerda de um ponto \(q\) é</p>
-$$P(\theta \le q) = \int_0^q 2\theta\,d\theta = q^2$$
+$$P(\theta \le q) = \int_0^q 2\theta\,d\theta = \Big[\theta^2\Big]_0^q = q^2$$
+<div class="callout"><p>Atalho para a posterior \(2\theta\): a área à esquerda de qualquer ponto \(q\) é \(q^2\), então a integral não precisa
+ser refeita a cada pergunta. Por exemplo, \(P(\theta \le 0.3) = 0.3^2 = 0.09\), e a área à direita é o resto, \(P(\theta > 0.3) = 1 - 0.09 = 0.91\).
+O mesmo vale para as outras posteriores da forma \((k+1)\,\theta^k\) da lição 0003: a área à esquerda de \(q\) é \(q^{k+1}\). Por exemplo,
+com \(3\theta^2\) ela é \(q^3\). É um atalho da integral, e não outra regra; se esquecer, faça a integral.</p></div>
 <p>Para achar o quantil \(q_s\), resolva \(q^2 = s\): \(q_s = \sqrt{s}\). Então \(q_{0.25} = \sqrt{0.25} = 0.5\) e \(q_{0.75} = \sqrt{0.75} \approx 0.866\),
 e \([0.5,\ 0.866]\) é um intervalo de probabilidade 0.5.</p>
 """ + pdf_plot(
@@ -273,7 +277,7 @@ receita = r"""
 <ol class="spaced">
 <li>Intervalo de probabilidade \(p\): \([a, b]\) com \(P(a \le \theta \le b) = p\). Com pmf, some; com pdf, integre.</li>
 <li>Simétrico: \([q_{(1-p)/2},\ q_{(1+p)/2}]\). 50% é \([q_{0.25}, q_{0.75}]\); 90% é \([q_{0.05}, q_{0.95}]\).</li>
-<li>Quantil \(q_s\): resolva \(P(\theta \le q) = s\). Se a integral for simples (como \(2\theta\)), faça à mão; numa Beta grande, use os valores dados.</li>
+<li>Quantil \(q_s\): resolva \(P(\theta \le q) = s\). Se a integral for simples, faça à mão (atalho: com posterior \((k+1)\,\theta^k\), como \(2\theta\), \(P(\theta \le q) = q^{k+1}\)); numa Beta grande, use os valores dados.</li>
 <li>Para "\(\theta > c\)": calcule \(P(\theta > c) = 1 - P(\theta \le c)\). O MAP acima de \(c\) não basta.</li>
 <li>Prior plana (Uniforme em todo o intervalo de \(\theta\)): posterior \(\propto\) likelihood, então MAP = MLE.</li>
 </ol></div>
