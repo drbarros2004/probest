@@ -326,9 +326,9 @@ SPEC = {
         {"question": r"A posterior de \(\theta\) é \(2\theta\) em \([0, 1]\). Qual é \(P(\theta > 0.6)\)?",
          "ref": [("regiao", "A probabilidade de uma afirmação")],
          "options": [
-             {"text": "0.64", "correct": True, "feedback": r"Isso: \(P(\theta \le 0.6) = 0.6^2 = 0.36\), e \(1 - 0.36 = 0.64\)."},
-             {"text": "0.36", "correct": False, "feedback": r"Essa é a área à esquerda, \(P(\theta \le 0.6) = 0.36\). A pergunta é o complemento: \(0.64\)."},
-             {"text": "0.40", "correct": False, "feedback": r"Essa seria a resposta com prior plana. Com \(2\theta\) a área à direita é \(1 - 0.6^2 = 0.64\)."}]},
+             {"text": "0.64", "correct": True, "feedback": r"Isso. A área à esquerda de 0.6 é a integral da posterior: \(P(\theta \le 0.6) = \int_0^{0.6} 2\theta\,d\theta = \big[\theta^2\big]_0^{0.6} = 0.36\). A área à direita é o resto: \(1 - 0.36 = 0.64\)."},
+             {"text": "0.36", "correct": False, "feedback": r"Essa é a área à esquerda, \(\int_0^{0.6} 2\theta\,d\theta = 0.6^2 = 0.36\). A pergunta é a área à direita, o resto: \(1 - 0.36 = 0.64\)."},
+             {"text": "0.40", "correct": False, "feedback": r"Essa seria a área à direita se a posterior fosse plana, \(f(\theta) = 1\). Com \(2\theta\): \(1 - \int_0^{0.6} 2\theta\,d\theta = 1 - 0.36 = 0.64\)."}]},
         {"question": r"Prior plana em \([0, 1]\) e 3 caras em 12 lançamentos. Qual é o MAP de \(\theta\)?",
          "ref": [("map-mle", "Prior plana: MAP = MLE (P2-23.2 Q4.6)")],
          "options": [
