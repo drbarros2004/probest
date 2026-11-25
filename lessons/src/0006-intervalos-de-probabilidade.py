@@ -194,14 +194,16 @@ que sobra a mesma probabilidade nas duas pontas. Os quantis abaixo foram calcula
     f"Isso: 50% vai de q₀.₂₅ a q₀.₇₅, [0.483, 0.663]; 90% vai de q₀.₀₅ a q₀.₉₅, [0.355, 0.776]. "
     f"Confira no <a href='{MEX2G}'>MEX2G</a>, problema 13(c).") + pdf_plot(
     [("Beta(8, 6)", b86, ACC, False, .8)],
-    "Posterior Beta(8, 6): a área pintada é o intervalo de 50%, e ele começa abaixo de 0.5. "
-    "A linha tracejada em 0.5 separa a maioria Bayes (à direita) da maioria frequentista (à esquerda).",
-    ymax=3.6, shade=(Q[0.25], Q[0.75], b86, "50%"),
-    marks=[(0.5, lambda x: 3.3, "0.5", MUT), (7 / 12, b86, "MAP 7/12", ACC, "ur")]) + rf"""
+    "Posterior Beta(8, 6). A área pintada, de 0.483 a 0.663, é o intervalo de 50%; fora dele fica 0.25 de cada lado.",
+    ymax=3.6, shade=(Q[0.25], Q[0.75], b86, "50%")) + rf"""
 <h3>(d) O caso do Jerry</h3>
 <p>Jerry conclui que a maioria prefere Bayes porque o MAP, 7/12, passa de 0.5. Pergunte à posterior quanta área ela tem abaixo de 0.5.
 O software dá \(P(\theta \le 0.5) = {CDF_HALF:.3f}\).</p>
-""" + mc(
+""" + pdf_plot(
+    [("Beta(8, 6)", b86, ACC, False, .8)],
+    "A área pintada, à esquerda de 0.5, é P(θ ≤ 0.5) ≈ 0.29. O pico fica à direita de 0.5, mas quase um terço da probabilidade fica à esquerda.",
+    ymax=3.6, fills=[(lambda x: b86(x) if x <= 0.5 else 0, ACC, "área 0.29", .42, .4)],
+    marks=[(7 / 12, b86, "MAP 7/12", ACC, "ur")]) + mc(
     r"Os intervalos de 50% e 90% contêm valores abaixo de 0.5, e \(P(\theta \le 0.5) \approx 0.29\). Jerry tem um caso forte?",
     [("Não: sobra 29% de chance de a maioria ser frequentista", True,
       "Isso. O MEX2G conclui o mesmo: os dois intervalos cobrem valores abaixo de 0.5, e \"there is still a 29% posterior probability that the majority prefers frequentist statistics.\""),
