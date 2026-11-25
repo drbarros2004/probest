@@ -59,7 +59,7 @@ def malaria_table():
                         for s in v)
         rows.append(f'<tr><th class="num">{n:g}</th>{cells}</tr>')
     return (r'<table style="table-layout:fixed"><tr><th>\(\theta_N\) \ \(\theta_S\)</th>' + head + "</tr>" + "".join(rows) + "</table>"
-            r'<p style="font-size:.85rem;color:var(--muted)">Posterior de cada par \((\theta_S, \theta_N)\), com 5 casas, como no MIT16 (0 = menos de 0.000005). '
+            r'<p style="font-size:.85rem;color:var(--muted)">Posterior de cada par \((\theta_S, \theta_N)\). '
             r'Casas pintadas: \(\theta_N > \theta_S\), o gene protege. Os valores são os da tabela do MIT16, §4.1.</p>')
 
 # Beta(8,6) quantiles (scipy; MEX2G gives the same with qbeta)
@@ -220,7 +220,7 @@ mapmle = r"""
 """ + quote(r"""<p>Suppose we have no idea what the distribution of dice in the drawer might be. In this case it’s reasonable to use a flat prior.</p>""",
             src("<i>Choosing priors</i>, §3.1")) + r"""
 <p>O exemplo: uma gaveta com dados de 4, 6, 8, 12 e 20 lados, em proporção desconhecida. Tira-se um dado ao acaso, e o primeiro lançamento
-dá 4. Com a prior plana, cada hipótese tem prior 1/5, e a tabela de Bayes fica assim (posterior com 3 casas, como no MIT16):</p>
+dá 4. Com a prior plana, cada hipótese tem prior 1/5, e a tabela de Bayes fica assim:</p>
 <table>
 <tr><th>hipótese</th><th class="num">prior \(P(H)\)</th><th class="num">likelihood \(P(4 \mid H)\)</th><th class="num">posterior \(P(H \mid 4)\)</th></tr>
 <tr><td>4 lados</td><td class="num">1/5</td><td class="num">1/4</td><td class="num">0.370</td></tr>
