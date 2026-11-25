@@ -235,13 +235,15 @@ que não muda de linha para linha:</p>
 $$\text{posterior} \propto \text{likelihood} \cdot \underbrace{\text{prior}}_{\text{constante}} \quad\Longrightarrow\quad \text{posterior} \propto \text{likelihood}$$
 <p>Se a posterior é a likelihood multiplicada por uma constante, as duas têm o pico no mesmo lugar. O pico da posterior é o MAP; o pico da
 likelihood é o MLE. Na tabela, os dois são o dado de 4 lados.</p>
-<p>Com \(\theta\) contínuo vale o mesmo. Use os dados do MEX2, 6 sim e 4 não. A likelihood é</p>
+<p>Com \(\theta\) contínuo vale o mesmo. Para ver, volte ao problema de Peter e Jerry da <a href="#objetivo">seção anterior</a>
+(MEX2 13): \(\theta\) é a fração dos alunos que preferem Bayes, e na amostra de 10 alunos, 6 preferem Bayes e 4 não. A likelihood é</p>
 $$P(\text{dados} \mid \theta) = \binom{10}{6}\,\theta^6(1-\theta)^4$$
 <p>O pico dela, o MLE, fica em \(6/10\) (<a href="#recordacao">item 3 da recordação</a>). Agora compare duas priors.</p>
 <p>Com a prior plana, \(f(\theta) = 1\) em \([0, 1]\), a prior não muda nada na multiplicação:</p>
 $$\text{posterior} \propto \underbrace{1}_{\text{prior}} \cdot \underbrace{\theta^6(1-\theta)^4}_{\text{likelihood sem a constante}} = \theta^6(1-\theta)^4$$
 <p>A posterior tem a mesma forma da likelihood, então o pico é o mesmo: MAP \(= 6/10 =\) MLE.</p>
-<p>Com a prior Beta(2, 2) do MEX2, \(f(\theta) = 6\,\theta(1-\theta)\), que não é constante:</p>
+<p>Agora com a prior que Peter e Jerry combinaram, Beta(2, 2). A pdf dela é \(f(\theta) = 6\,\theta(1-\theta)\): a forma é
+\(\theta^{a-1}(1-\theta)^{b-1}\) com \(a = b = 2\), e o 6 é a constante da Beta, \(\frac{3!}{1!\,1!}\). Diferente da prior plana, ela muda com \(\theta\):</p>
 $$\text{posterior} \propto \underbrace{\theta(1-\theta)}_{\text{prior sem a constante}} \cdot \theta^6(1-\theta)^4 = \theta^7(1-\theta)^5$$
 <p>Os expoentes mudaram, e o pico vai para \(7/12 \approx 0.583\) (<a href="#recordacao">item 2 da recordação</a>). A prior Beta(2, 2) é mais alta perto de 0.5,
 então puxa o pico de 0.6 para perto de 0.5. Com uma prior que não é constante, o MAP e o MLE ficam diferentes.</p>
