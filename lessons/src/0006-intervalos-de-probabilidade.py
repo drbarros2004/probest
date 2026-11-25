@@ -237,13 +237,13 @@ $$\text{posterior} \propto \text{likelihood} \cdot \underbrace{\text{prior}}_{\t
 likelihood é o MLE. Na tabela, os dois são o dado de 4 lados.</p>
 <p>Com \(\theta\) contínuo vale o mesmo. Use os dados do MEX2, 6 sim e 4 não. A likelihood é</p>
 $$P(\text{dados} \mid \theta) = \binom{10}{6}\,\theta^6(1-\theta)^4$$
-<p>O pico dela, o MLE, fica em \(6/10\) (é o item 3 da recordação). Agora compare duas priors.</p>
+<p>O pico dela, o MLE, fica em \(6/10\) (<a href="#recordacao">item 3 da recordação</a>). Agora compare duas priors.</p>
 <p>Com a prior plana, \(f(\theta) = 1\) em \([0, 1]\), a prior não muda nada na multiplicação:</p>
 $$\text{posterior} \propto \underbrace{1}_{\text{prior}} \cdot \underbrace{\theta^6(1-\theta)^4}_{\text{likelihood sem a constante}} = \theta^6(1-\theta)^4$$
 <p>A posterior tem a mesma forma da likelihood, então o pico é o mesmo: MAP \(= 6/10 =\) MLE.</p>
 <p>Com a prior Beta(2, 2) do MEX2, \(f(\theta) = 6\,\theta(1-\theta)\), que não é constante:</p>
 $$\text{posterior} \propto \underbrace{\theta(1-\theta)}_{\text{prior sem a constante}} \cdot \theta^6(1-\theta)^4 = \theta^7(1-\theta)^5$$
-<p>Os expoentes mudaram, e o pico vai para \(7/12 \approx 0.583\) (é o item 2 da recordação). A prior Beta(2, 2) é mais alta perto de 0.5,
+<p>Os expoentes mudaram, e o pico vai para \(7/12 \approx 0.583\) (<a href="#recordacao">item 2 da recordação</a>). A prior Beta(2, 2) é mais alta perto de 0.5,
 então puxa o pico de 0.6 para perto de 0.5. Com uma prior que não é constante, o MAP e o MLE ficam diferentes.</p>
 """ + pdf_plot(
     [("Beta(7, 5), prior plana", b75, MUT, True, .0, 3.3), ("Beta(8, 6), prior Beta(2, 2)", b86, ACC, False, .0, 2.9)],
