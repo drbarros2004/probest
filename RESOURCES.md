@@ -25,6 +25,7 @@ Tudo vem da pasta do Google Drive: https://drive.google.com/drive/folders/1epRBr
   = MEX2 problemas 5 a 9 (numerados 6 a 10 na lista): MLE da Binomial, Uniforme discreta 1..N, Exponencial, Geométrica e tamanho da turma (sem derivada). Use com: M10.
 - [MEX2 - Prática Prova 2](https://drive.google.com/file/d/1GrVVl5QZtlKpjc1ZMferBVI-sTk3rwMA/view) / [MEX2G - solução](https://drive.google.com/file/d/1QqJq3wXWRIiaJaonbzpUTus8JRrpDAgb/view)
 - [P2-23.2 - Prova 2 antiga](https://drive.google.com/file/d/1UC2kRa6K_6zXryQe7irAKbvfMTQh12um/view): Q1 tabela bayesiana discreta + predictive + MAP; Q4 conceitos (Bernoulli/hipóteses, MAP, MAP = ML com prior uniforme, Beta-Binomial).
+  [P2-23.2T - transcrição em Markdown](https://drive.google.com/file/d/1vI60C0n8ypcapp2u5vftlVA9ixrR1N5R/view): enunciados impressos + resumo das marcas da correção (a cópia é de um aluno, não um gabarito). Use para citar o enunciado sem abrir as fotos.
 - L04, L05, MPS07/08 (+G): ver o mapa E1.
 
 ### Mapas
