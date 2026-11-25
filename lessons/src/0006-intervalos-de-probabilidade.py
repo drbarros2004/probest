@@ -77,7 +77,12 @@ between the \(s\)-quantile and the \(t\)-quantile is just \(t - s\). In these te
 \(t - s = p\).</p>""", src("<i>Probability intervals</i>, §2")) + r"""
 <p>O <b>quantil</b> \(q_s\) é o ponto que deixa a probabilidade \(s\) à esquerda. \(q_{0.5}\) é a mediana. Entre \(q_{0.25}\) e \(q_{0.75}\)
 fica \(0.75 - 0.25 = 0.5\) da probabilidade.</p>
-<p>Para ver a conta inteira, use a posterior \(f(\theta) = 2\theta\) da lição 0003 (prior plana e uma cara). A probabilidade à esquerda de \(q\) é</p>
+<p>Para fazer a conta inteira à mão, um exemplo pequeno. Uma moeda torta tem probabilidade de cara \(\theta\) desconhecida. Sem nenhuma
+informação sobre \(\theta\), a prior é plana: \(f(\theta) = 1\) em \([0, 1]\). A moeda é lançada uma vez e dá cara. A likelihood dessa cara é
+\(\theta\), então o numerador de Bayes é \(1 \cdot \theta = \theta\). A área sob \(\theta\) entre 0 e 1 é \(1/2\); dividindo por ela, a posterior é</p>
+$$f(\theta \mid \text{cara}) = 2\theta, \qquad 0 \le \theta \le 1$$
+<p>É a mesma conta do exemplo da <a href="0003-prior-continua.html#flat">prior plana na lição 0003</a>. A posterior cresce com \(\theta\): uma moeda que dá
+mais cara explica melhor a cara observada. A probabilidade à esquerda de um ponto \(q\) é</p>
 $$P(\theta \le q) = \int_0^q 2\theta\,d\theta = q^2$$
 <p>Para achar o quantil \(q_s\), resolva \(q^2 = s\): \(q_s = \sqrt{s}\). Então \(q_{0.25} = \sqrt{0.25} = 0.5\) e \(q_{0.75} = \sqrt{0.75} \approx 0.866\),
 e \([0.5,\ 0.866]\) é um intervalo de probabilidade 0.5.</p>
@@ -95,8 +100,8 @@ recomenda dois:</p>
 same, namely 0.25. If the pdf is not too skewed, the symmetric interval is usually a good default choice.</p>
 <p>[…] We can make the width smaller by centering the interval under the highest part of the pdf. Such an interval is usually a good choice
 since it contains the most likely values.</p>""", src("<i>Probability intervals</i>, §2")) + r"""
-<p>O <b>intervalo simétrico</b> deixa a mesma sobra dos dois lados: \([q_{(1-p)/2},\ q_{(1+p)/2}]\). É o que o MEX2 pede ("leftover probability
-in both tails is the same"). Quando o enunciado não diz qual, use o simétrico.</p>
+<p>O <b>intervalo simétrico</b> deixa a mesma sobra dos dois lados: \([q_{(1-p)/2},\ q_{(1+p)/2}]\). Para 50%, sobra
+0.5 no total, 0.25 de cada lado: \([q_{0.25}, q_{0.75}]\). Quando o enunciado não diz qual, use o simétrico.</p>
 """ + mc(
     "Você tem um intervalo de probabilidade 0.8 e quer um de 0.9 com a mesma ideia (simétrico). O novo intervalo é…",
     [("mais largo, porque precisa conter mais área", True,
@@ -108,15 +113,21 @@ in both tails is the same"). Quando o enunciado não diz qual, use o simétrico.
 
 # ---------------------------------------------------------------- região
 regiao = r"""
-<p>Um intervalo resume a posterior. Para uma afirmação como "\(\theta > 0.5\)" há uma conta mais direta: some (ou integre) a posterior
-na região onde a afirmação vale. O exemplo da malária do MIT16 faz isso. Nele, \(\theta_S\) e \(\theta_N\) são as probabilidades de
-portadores e não portadores do gene da anemia falciforme pegarem malária, a prior é plana numa grade de 36 pares
-\((\theta_S, \theta_N)\), e a pergunta é se o gene protege:</p>
+<p>Às vezes a pergunta não é "onde está \(\theta\)?", e sim "a afirmação \(\theta > 0.5\) é verdadeira?". A resposta bayesiana é a
+probabilidade posterior da afirmação: some a posterior de todas as hipóteses em que ela vale. Com uma pdf, a soma vira a área sob a
+posterior nessa região.</p>
+<p>O MIT16 faz essa conta com um experimento real. Quinze portadores do gene da anemia falciforme e quinze não portadores receberam o
+parasita da malária: 2 portadores e 14 não portadores ficaram doentes. Há dois parâmetros, \(\theta_S\), a probabilidade de um portador
+ficar doente, e \(\theta_N\), a de um não portador. O gene protege se \(\theta_N > \theta_S\). Cada hipótese é um par \((\theta_S, \theta_N)\)
+com os dois valores em \(\{0, 0.2, 0.4, 0.6, 0.8, 1\}\), o que dá 36 pares, todos com a mesma prior. Depois da tabela de Bayes, a probabilidade
+de "o gene protege" é a soma da posterior dos pares com \(\theta_N > \theta_S\):</p>
 """ + quote(r"""<p>To decide whether \(S\) confers protection against malaria, we compute the posterior probabilities of ‘some protection’ and of ‘strong
 protection’. These are computed by summing the corresponding squares in the posterior table.</p>
 <p>Some protection: \(P(\theta_N > \theta_S)\) = sum of orange and darker blue = 0.99995</p>""", src("<i>Choosing priors</i>, §4.1")) + r"""
-<p>Com pdf, a soma vira área. A probabilidade de \(\theta < 0.5\) é a área da posterior à esquerda de 0.5, ou seja,
-\(P(\theta \le 0.5)\). Na posterior \(2\theta\), isso dá \(0.5^2 = 0.25\).</p>
+<p>Na tabela do MIT16, as casas laranja e azul-escuras são os pares com \(\theta_N > \theta_S\). A soma dá 0.99995: depois dos dados,
+é praticamente certo que o gene protege.</p>
+<p>Na moeda, com posterior \(2\theta\), a afirmação "\(\theta < 0.5\)" tem probabilidade igual à área à esquerda de 0.5:
+\(P(\theta \le 0.5) = 0.5^2 = 0.25\).</p>
 """ + check(
     r"""<p>Na posterior \(2\theta\): \(P(\theta > 0.5)\) = """ + num("0.75", "0.002", "4rem") + "</p>",
     "Isso: 1 − P(θ ≤ 0.5) = 1 − 0.25 = 0.75.")
@@ -137,7 +148,8 @@ O MIT16 usa essa mesma Beta(8, 6) para mostrar por que um intervalo comunica mel
 \(\theta\) follows a beta(8,6) distribution”.</p>""", src("<i>Probability intervals</i>, §3.1")) + rf"""
 <h3>(c) Os intervalos</h3>
 <p>A Beta(8, 6) não tem quantil por fórmula simples: a integral dela é um polinômio de grau 14. Por isso o MEX2 manda usar o R
-(<code>qbeta</code>). Os quantis abaixo foram calculados com software; o que fica com você é escolher quais usar.</p>
+(<code>qbeta</code>). O enunciado pede o intervalo simétrico: "leftover probability in both tails is the same" quer dizer
+que sobra a mesma probabilidade nas duas pontas. Os quantis abaixo foram calculados com software; o que fica com você é escolher quais usar.</p>
 <table>
 <tr><th>\(s\)</th><td class="num">0.05</td><td class="num">0.25</td><td class="num">0.5</td><td class="num">0.75</td><td class="num">0.95</td></tr>
 <tr><th>\(q_s\) da Beta(8, 6)</th><td class="num">{Q[0.05]:.3f}</td><td class="num">{Q[0.25]:.3f}</td><td class="num">{Q[0.5]:.3f}</td><td class="num">{Q[0.75]:.3f}</td><td class="num">{Q[0.95]:.3f}</td></tr>
